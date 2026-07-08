@@ -1031,6 +1031,17 @@ body.tutorial-active #miPrompt{
 @keyframes editTagDrop{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
 .task-search-wrap{display:none!important}
 
+
+/* ===== v19: safer swipe delete / top charge / menu / keyboard guard ===== */
+.header{justify-content:space-between;gap:8px!important;overflow:visible!important}
+.menu-brand{width:104px;flex:0 0 104px;align-items:flex-start;text-align:left;border:0;background:transparent;padding:6px 2px;border-radius:12px;cursor:pointer;color:inherit}
+.menu-brand:active{background:#0f0f20}.menu-caret{font-size:10px;letter-spacing:0;color:#00ffcc99}.top-menu{position:absolute;left:10px;top:calc(var(--safe-top) + 48px);width:168px;border:1px solid rgba(0,255,204,.22);border-radius:16px;background:rgba(7,7,15,.96);box-shadow:0 18px 50px rgba(0,0,0,.55),0 0 24px rgba(0,255,204,.08);padding:7px;z-index:80;display:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.top-menu.open{display:flex;flex-direction:column;gap:5px;animation:editTagDrop .14s ease both}.top-menu button{height:36px;border-radius:11px;border:1px solid rgba(255,255,255,.07);background:#0b0d18;color:#cfe1ff;text-align:left;padding:0 12px;font-weight:900;letter-spacing:.5px}.top-menu button:active{filter:brightness(1.25)}
+.header .identity{width:104px;flex:0 0 104px}.header .id-name{max-width:70px}.header .id-avatar{display:none}.header #chargeMeter.top-charge{position:absolute!important;left:50%!important;top:calc(var(--safe-top) + 8px)!important;transform:translateX(-50%)!important;width:102px!important;height:44px!important;border:1px solid rgba(0,229,188,.28)!important;border-radius:17px!important;background:#05090c!important;box-shadow:inset 0 0 16px rgba(0,229,188,.07),0 0 18px rgba(0,229,188,.05)!important;z-index:35!important;overflow:hidden!important;padding:0!important}.header #chargeFrame{position:absolute!important;left:50%!important;top:50%!important;width:260px!important;height:260px!important;margin-left:-130px!important;margin-top:-130px!important;transform:scale(.17)!important;transform-origin:center!important;border:0!important;background:transparent!important}
+#statusBar{padding-right:0!important}#statusBar #habitRow{border-right:0!important}
+.task-tools-panel{right:-14px!important;width:146px!important;border-radius:0 14px 14px 0!important;background:linear-gradient(90deg,rgba(44,5,13,.05),#2c0710 50%,#300812)!important}.task.open-tools .task-card{transform:translateX(-132px)!important}.task-delete-zone{padding-right:14px!important;border-radius:0 14px 14px 0!important}.task.swiping .task-card{transition:none!important}.task.open-tools.swiping .task-card{transition:none!important}
+.task-extra{max-height:min(62dvh,520px)!important;overflow-y:auto!important;overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important}.edit-tag-input{font-size:16px!important;height:42px!important}.edit-tag-add{height:42px!important}.edit-tag-chip{font-size:13px!important;min-height:34px}.task-edit-name,.form-input,.form-select,.task-memo,.subtask-input{font-size:16px!important}#ta{overscroll-behavior:contain!important}html,body,#sf8{overscroll-behavior:none!important}
+
 </style>
 </head>
 <body>
@@ -1038,7 +1049,19 @@ body.tutorial-active #miPrompt{
   <div id="pc"></div>
   <canvas id="chargeParticleLayer" aria-hidden="true"></canvas>
   <div class="header">
-    <div class="brand"><span class="logo">DOPADO</span><span class="sub">TASK SYS</span></div>
+    <button class="brand menu-brand" id="brandMenuBtn" type="button" onclick="toggleTopMenu(event)" aria-label="メニュー">
+      <span class="logo">DOPADO <span class="menu-caret">▾</span></span><span class="sub">MENU</span>
+    </button>
+    <div class="top-menu" id="topMenu">
+      <button type="button" onclick="chooseTopMenu('tasks')">今日</button>
+      <button type="button" onclick="chooseTopMenu('cal')">カレンダー</button>
+      <button type="button" onclick="chooseTopMenu('game')">ゲーム</button>
+      <button type="button" onclick="chooseTopMenu('habits')">習慣</button>
+      <button type="button" onclick="chooseTopMenu('profile')">プロフィール</button>
+    </div>
+    <div class="meter charge-frame-shell charge-off top-charge" id="chargeMeter" aria-label="チャージ抽選窓">
+      <iframe id="chargeFrame" src="./charge.html?v=19" title="DOPADO CHARGE"></iframe>
+    </div>
     <div class="identity" id="identity" onclick="openProfile()">
       <div class="id-text"><div class="id-name" id="hdName"></div><div class="id-lv"><span>Lv.<b id="hdLv">0</b></span><span class="free" id="hdFree">+0日</span></div></div>
       <div class="id-avatar">👤</div>
@@ -1051,9 +1074,7 @@ body.tutorial-active #miPrompt{
       <span class="habit-title">HABIT GATE <span class="mode-sample">SET</span></span>
       <div class="habit-status"><span class="mode-gate-copy"><span class="pending">習慣をセット</span></span><span class="gate-arrows" aria-hidden="true"><i>›</i><i>›</i><i>›</i></span></div>
     </div>
-    <div class="meter charge-frame-shell charge-off" id="chargeMeter" aria-label="チャージ抽選窓">
-      <iframe id="chargeFrame" src="./charge.html?v=13-12-2" title="DOPADO CHARGE"></iframe>
-    </div>
+
   </div>
   <div id="bottomDock">
     <div id="inputBar">
@@ -1160,7 +1181,7 @@ body.tutorial-active #miPrompt{
 </div>
 
 <script>
-const APP_VERSION=18;
+const APP_VERSION=19;
 const STORAGE_KEY='dopaon_state_v6';
 const BACKUP_KEY='dopaon_state_v6_backup';
 const LEGACY_KEYS=['dopaon_state_v5','dopaon_state_v4','dopaon_state_v3','dopaon_state_v2','dopaon_state_v1'];
@@ -1360,6 +1381,19 @@ function claimImportant(t){if(!t)return false;syncImportantUsage();const day=app
 
 function levelFromXp(xp){return Math.floor((Number(xp)||0)/LEVEL_STEP)}
 function titleById(id){return TITLES.find(t=>t.id===id)||null}
+
+function toggleTopMenu(e){
+  if(e)e.stopPropagation();
+  const m=document.getElementById('topMenu');
+  if(m)m.classList.toggle('open');
+}
+function closeTopMenu(){const m=document.getElementById('topMenu');if(m)m.classList.remove('open')}
+function chooseTopMenu(mode){
+  closeTopMenu();
+  if(mode==='profile'){openProfile();return;}
+  setMainMode(mode);
+}
+document.addEventListener('click',e=>{if(!e.target.closest('#brandMenuBtn')&&!e.target.closest('#topMenu'))closeTopMenu()});
 function currentMode(){const m=state.ui&&state.ui.mode;return m==='habits'||m==='game'||m==='cal'?m:'tasks'}
 
 function defaultTaskConfig(){return{name:'',dueDate:'',dueTime:'',tags:[],taskType:'normal',habitKind:'do',repeatFreq:'none',repeatMonthDay:1}}
@@ -2053,6 +2087,15 @@ function toggleEditSystemTag(id,type){const t=state.tasks.find(x=>x.id===id);if(
 syncTaskDateFlags(t);saveState();render()}
 function toggleEditUserTag(id,tagId){const t=state.tasks.find(x=>x.id===id);if(!t)return;const arr=Array.isArray(t.tags)?t.tags:[];if(arr.includes(tagId))t.tags=arr.filter(x=>x!==tagId);else t.tags=[...arr,tagId];const rp=t.repeatId?repeatById(t.repeatId):null;if(rp)rp.tags=(t.tags||[]).slice();saveState();render()}
 function createEditTag(id,value){const t=state.tasks.find(x=>x.id===id);if(!t)return;const name=String(value||'').trim().slice(0,12);if(!name){openEditTagTaskId=id;render();return}let tg=(state.tags||[]).find(x=>x.name===name);if(!tg){tg={id:newId(),name,color:TAG_COLORS[(state.tags||[]).length%TAG_COLORS.length]};if(!Array.isArray(state.tags))state.tags=[];state.tags.push(tg)}if(!Array.isArray(t.tags))t.tags=[];if(!t.tags.includes(tg.id))t.tags.push(tg.id);const rp=t.repeatId?repeatById(t.repeatId):null;if(rp)rp.tags=(t.tags||[]).slice();openEditTagTaskId=id;saveState();render()}
+
+function safeScrollEditInput(el){
+  if(!el)return;
+  const extra=el.closest('.task-extra');
+  try{el.scrollIntoView({block:'center',inline:'nearest',behavior:'smooth'});}catch(_){try{el.scrollIntoView(false)}catch(e){}}
+  if(extra){
+    setTimeout(()=>{try{extra.scrollTop=Math.max(0,extra.scrollTop+72)}catch(e){}},80);
+  }
+}
 function renderTaskEditPanel(task){
   const p=document.createElement('div');p.className='task-edit-panel';
   const nm=document.createElement('input');nm.className='task-edit-name';nm.value=task.name||'';nm.placeholder='タスク名';nm.onchange=e=>setTaskEditName(task.id,e.target.value);nm.onclick=e=>e.stopPropagation();nm.ontouchstart=e=>e.stopPropagation();p.appendChild(nm);
@@ -2064,7 +2107,7 @@ function renderTaskEditPanel(task){
   const tagBox=document.createElement('div');tagBox.className='edit-tag-box';
   const line=document.createElement('div');line.className='edit-tag-line';
   const inp=document.createElement('input');inp.className='edit-tag-input';inp.setAttribute('data-edit-tag-input',task.id);inp.placeholder=(task.tags||[]).map(id=>{const tg=tagById(id);return tg?tg.name:''}).filter(Boolean).join(', ')||'タグ';
-  function openTagList(){if(openEditTagTaskId!==task.id){openEditTagTaskId=task.id;render();setTimeout(()=>{const x=document.querySelector('[data-edit-tag-input="'+task.id+'"]');if(x)x.focus({preventScroll:true})},30)}}
+  function openTagList(){if(openEditTagTaskId!==task.id){openEditTagTaskId=task.id;render();setTimeout(()=>{const x=document.querySelector('[data-edit-tag-input="'+task.id+'"]');if(x){x.focus({preventScroll:true});setTimeout(()=>safeScrollEditInput(x),60)}},30)}else{setTimeout(()=>safeScrollEditInput(inp),30)}}
   inp.onclick=e=>{e.stopPropagation();openTagList()};inp.onfocus=openTagList;inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();createEditTag(task.id,inp.value)}};line.appendChild(inp);
   const add=document.createElement('button');add.type='button';add.className='edit-tag-add';add.textContent='＋';add.onclick=e=>{e.stopPropagation();createEditTag(task.id,inp.value)};line.appendChild(add);tagBox.appendChild(line);
   if(openEditTagTaskId===task.id){
@@ -2102,21 +2145,72 @@ function renderSubtaskRow(taskId,st){
 function attachTaskSwipe(el,task){
   const card=el.querySelector('.task-card'),bg=el.querySelector('.task-swipe-bg');
   const isHabit=!!(task&&task._isHabit);
-  let sx=0,sy=0,dx=0,dy=0,drag=false,tracking=false,gestureDir='';
-  const RIGHT_SMALL=96,RIGHT_BIG=162,LEFT_OPEN=-94;
+  let sx=0,sy=0,dx=0,dy=0,drag=false,tracking=false,gestureDir='',wasOpen=false;
+  const RIGHT_SMALL=96,RIGHT_BIG=162,LEFT_OPEN=-94,OPEN_W=132;
   function closeOthers(){document.querySelectorAll('.task.open-tools').forEach(x=>{if(x!==el)x.classList.remove('open-tools')})}
   function resetVisual(){el.classList.remove('swiping','swipe-right-preview','swipe-left-preview','tier1','tier2','remove','max','full');if(card)card.style.transform='';if(bg)bg.textContent=''}
-  el.addEventListener('touchstart',e=>{if(e.target.closest('.task-extra'))return;if(e.target.closest('button'))return;if(openExtraTaskId){closeTaskExtras(true);tracking=false;return}const t=e.touches&&e.touches[0];if(!t)return;sx=t.clientX;sy=t.clientY;dx=dy=0;drag=false;tracking=true;gestureDir='';closeOthers()},{passive:true});
-  el.addEventListener('touchmove',e=>{if(!tracking||!e.touches||!e.touches[0])return;const t=e.touches[0];dx=t.clientX-sx;dy=t.clientY-sy;if(!drag){if(Math.abs(dx)<10)return;if(Math.abs(dx)<Math.abs(dy)*1.25){tracking=false;return}drag=true;gestureDir=dx>0?'right':'left';el.classList.add('swiping');}
+  el.addEventListener('touchstart',e=>{
+    if(e.target.closest('.task-extra'))return;
+    if(e.target.closest('button'))return;
+    if(openExtraTaskId){closeTaskExtras(true);tracking=false;return}
+    const t=e.touches&&e.touches[0];if(!t)return;
+    sx=t.clientX;sy=t.clientY;dx=dy=0;drag=false;tracking=true;gestureDir='';
+    wasOpen=el.classList.contains('open-tools');
+    if(!wasOpen)closeOthers();
+  },{passive:true});
+  el.addEventListener('touchmove',e=>{
+    if(!tracking||!e.touches||!e.touches[0])return;
+    const t=e.touches[0];dx=t.clientX-sx;dy=t.clientY-sy;
+    if(!drag){
+      if(Math.abs(dx)<10)return;
+      if(Math.abs(dx)<Math.abs(dy)*1.25){tracking=false;return}
+      drag=true;
+      gestureDir=wasOpen?'close':(dx>0?'right':'left');
+      el.classList.add('swiping');
+    }
     e.preventDefault();
+    if(wasOpen){
+      el.classList.remove('swipe-right-preview','swipe-left-preview','tier1','tier2','remove','max','full');
+      if(bg)bg.textContent='';
+      const x=-OPEN_W+Math.max(0,Math.min(OPEN_W,dx));
+      if(card)card.style.transform='translateX('+x.toFixed(1)+'px)';
+      return;
+    }
     if(gestureDir==='right'&&dx>0&&!isHabit&&task.state!=='done'){
-      const x=Math.min(dx,186),big=x>=RIGHT_BIG,armed=x>=RIGHT_SMALL,p=priorityPreview(task,big);el.classList.remove('swipe-left-preview','tier1','tier2','remove','max','full');el.classList.add('swipe-right-preview',armed?p.cls:'tier1');if(bg)bg.textContent=armed?p.txt:'もう少し';if(card)card.style.transform='translateX('+x.toFixed(1)+'px)';
+      const x=Math.min(dx,186),big=x>=RIGHT_BIG,armed=x>=RIGHT_SMALL,p=priorityPreview(task,big);
+      el.classList.remove('swipe-left-preview','tier1','tier2','remove','max','full');
+      el.classList.add('swipe-right-preview',armed?p.cls:'tier1');
+      if(bg)bg.textContent=armed?p.txt:'もう少し';
+      if(card)card.style.transform='translateX('+x.toFixed(1)+'px)';
     }else if(gestureDir==='left'&&dx<0){
-      const x=Math.max(dx,-132);el.classList.remove('swipe-right-preview','tier1','tier2','remove','max','full');el.classList.add('swipe-left-preview');if(bg)bg.textContent='削除';if(card)card.style.transform='translateX('+x.toFixed(1)+'px)';
+      const x=Math.max(dx,-OPEN_W);
+      el.classList.remove('swipe-right-preview','tier1','tier2','remove','max','full');
+      el.classList.add('swipe-left-preview');
+      if(bg)bg.textContent='削除';
+      if(card)card.style.transform='translateX('+x.toFixed(1)+'px)';
     }
   },{passive:false});
-  el.addEventListener('touchend',e=>{if(!tracking)return;tracking=false;if(!drag)return;const finalDx=dx,dir=gestureDir;const big=finalDx>=RIGHT_BIG;resetVisual();if(dir==='right'&&finalDx>=RIGHT_SMALL&&!isHabit&&task.state!=='done'){applyPrioritySwipe(task,big);return}if(dir==='left'&&finalDx<=LEFT_OPEN){closeTaskExtras(false);clearInlineDopaon(false);el.classList.add('open-tools');return}if(dir==='left')el.classList.remove('open-tools')},{passive:true});
-  el.addEventListener('touchcancel',()=>{tracking=false;resetVisual()},{passive:true});
+  el.addEventListener('touchend',e=>{
+    if(!tracking)return;
+    tracking=false;
+    if(!drag)return;
+    const finalDx=dx,dir=gestureDir,big=finalDx>=RIGHT_BIG;
+    resetVisual();
+    if(wasOpen){
+      if(finalDx>38)el.classList.remove('open-tools');
+      else el.classList.add('open-tools');
+      wasOpen=false;
+      return;
+    }
+    if(dir==='right'&&finalDx>=RIGHT_SMALL&&!isHabit&&task.state!=='done'){
+      applyPrioritySwipe(task,big);return;
+    }
+    if(dir==='left'&&finalDx<=LEFT_OPEN){
+      closeTaskExtras(false);clearInlineDopaon(false);el.classList.add('open-tools');return;
+    }
+    if(dir==='left')el.classList.remove('open-tools');
+  },{passive:true});
+  el.addEventListener('touchcancel',()=>{tracking=false;wasOpen=false;resetVisual()},{passive:true});
 }
 function toggleCompleted(){state.ui.completedOpen=!state.ui.completedOpen;saveState();render()}
 function clearCompleted(){const removed=state.tasks.filter(t=>t.state==='done');const n=removed.length;if(!n)return;state.tasks=state.tasks.filter(t=>t.state!=='done');saveState();render();showUndo('完了済み '+n+'件を整理した',()=>{state.tasks=state.tasks.concat(removed);saveState();render()})}
