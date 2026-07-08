@@ -453,9 +453,28 @@ class ScrollLayer{
 }
 const layers=[new ScrollLayer('farLayer',.16,'far',7,[80,160]),new ScrollLayer('midLayer',.42,'mid',8,[70,170]),new ScrollLayer('nearLayer',.72,'near',9,[70,180]),new ScrollLayer('frontLayer',1.05,'front',12,[45,120])];
 let firstCell=0,offset=0;
-function makeCell(g){const el=document.createElement('div');el.className='road-cell';if(g%10===0)el.classList.add('mark');return el}
+function makeCell(g){
+  const el=document.createElement('div');
+  el.className='road-cell';
+  if(g%10===0)el.classList.add('mark');
+  // 再構築直後に過去マスが1フレームだけ白く光るのを防ぐため、
+  // 生成した瞬間からpast状態を付ける。
+  if(g<=S.clearedG)el.classList.add('past');
+  return el;
+}
 function updateRoadFuture(){[...$('road').children].forEach((el,i)=>{const g=firstCell+i;el.classList.toggle('past',g<=S.clearedG)})}
-function buildRoad(){const road=$('road');road.innerHTML='';firstCell=S.g-4;for(let i=0;i<11;i++)road.appendChild(makeCell(firstCell+i));offset=$('stage').offsetWidth/2-CELL_W/2-(S.g-firstCell)*CELL_W;road.style.transition='none';road.style.transform=`translateX(${offset}px)`;updateRoadFuture();requestAnimationFrame(()=>road.style.transition='transform .54s cubic-bezier(.22,.94,.25,1)')}
+function buildRoad(){
+  const road=$('road');
+  road.style.transition='none';
+  firstCell=S.g-4;
+  const frag=document.createDocumentFragment();
+  for(let i=0;i<11;i++)frag.appendChild(makeCell(firstCell+i));
+  road.replaceChildren(frag);
+  offset=$('stage').offsetWidth/2-CELL_W/2-(S.g-firstCell)*CELL_W;
+  road.style.transform=`translateX(${offset}px)`;
+  updateRoadFuture();
+  requestAnimationFrame(()=>road.style.transition='transform .54s cubic-bezier(.22,.94,.25,1)');
+}
 function shiftRoad(){
   const road=$('road');
   road.style.transition='transform .54s cubic-bezier(.22,.94,.25,1)';
