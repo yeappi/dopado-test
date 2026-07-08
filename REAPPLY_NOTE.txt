@@ -1,0 +1,1 @@
+DOPADO v15: Claude v14 base + re-applied v27.3 game.html, square game iframe, input-bar fixes, infinite stamina test mode.

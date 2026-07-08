@@ -892,6 +892,7 @@ body.tutorial-active #miPrompt{
 .claude-game .cg-log{font-size:12px;min-height:62px;color:#d2deea;background:#0a101b;border-color:#172235}
 
 
+/* ===== v27.3 REAPPLIED GAME FROM CHATGPT ===== */
 /* ===== v27.2 native GAME bridge / no bottom input on GAME + HABIT ===== */
 #sf8[data-mode="game"] #inputBar,
 #sf8[data-mode="habits"] #inputBar{display:none!important;visibility:hidden!important;pointer-events:none!important;height:0!important;padding:0!important;border:0!important;}
@@ -1138,7 +1139,7 @@ body.tutorial-active #miPrompt{
 </div>
 
 <script>
-const APP_VERSION=14;
+const APP_VERSION=15;
 const STORAGE_KEY='dopaon_state_v6';
 const BACKUP_KEY='dopaon_state_v6_backup';
 const LEGACY_KEYS=['dopaon_state_v5','dopaon_state_v4','dopaon_state_v3','dopaon_state_v2','dopaon_state_v1'];
@@ -2422,7 +2423,7 @@ function renderGame(a){
   try{localStorage.setItem('DOPADO_GAME_CONTEXT',JSON.stringify(ctx));}catch(e){}
   const wrap=document.createElement('div');
   wrap.className='game-wrap v27-native-game-wrap';
-  wrap.innerHTML='<iframe id="dopadoV27GameFrame" class="dopado-v27-game-frame" src="./game.html?v=27-2-square" title="DOPADO GAME"></iframe>';
+  wrap.innerHTML='<iframe id="dopadoV27GameFrame" class="dopado-v27-game-frame" src="./game.html?v=27-3-reapplied" title="DOPADO GAME"></iframe>';
   a.appendChild(wrap);
 }
 
