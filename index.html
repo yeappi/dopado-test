@@ -1042,6 +1042,33 @@ body.tutorial-active #miPrompt{
 .task-tools-panel{right:-14px!important;width:146px!important;border-radius:0 14px 14px 0!important;background:linear-gradient(90deg,rgba(44,5,13,.05),#2c0710 50%,#300812)!important}.task.open-tools .task-card{transform:translateX(-132px)!important}.task-delete-zone{padding-right:14px!important;border-radius:0 14px 14px 0!important}.task.swiping .task-card{transition:none!important}.task.open-tools.swiping .task-card{transition:none!important}
 .task-extra{max-height:min(62dvh,520px)!important;overflow-y:auto!important;overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important}.edit-tag-input{font-size:16px!important;height:42px!important}.edit-tag-add{height:42px!important}.edit-tag-chip{font-size:13px!important;min-height:34px}.task-edit-name,.form-input,.form-select,.task-memo,.subtask-input{font-size:16px!important}#ta{overscroll-behavior:contain!important}html,body,#sf8{overscroll-behavior:none!important}
 
+
+/* ===== v20: cleaner top bar / no status gate / larger charge / simple input ===== */
+:root{--status-h:0px!important;}
+#statusBar{display:none!important;height:0!important;min-height:0!important;border:0!important;pointer-events:none!important;visibility:hidden!important;}
+#ta{top:calc(var(--safe-top) + var(--header-h))!important;}
+#pc{top:calc(var(--safe-top) + var(--header-h))!important;}
+#inputBar{gap:8px!important;}
+#inputBar #ib{display:none!important;}
+#inputBar #mi{margin-left:0!important;}
+.header{grid-template-columns:112px 1fr 112px!important;display:grid!important;align-items:center!important;gap:4px!important;padding-left:10px!important;padding-right:10px!important;}
+.header .menu-brand{width:112px!important;flex:auto!important;min-width:0!important;justify-self:start!important;}
+.header .identity{width:112px!important;flex:auto!important;min-width:0!important;justify-self:end!important;display:flex!important;align-items:center!important;justify-content:flex-end!important;border:0!important;background:transparent!important;padding:5px 0!important;border-radius:12px!important;cursor:pointer!important;}
+.header .identity:active{background:#0f0f20!important;}
+.header .id-avatar{display:none!important;}
+.header .id-text{align-items:flex-end!important;text-align:right!important;min-width:0!important;}
+.header .id-name{max-width:102px!important;font-size:12px!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;}
+.header .id-lv{justify-content:flex-end!important;font-size:10px!important;gap:5px!important;}
+.header #chargeMeter.top-charge{position:relative!important;left:auto!important;top:auto!important;transform:none!important;justify-self:center!important;width:128px!important;height:52px!important;border:none!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important;padding:0!important;z-index:35!important;}
+.header #chargeMeter.top-charge.charge-off{filter:brightness(.86) saturate(.92)!important;}
+.header #chargeMeter.top-charge.charge-busy{filter:brightness(1.12) saturate(1.1)!important;}
+.header #chargeFrame{position:absolute!important;left:50%!important;top:50%!important;width:260px!important;height:260px!important;margin-left:-130px!important;margin-top:-130px!important;transform:scale(.215)!important;transform-origin:center!important;border:0!important;background:transparent!important;}
+.header-level-line{top:calc(var(--safe-top) + var(--header-h) - 2px)!important;}
+#sf8[data-mode="game"] #statusBar{display:none!important;}
+#sf8[data-mode="habits"] #statusBar{display:none!important;}
+#sf8[data-mode="tasks"] #statusBar{display:none!important;}
+#sf8[data-mode="cal"] #statusBar{display:none!important;}
+
 </style>
 </head>
 <body>
@@ -1060,11 +1087,10 @@ body.tutorial-active #miPrompt{
       <button type="button" onclick="chooseTopMenu('profile')">プロフィール</button>
     </div>
     <div class="meter charge-frame-shell charge-off top-charge" id="chargeMeter" aria-label="チャージ抽選窓">
-      <iframe id="chargeFrame" src="./charge.html?v=19" title="DOPADO CHARGE"></iframe>
+      <iframe id="chargeFrame" src="./charge.html?v=20" title="DOPADO CHARGE"></iframe>
     </div>
     <div class="identity" id="identity" onclick="openProfile()">
       <div class="id-text"><div class="id-name" id="hdName"></div><div class="id-lv"><span>Lv.<b id="hdLv">0</b></span><span class="free" id="hdFree">+0日</span></div></div>
-      <div class="id-avatar">👤</div>
     </div>
     <div class="header-level-line"><div class="header-level-fill" id="hdLevelFill"></div></div>
   </div>
@@ -1078,7 +1104,6 @@ body.tutorial-active #miPrompt{
   </div>
   <div id="bottomDock">
     <div id="inputBar">
-      <button id="ib" class="roundBtn bolt" onclick="openTaskMenu()" aria-label="タスク設定">☰</button>
       <input id="mi" type="text" placeholder="" aria-label="タスクを入力" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" oninput="onIn(event)" onbeforeinput="onBeforeInput(event)" onkeydown="onKey(event)" oncompositionstart="onCompStart(event)" oncompositionupdate="onCompUpdate(event)" oncompositionend="onCompEnd(event)" onfocus="onInputFocus()" onblur="onInputBlur()" />
       <div id="miPrompt" aria-hidden="true"><span></span></div>
       <button id="db" class="roundBtn dopa" onclick="doDopa()" aria-label="DOPADO!">✓</button>
@@ -1181,7 +1206,7 @@ body.tutorial-active #miPrompt{
 </div>
 
 <script>
-const APP_VERSION=19;
+const APP_VERSION=20;
 const STORAGE_KEY='dopaon_state_v6';
 const BACKUP_KEY='dopaon_state_v6_backup';
 const LEGACY_KEYS=['dopaon_state_v5','dopaon_state_v4','dopaon_state_v3','dopaon_state_v2','dopaon_state_v1'];
@@ -2863,7 +2888,7 @@ window.addEventListener('message',e=>{
     stopChargeParticles();
     return;
   }
-  if(d.type==='DOPAON_CHARGE_STATE'){chargeCanInterrupt=false;if(d.phase==='peka'){startChargeInteractionLock();const bonus=!!(currentChargeTicket&&(currentChargeTicket.force==='bonus'||currentChargeTicket.type==='habit'||currentChargeTicket.type==='important'));startChargeParticles(bonus?'bonus':'normal')}return}
+  if(d.type==='DOPAON_CHARGE_STATE'){chargeCanInterrupt=false;if(d.phase==='peka'){startChargeInteractionLock();const redCharge=!!(currentChargeTicket&&(currentChargeTicket.type==='habit'||currentChargeTicket.type==='important'||currentChargeTicket.tutorial));startChargeParticles(redCharge?'bonus':'normal')}return}
   if(d.type==='DOPAON_CHARGE_RESULT'){
     const kind=['miss','white','blue','bonus'].includes(d.kind)?d.kind:'miss';
     stopChargeParticles();
