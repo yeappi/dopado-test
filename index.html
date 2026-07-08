@@ -765,6 +765,77 @@ body.tutorial-active #miPrompt{
 
 @media(max-width:390px){.claude-game .cg-stage{height:315px}.claude-game .cg-ginfo b{font-size:24px}}
 
+
+
+/* ===== v19 official hotfix: bottom input+tabs, combat pressure, fast hint zones ===== */
+:root{--dock-h:108px;}
+#bottomDock{height:calc(var(--dock-h) + var(--safe-bottom))!important;display:block!important;}
+#inputBar{display:flex!important;position:absolute!important;left:0!important;right:0!important;bottom:50px!important;height:var(--input-h)!important;padding:8px 12px!important;z-index:6!important;}
+#dopadoTabBar{bottom:0!important;}
+#sf8[data-mode="habits"] #inputBar,#sf8[data-mode="game"] #inputBar{display:flex!important;}
+#sf8[data-mode="habits"] #ta,#sf8[data-mode="game"] #ta,#sf8[data-mode="tasks"] #ta{bottom:calc(var(--dock-h) + var(--safe-bottom) + var(--kb))!important;}
+#sf8[data-mode="game"] #ta{padding-bottom:130px!important;}
+
+.claude-game .cg-stage{transition:filter .35s ease, transform .35s ease, border-color .25s, box-shadow .25s;}
+.claude-game .cg-stage.cg-battle-entry{filter:brightness(1.45) saturate(1.15);transform:scale(1.012);}
+.claude-game .cg-stage.cg-battle-on{background:#eef6ff;filter:brightness(1.12) contrast(1.03);}
+.claude-game .cg-stage.cg-battle-on .cg-sky{background:radial-gradient(circle at 50% 38%,rgba(255,255,255,.95),rgba(215,232,245,.92) 36%,rgba(150,180,205,.76) 100%)!important;opacity:1;}
+.claude-game .cg-stage.cg-battle-on .cg-biome-tint{background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,.05))!important;}
+.claude-game .cg-stage.cg-battle-on .cg-vignette{background:radial-gradient(105% 85% at 50% 45%,transparent 50%,rgba(0,0,0,.18) 100%);}
+.claude-game .cg-battle{position:absolute;inset:0;z-index:24;opacity:0;pointer-events:none;transition:opacity .32s ease;}
+.claude-game .cg-battle.active{opacity:1;pointer-events:auto;}
+.claude-game .cg-battle-arena{position:absolute;inset:0;z-index:26;display:flex;align-items:flex-end;justify-content:center;gap:78px;padding-bottom:calc(24% + 3px);}
+.claude-game .cg-fighter{position:relative;width:80px;height:86px;display:flex;align-items:flex-end;justify-content:center;transform-origin:50% 100%;z-index:31;transition:transform .34s cubic-bezier(.25,.7,.2,1), opacity .28s;}
+.claude-game .cg-fighter .body{width:46px;height:40px;background:var(--cg-ink);border-radius:52% 52% 46% 46% / 62% 62% 40% 40%;filter:drop-shadow(0 8px 5px rgba(0,0,0,.25));}
+.claude-game .cg-fighter.enemy .body{width:52px;height:47px;border-radius:48% 52% 44% 48%;clip-path:polygon(50% 0%,62% 20%,82% 9%,78% 31%,100% 38%,82% 51%,96% 72%,72% 64%,65% 90%,51% 70%,38% 91%,31% 65%,7% 78%,19% 55%,0% 41%,24% 31%,11% 13%,34% 22%);}
+.claude-game .cg-fighter .tag{position:absolute;left:50%;top:0;transform:translateX(-50%);white-space:nowrap;font-size:12px;font-weight:900;letter-spacing:1px;color:#fff;text-shadow:-1.5px 0 var(--cg-ink),1.5px 0 var(--cg-ink),0 -1.5px var(--cg-ink),0 1.5px var(--cg-ink),0 0 12px rgba(46,230,176,.55);}
+.claude-game .cg-fighter .hit{position:absolute;left:50%;bottom:18px;width:34px;height:34px;border-radius:50%;transform:translateX(-50%) scale(.45);opacity:0;background:rgba(255,255,255,.95);box-shadow:0 0 22px rgba(255,255,255,.8);}
+.claude-game .cg-fighter .hit.show{animation:cgHitPop .32s ease;}
+@keyframes cgHitPop{0%{opacity:0;transform:translateX(-50%) scale(.3)}35%{opacity:1;transform:translateX(-50%) scale(1.1)}100%{opacity:0;transform:translateX(-50%) scale(1.45)}}
+.claude-game .cg-fighter.player.lunge{animation:cgPlayerStrike .72s cubic-bezier(.22,.7,.2,1);}
+.claude-game .cg-fighter.enemy.lunge{animation:cgEnemyStrike .72s cubic-bezier(.22,.7,.2,1);}
+@keyframes cgPlayerStrike{0%{transform:translateX(0) scaleY(1)}24%{transform:translateX(-8px) scaleX(1.12) scaleY(.86)}55%{transform:translateX(60px) scaleX(.88) scaleY(1.12)}100%{transform:translateX(0) scaleY(1)}}
+@keyframes cgEnemyStrike{0%{transform:translateX(0) scaleY(1)}24%{transform:translateX(8px) scaleX(1.12) scaleY(.86)}55%{transform:translateX(-60px) scaleX(.88) scaleY(1.12)}100%{transform:translateX(0) scaleY(1)}}
+.claude-game .cg-fighter.player.recoil{animation:cgRecoP .48s ease;}
+.claude-game .cg-fighter.enemy.recoil{animation:cgRecoE .48s ease;}
+@keyframes cgRecoP{0%,100%{transform:translateX(0)}35%{transform:translateX(-18px) rotate(-4deg)}65%{transform:translateX(7px)}}
+@keyframes cgRecoE{0%,100%{transform:translateX(0)}35%{transform:translateX(18px) rotate(4deg)}65%{transform:translateX(-7px)}}
+.claude-game .cg-battle.clash .cg-battle-arena{animation:cgArenaShake .58s ease-in-out infinite;}
+.claude-game .cg-battle.clash .cg-fighter.player{animation:cgPushP .58s ease-in-out infinite;}
+.claude-game .cg-battle.clash .cg-fighter.enemy{animation:cgPushE .58s ease-in-out infinite;}
+@keyframes cgArenaShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@keyframes cgPushP{0%,100%{transform:translateX(42px)}50%{transform:translateX(72px) scaleX(1.12) scaleY(.9)}}
+@keyframes cgPushE{0%,100%{transform:translateX(-42px)}50%{transform:translateX(-72px) scaleX(1.12) scaleY(.9)}}
+.claude-game .cg-fighter.winner{z-index:42;animation:cgWinnerPop .7s ease both!important;}
+.claude-game .cg-fighter.loser{z-index:38;animation:cgLoserFly .76s cubic-bezier(.15,.72,.25,1) both!important;}
+.claude-game .cg-fighter.enemy.loser{animation-name:cgEnemyFly!important;}
+@keyframes cgWinnerPop{0%{transform:translateY(0) scale(1)}45%{transform:translateY(-26px) scale(1.18)}100%{transform:translateY(-6px) scale(1.06)}}
+@keyframes cgLoserFly{0%{transform:translateX(0) rotate(0) scale(1);opacity:1}100%{transform:translateX(-190px) translateY(-45px) rotate(-42deg) scale(.55);opacity:0}}
+@keyframes cgEnemyFly{0%{transform:translateX(0) rotate(0) scale(1);opacity:1}100%{transform:translateX(190px) translateY(-45px) rotate(42deg) scale(.55);opacity:0}}
+.claude-game .cg-clash-copy{display:none!important;}
+.claude-game .cg-result{position:absolute;inset:0;z-index:29;opacity:0;pointer-events:none;display:flex;align-items:center;justify-content:center;transition:opacity .28s ease;overflow:hidden;}
+.claude-game .cg-result.show{opacity:1;}
+.claude-game .cg-result .rays{position:absolute;inset:-30%;z-index:1;opacity:0;background:conic-gradient(from 0deg,#ff6b6b,#ffd166,#8affc1,#6bcfff,#b98bff,#ff6bd6,#ff6b6b);mix-blend-mode:screen;filter:blur(2px);}
+.claude-game .cg-result.win .rays{opacity:.32;animation:cgSpin 3.8s linear infinite;}
+@keyframes cgSpin{to{transform:rotate(360deg)}}
+.claude-game .cg-result .word{position:absolute;z-index:30;bottom:52px;left:0;right:0;text-align:center;font-family:'Orbitron',monospace;font-size:42px;font-weight:900;letter-spacing:7px;text-shadow:0 0 16px #fff,0 0 34px rgba(255,210,74,.7);}
+.claude-game .cg-result.win .word{color:#fff;}
+.claude-game .cg-result.lose .word{color:#c9d3dc;text-shadow:0 0 14px rgba(0,0,0,.8);}
+.claude-game .cg-attack-flash{position:absolute;inset:0;z-index:23;pointer-events:none;opacity:0;transition:opacity .12s;mix-blend-mode:screen;}
+.claude-game .cg-attack-flash.show{animation:cgHintFlash .34s ease;}
+.claude-game .cg-attack-flash.green{background:radial-gradient(circle at 50% 56%,rgba(52,211,153,.42),transparent 58%)}
+.claude-game .cg-attack-flash.blue{background:radial-gradient(circle at 50% 56%,rgba(56,189,248,.44),transparent 58%)}
+.claude-game .cg-attack-flash.purple{background:radial-gradient(circle at 50% 56%,rgba(167,139,250,.48),transparent 58%)}
+.claude-game .cg-attack-flash.red{background:radial-gradient(circle at 50% 56%,rgba(248,113,113,.55),transparent 58%)}
+.claude-game .cg-attack-flash.gold{background:radial-gradient(circle at 50% 56%,rgba(251,191,36,.55),transparent 58%)}
+@keyframes cgHintFlash{0%{opacity:0}28%{opacity:1}100%{opacity:0}}
+.claude-game .cg-enemy-hud{position:absolute;right:12px;top:12px;z-index:35;min-width:112px;padding:8px 10px;border-radius:12px;background:rgba(5,7,10,.52);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(4px);text-align:right;}
+.claude-game .cg-enemy-hud .name{font-weight:900;font-size:12px;color:#fff;letter-spacing:1px;}
+.claude-game .cg-enemy-hud .lv{font-family:'Orbitron',monospace;font-size:10px;color:var(--cg-dim);margin-top:2px;}
+.claude-game .cg-enemy-hud .stars{font-size:12px;color:#ffd24a;letter-spacing:1px;margin-top:2px;text-shadow:0 0 8px rgba(255,210,74,.35);}
+.claude-game .cg-advance.locked{opacity:.55;pointer-events:none;filter:grayscale(.35);}
+.claude-game .cg-stamina-hud.inf .rest{color:#ffd24a;}
+
 </style>
 </head>
 <body>
@@ -1800,7 +1871,7 @@ function habitCheckListHtml(h){
   if(!arr.length)return '';
   return '<div class="habit-check-list">'+arr.slice(0,3).map(x=>'<div>□ '+escapeHtml(x)+'</div>').join('')+(arr.length>3?'<div>…</div>':'')+'</div>';
 }
-function defaultGameState(){return{stamina:0,staminaDay:appDayStr(),gCount:0,coins:0,pullbackLeft:0,lastLog:'スタミナを使ってG数を進めろ。\nタスク完了でスタミナ+5。',titles:{detector:0,greed:0,saver:0},lastEnemy:null}}
+function defaultGameState(){return{stamina:0,staminaDay:appDayStr(),gCount:0,coins:0,pullbackLeft:0,lastLog:'スタミナを使ってG数を進めろ。\nタスク完了でスタミナ+5。',titles:{detector:0,greed:0,saver:0},lastEnemy:null,hintLevel:0,hintStepG:-1,timePhase:'day',timeStepG:-1,infinite:false}}
 function ensureGameState(){
   if(!state.game||typeof state.game!=='object')state.game=defaultGameState();
   const g=state.game,day=appDayStr();
@@ -1808,6 +1879,11 @@ function ensureGameState(){
   g.stamina=Math.max(0,Number(g.stamina)||0);g.gCount=Math.max(0,Number(g.gCount)||0);g.coins=Math.max(0,Number(g.coins)||0);g.pullbackLeft=Math.max(0,Number(g.pullbackLeft)||0);
   if(!g.titles||typeof g.titles!=='object')g.titles={detector:0,greed:0,saver:0};
   ['detector','greed','saver'].forEach(k=>g.titles[k]=clamp(Number(g.titles[k])||0,0,10));
+  g.hintLevel=clamp(Number(g.hintLevel)||0,0,4);
+  g.hintStepG=Number.isFinite(Number(g.hintStepG))?Number(g.hintStepG):-1;
+  g.timeStepG=Number.isFinite(Number(g.timeStepG))?Number(g.timeStepG):-1;
+  if(!['day','evening','night'].includes(g.timePhase))g.timePhase='day';
+  g.infinite=!!g.infinite;
   return g;
 }
 function addGameStamina(n,label='CLEAR'){const g=ensureGameState();g.stamina+=Number(n)||0;g.lastLog=(label||'CLEAR')+'\nスタミナ +'+(Number(n)||0)+' 獲得。';}
@@ -1816,16 +1892,39 @@ function gameTitleInfo(){const g=ensureGameState();return{
   greed:{name:'強欲',desc:'勝利コインUP',lv:g.titles.greed||0,cost:50*((g.titles.greed||0)+1)},
   saver:{name:'省エネ',desc:'スタミナ温存率UP',lv:g.titles.saver||0,cost:50*((g.titles.saver||0)+1)}
 }}
+function gameHintName(level){return ['通常','高確','チャンス','前兆','激アツ'][clamp(Number(level)||0,0,4)]}
+function gameHintKey(level){return ['white','green','blue','purple','red'][clamp(Number(level)||0,0,4)]}
+function gameStepHintAdvance(g){
+  const step=Math.floor(g.gCount/5);
+  if(g.hintStepG===step)return;
+  g.hintStepG=step;
+  if(g.hintLevel>=4){g.hintLevel=0;return;}
+  const r=Math.random();
+  if(g.hintLevel===0){
+    if(r<0.08)g.hintLevel=4;       // いきなり赤
+    else if(r<0.22)g.hintLevel=3;  // いきなり紫
+    else if(r<0.42)g.hintLevel=2;  // いきなり青
+    else if(r<0.72)g.hintLevel=1;  // 緑
+    else g.hintLevel=0;
+  }else{
+    if(r<0.70)g.hintLevel=Math.min(4,g.hintLevel+1);
+    else g.hintLevel=g.hintLevel; // ステップダウンはしない
+  }
+}
+function gameTimeAdvance(g){
+  const step=Math.floor(g.gCount/20);
+  if(g.timeStepG===step)return;
+  g.timeStepG=step;
+  const r=Math.random();
+  g.timePhase=r<0.48?'day':(r<0.78?'evening':'night');
+}
 function gameZone(){
   const g=ensureGameState();
-  if(g.pullbackLeft>0)return{key:'gold',name:'引き戻し',rate:1/8};
-  const x=g.gCount%240;
-  if(x>=220)return{key:'gold',name:'天井前',rate:1/5};
-  if(x>=190)return{key:'red',name:'激アツ',rate:1/12};
-  if(x>=150)return{key:'purple',name:'強ゾーン',rate:1/22};
-  if(x>=105)return{key:'blue',name:'チャンス',rate:1/35};
-  if(x>=55)return{key:'green',name:'高確',rate:1/55};
-  return{key:(x%20<10?'white':'green'),name:(x%20<10?'通常':'微高確'),rate:(x%20<10?1/90:1/65)};
+  if(g.pullbackLeft>0)return{key:'gold',name:'引き戻し',rate:1/7,level:4};
+  if(g.gCount>=220)return{key:'gold',name:'天井前',rate:1/4,level:4};
+  const lv=clamp(Number(g.hintLevel)||0,0,4);
+  const rates=[1/95,1/70,1/45,1/24,.72];
+  return{key:gameHintKey(lv),name:gameHintName(lv),rate:rates[lv],level:lv};
 }
 function gameSaveChance(){const lv=ensureGameState().titles.saver||0;return (1/15)+lv*((1/5-1/15)/10)}
 function gameEncounterRate(){const g=ensureGameState(),z=gameZone();return Math.min(.85,z.rate+(g.titles.detector||0)*0.001)}
@@ -1833,9 +1932,12 @@ function gameRewardMult(){return 1+(ensureGameState().titles.greed||0)*0.001}
 function gameEnemyLevel(){const pl=levelFromXp(state.xp);return Math.max(1,pl+Math.floor(Math.random()*5)-2)}
 function gameWinRate(enemyLv){const pl=levelFromXp(state.xp);return clamp(50+(pl-enemyLv)*3,15,90)}
 let cgBattle=null;
+let cgBattleLocked=false;
+function cgLockButton(ms=720){const b=document.getElementById('cgMainBtn');cgBattleLocked=true;if(b)b.classList.add('locked');setTimeout(()=>{cgBattleLocked=false;const bb=document.getElementById('cgMainBtn');if(bb)bb.classList.remove('locked')},ms)}
 function cgRand(a,b){return a+Math.random()*(b-a)}
 function cgPick(arr){return arr[Math.floor(Math.random()*arr.length)]}
 function cgButton(){
+  if(cgBattleLocked)return;
   if(cgBattle&&cgBattle.phase==='battle')return cgBattleClick();
   if(cgBattle&&cgBattle.phase==='result')return cgEndBattle();
   return gameStep();
@@ -1847,10 +1949,10 @@ function cgUpdateButton(text,cost,battle){
 }
 function cgExpectFlash(){
   const el=document.getElementById('cgAttackFlash');if(!el)return;
-  if(Math.random()>0.38)return;
-  const colors=['green','green','blue','blue','purple','red','gold'];
+  if(Math.random()>0.28)return;
+  const colors=['green','green','green','blue','blue','purple','red','gold'];
   el.className='cg-attack-flash '+cgPick(colors)+' show';
-  setTimeout(()=>{el.className='cg-attack-flash'},480);
+  setTimeout(()=>{el.className='cg-attack-flash'},360);
 }
 function cgAnimateRound(type){
   const p=document.getElementById('cgPlayerFighter'),e=document.getElementById('cgEnemyFighter');
@@ -1884,19 +1986,27 @@ function cgComboFor(win){
 function cgStartBattle(info){
   const battle=document.getElementById('cgBattle'),stage=document.getElementById('cgStage');
   if(!battle||!stage)return;
-  cgBattle={phase:'battle',step:0,info:info,combo:cgComboFor(info.win)};
-  stage.classList.add('cg-battle-on');battle.classList.add('active');battle.classList.remove('clash');
-  document.getElementById('cgPlayerFighter')?.classList.remove('winner','loser');
-  document.getElementById('cgEnemyFighter')?.classList.remove('winner','loser');
-  const result=document.getElementById('cgResult');result&&result.classList.remove('show','win','lose');
-  cgUpdateButton('こうげき','1/4',true);
+  cgBattle={phase:'entry',step:0,info:info,combo:cgComboFor(info.win)};
+  stage.classList.add('cg-battle-entry');
+  cgUpdateButton('接敵中…','LOCK',true);
+  cgLockButton(820);
+  setTimeout(()=>{
+    if(!cgBattle||cgBattle.phase!=='entry')return;
+    cgBattle.phase='battle';
+    stage.classList.remove('cg-battle-entry');
+    stage.classList.add('cg-battle-on');battle.classList.add('active');battle.classList.remove('clash');
+    document.getElementById('cgPlayerFighter')?.classList.remove('winner','loser');
+    document.getElementById('cgEnemyFighter')?.classList.remove('winner','loser');
+    const result=document.getElementById('cgResult');result&&result.classList.remove('show','win','lose');
+    cgUpdateButton('こうげき','1/4',true);
+  },760);
 }
 function cgBattleClick(){
-  if(!cgBattle)return;
+  if(!cgBattle||cgBattle.phase!=='battle')return;
   cgBattle.step++;
-  if(cgBattle.step===1){cgAnimateRound(cgBattle.combo[0]);cgUpdateButton('こうげき','2/4',true);return;}
-  if(cgBattle.step===2){cgAnimateRound(cgBattle.combo[1]);cgUpdateButton('せめぎ合い','3/4',true);return;}
-  if(cgBattle.step===3){document.getElementById('cgBattle')?.classList.add('clash');cgUpdateButton('結果発表','4/4',true);return;}
+  if(cgBattle.step===1){cgAnimateRound(cgBattle.combo[0]);cgUpdateButton('こうげき','2/4',true);cgLockButton(780);return;}
+  if(cgBattle.step===2){cgAnimateRound(cgBattle.combo[1]);cgUpdateButton('押し切れ','3/4',true);cgLockButton(780);return;}
+  if(cgBattle.step===3){document.getElementById('cgBattle')?.classList.add('clash');cgUpdateButton('結果発表','4/4',true);cgLockButton(920);return;}
   return cgShowResult();
 }
 function cgShowResult(){
@@ -1904,13 +2014,14 @@ function cgShowResult(){
   const win=!!cgBattle.info.win,g=ensureGameState(),info=cgBattle.info;
   cgBattle.phase='result';
   const p=document.getElementById('cgPlayerFighter'),e=document.getElementById('cgEnemyFighter'),res=document.getElementById('cgResult'),word=document.getElementById('cgResultWord');
+  document.getElementById('cgBattle')?.classList.remove('clash');
   if(win){
     const coins=Math.max(1,Math.round(info.enemyLv*10*gameRewardMult()));
-    g.coins+=coins;g.gCount=0;g.pullbackLeft=0;g.lastEnemy={lv:info.enemyLv,winRate:info.rate,win:true};
+    g.coins+=coins;g.gCount=0;g.pullbackLeft=0;g.hintLevel=0;g.hintStepG=-1;g.lastEnemy={lv:info.enemyLv,winRate:info.rate,win:true};
     g.lastLog='WIN！！\n敵Lv.'+info.enemyLv+' 撃破。\nコイン +'+coins+' 獲得。\nG数リセット。';
     p&&p.classList.add('winner');e&&e.classList.add('loser');
   }else{
-    g.pullbackLeft=15;g.lastEnemy={lv:info.enemyLv,winRate:info.rate,win:false};
+    g.pullbackLeft=15;g.hintLevel=0;g.hintStepG=-1;g.lastEnemy={lv:info.enemyLv,winRate:info.rate,win:false};
     g.lastLog='LOSE…\n敵Lv.'+info.enemyLv+' に敗北。\n15G引き戻し区間へ。G数は継続。';
     e&&e.classList.add('winner');p&&p.classList.add('loser');
   }
@@ -1922,22 +2033,27 @@ function cgShowResult(){
 function cgEndBattle(){cgBattle=null;saveState();render();}
 function gameStep(){
   const g=ensureGameState();
-  if(g.stamina<=0){g.lastLog='スタミナ切れ。\nタスクを完了してチャージしろ。';saveState();render();return}
-  const saved=Math.random()<gameSaveChance();
-  if(!saved)g.stamina-=1;
+  if(!g.infinite&&g.stamina<=0){g.lastLog='スタミナ切れ。\nタスクを完了してチャージしろ。';saveState();render();return}
+  const saved=!g.infinite && Math.random()<gameSaveChance();
+  if(!g.infinite&&!saved)g.stamina-=1;
   g.gCount+=1;
   if(g.pullbackLeft>0)g.pullbackLeft-=1;
+  gameStepHintAdvance(g);
+  gameTimeAdvance(g);
   const z=gameZone();
   const forced=g.gCount>=240;
   const hit=forced||Math.random()<gameEncounterRate();
-  let log=(saved?'省エネ発動！スタミナ消費なし。\n':'')+'▶ '+g.gCount+'G 進行\n'+z.name+' / 遭遇率 '+Math.round(gameEncounterRate()*1000)/10+'%';
+  let log=(g.infinite?'∞ TEST STAMINA\n':(saved?'省エネ発動！スタミナ消費なし。\n':''))+'▶ '+g.gCount+'G 進行\n'+z.name+' / 遭遇率 '+Math.round(gameEncounterRate()*1000)/10+'%';
   let battleInfo=null;
   if(hit){
     const enemyLv=forced?Math.max(1,levelFromXp(state.xp)+3):gameEnemyLevel();
     const rate=forced?50:gameWinRate(enemyLv);
     const win=Math.random()*100<rate;
-    battleInfo={enemyLv,rate,win,forced};
-    log+='\n\n⚔ 接敵！ 敵Lv.'+enemyLv+' / 勝率 '+rate+'%';
+    battleInfo={enemyLv,rate,win,forced,name:'シャドウ'};
+    log+='\n\n⚔ 接敵！ 敵Lv.'+enemyLv+' / 期待度 '+rate+'%';
+  }else if(z.level>=4){
+    g.hintLevel=0;g.hintStepG=-1;
+    log+='\n赤示唆スルー。通常へ。';
   }
   g.lastLog=log;saveState();render();
   const slime=document.querySelector('.claude-game .cg-slime'),shadow=document.querySelector('.claude-game .cg-shadow'),tag=document.querySelector('.claude-game .cg-name-tag');
@@ -1951,6 +2067,7 @@ function upgradeGameTitle(key){
   if(g.coins<info.cost){g.lastLog='コイン不足。\n必要 '+info.cost+' / 所持 '+g.coins;saveState();render();return}
   g.coins-=info.cost;g.titles[key]=info.lv+1;g.lastLog=info.name+' Lv.'+(info.lv+1)+' 強化完了。';saveState();render();
 }
+function toggleInfiniteStamina(){const g=ensureGameState();g.infinite=!g.infinite;g.lastLog=g.infinite?'テスト用：無限スタミナ ON':'テスト用：無限スタミナ OFF';saveState();render();}
 function resetGameData(){
   if(!confirm('ゲームデータだけリセットする？'))return;
   cgBattle=null;state.game=defaultGameState();saveState();render();
@@ -1962,35 +2079,34 @@ function renderGame(a){
   const biomeKeys=['forest','city','forest','forest','desert','snow'];
   const biomeLabels=['森抜け','遠い街','深い森','山麓','砂漠','雪山'];
   const bi=Math.floor((g.gCount%240)/40)%biomeKeys.length;
-  let timeClass='day',zoneLabel='通常',aura='none';
-  if(z.key==='green'){timeClass='day';zoneLabel='高確';aura='green'}
-  else if(z.key==='blue'){timeClass='evening';zoneLabel='チャンス';aura='blue'}
-  else if(z.key==='purple'){timeClass='night';zoneLabel='前兆';aura='purple'}
-  else if(z.key==='red'){timeClass='night';zoneLabel='激アツ';aura='red'}
-  else if(z.key==='gold'){timeClass='night';zoneLabel=z.name==='引き戻し'?'引戻':'天井前';aura='gold'}
+  let timeClass=g.timePhase||'day',zoneLabel='通常',aura='none';
+  if(z.key==='green'){zoneLabel='高確';aura='green'}
+  else if(z.key==='blue'){zoneLabel='チャンス';aura='blue'}
+  else if(z.key==='purple'){zoneLabel='前兆';aura='purple'}
+  else if(z.key==='red'){zoneLabel='激アツ';aura='red'}
+  else if(z.key==='gold'){zoneLabel=z.name==='引き戻し'?'引戻':'天井前';aura='gold'}
   const auraMap={none:['transparent','transparent'],green:['rgba(52,211,153,.8)','rgba(52,211,153,.32)'],blue:['rgba(56,189,248,.8)','rgba(56,189,248,.35)'],purple:['rgba(167,139,250,.85)','rgba(167,139,250,.4)'],red:['rgba(248,113,113,.9)','rgba(248,113,113,.44)'],gold:['rgba(251,191,36,.92)','rgba(251,191,36,.48)']};
   const aa=auraMap[aura]||auraMap.none;
   const wrap=document.createElement('div');wrap.className='game-wrap v18-game';
   const first=Math.max(0,g.gCount-2);
   let cellsHtml='';
   for(let i=0;i<7;i++){const n=first+i;cellsHtml+='<div class="cg-cell '+(n%10===0?'milestone':'')+'"><div class="pad"></div><em>'+n+'</em></div>'}
-  let dots='';const shown=Math.min(g.stamina,5);for(let i=0;i<5;i++)dots+='<span class="dot '+(i>=shown?'used':'')+'"></span>';
-  dots+='<span class="rest">'+(g.stamina>5?('+'+(g.stamina-5)):(g.stamina===0?'0':''))+'</span>';
+  let dots='';if(g.infinite){dots='<span class="rest">∞</span>';}else{const shown=Math.min(g.stamina,5);for(let i=0;i<5;i++)dots+='<span class="dot '+(i>=shown?'used':'')+'"></span>';dots+='<span class="rest">'+(g.stamina>5?('+'+(g.stamina-5)):(g.stamina===0?'0':''))+'</span>';}
   wrap.innerHTML='<div class="claude-game" style="--cg-aura:'+aa[0]+';--cg-aura-strong:'+aa[1]+'">'+
     '<div class="cg-top"><span class="cg-zone-label">'+escapeHtml(biomeLabels[bi])+'</span><div class="cg-ginfo"><b>'+g.gCount+'</b><small>／240G(天井まで<span>'+Math.max(0,240-g.gCount)+'</span>)</small></div></div>'+
     '<div class="cg-stage '+timeClass+'" id="cgStage"><div class="cg-sky '+timeClass+'"></div><div class="cg-biome-tint '+biomeKeys[bi]+'"></div><div class="cg-orb"></div><div class="cg-fog f1"></div><div class="cg-fog f2"></div><div class="cg-bokeh"><i style="left:12%;top:50%;width:24px;height:24px;animation-duration:7s"></i><i style="left:45%;top:42%;width:30px;height:30px;animation-duration:10s"></i><i style="left:76%;top:48%;width:21px;height:21px;animation-duration:8s"></i><i style="left:68%;top:70%;width:13px;height:13px;animation-duration:11s"></i></div>'+ 
     '<div class="cg-sil"><div class="cg-mountain"></div><div class="cg-mountain m2"></div><div class="cg-tree t1"></div><div class="cg-tree t2"></div></div><div class="cg-sil near"><div class="cg-tree t3"></div><div class="cg-grass g1"></div><div class="cg-grass g2"></div></div>'+ 
     '<div class="cg-groundband"></div><div class="cg-track"><div class="cg-cells" style="transform:translateX(calc(50% - '+(2*86+43)+'px))">'+cellsHtml+'</div></div>'+ 
     '<div class="cg-slime-wrap"><div class="cg-name-tag">'+displayName+'</div><div class="cg-shadow"></div><div class="cg-slime"><div class="body"></div></div></div>'+ 
-    '<div class="cg-battle" id="cgBattle"><div class="cg-attack-flash" id="cgAttackFlash"></div><div class="cg-battle-arena"><div class="cg-fighter player" id="cgPlayerFighter"><div class="tag">'+displayName+'</div><div class="hit" id="cgPlayerHit"></div><div class="body"></div></div><div class="cg-fighter enemy" id="cgEnemyFighter"><div class="tag">ENEMY</div><div class="hit" id="cgEnemyHit"></div><div class="body"></div></div></div><div class="cg-clash-copy">せめぎ合い…</div></div>'+ 
+    '<div class="cg-battle" id="cgBattle"><div class="cg-attack-flash" id="cgAttackFlash"></div><div class="cg-enemy-hud" id="cgEnemyHud"><div class="name">ENEMY</div><div class="lv">Lv.'+(cgBattle?cgBattle.info.enemyLv:'?')+'</div><div class="stars">'+(cgBattle?('★'.repeat(Math.max(1,Math.min(5,Math.round(cgBattle.info.rate/20))))+'☆'.repeat(5-Math.max(1,Math.min(5,Math.round(cgBattle.info.rate/20))))):'☆☆☆☆☆')+'</div></div><div class="cg-battle-arena"><div class="cg-fighter player" id="cgPlayerFighter"><div class="tag">'+displayName+'</div><div class="hit" id="cgPlayerHit"></div><div class="body"></div></div><div class="cg-fighter enemy" id="cgEnemyFighter"><div class="tag">ENEMY</div><div class="hit" id="cgEnemyHit"></div><div class="body"></div></div></div><div class="cg-clash-copy"></div></div>'+ 
     '<div class="cg-result" id="cgResult"><div class="rays"></div><div class="word" id="cgResultWord">WIN</div></div>'+ 
-    '<div class="cg-grain"></div><div class="cg-vignette"></div><div class="cg-zone-badge">'+escapeHtml(zoneLabel)+'</div><div class="cg-fire '+(aura==='none'?'':'on')+'"></div><div class="cg-stamina-hud '+(g.stamina===0?'empty':'')+'"><span class="lbl">STAMINA</span>'+dots+'</div></div>'+ 
-    '<button class="cg-advance" id="cgMainBtn" '+(g.stamina<=0?'disabled':'')+' onclick="cgButton()"><span id="cgBtnMain">'+(g.stamina<=0?'タスクを終わらせてスタミナGET':'1G 進む')+'</span><span class="cost" id="cgBtnCost">'+(g.stamina<=0?'':'STAMINA −1')+'</span></button>'+ 
+    '<div class="cg-grain"></div><div class="cg-vignette"></div><div class="cg-zone-badge">'+escapeHtml(zoneLabel)+'</div><div class="cg-fire '+(aura==='none'?'':'on')+'"></div><div class="cg-stamina-hud '+(g.infinite?'inf ': '')+(g.stamina===0&&!g.infinite?'empty':'')+'"><span class="lbl">STAMINA</span>'+dots+'</div></div>'+ 
+    '<button class="cg-advance" id="cgMainBtn" '+(g.stamina<=0&&!g.infinite?'disabled':'')+' onclick="cgButton()"><span id="cgBtnMain">'+(g.stamina<=0&&!g.infinite?'タスクを終わらせてスタミナGET':'1G 進む')+'</span><span class="cost" id="cgBtnCost">'+(g.infinite?'∞ TEST':(g.stamina<=0?'':'STAMINA −1'))+'</span></button>'+ 
     '<div class="cg-log">'+escapeHtml(g.lastLog||'探索開始。')+'</div></div>';
   const panel=document.createElement('div');panel.className='game-panel';panel.innerHTML='<div class="game-panel-head">TITLE TRAINING / 自分Lv.'+pl+'</div>';
   const infos=gameTitleInfo();
   [['detector','遭遇率 +'+((g.titles.detector||0)*0.1).toFixed(1)+'%'],['greed','報酬 +'+((g.titles.greed||0)*0.1).toFixed(1)+'%'],['saver','温存 '+Math.round(gameSaveChance()*1000)/10+'%']].forEach(([key,effect])=>{const info=infos[key];const row=document.createElement('div');row.className='game-title-row';row.innerHTML='<div><div class="game-title-name">'+info.name+' Lv.'+info.lv+'/10</div><div class="game-title-meta">'+info.desc+' / '+effect+'</div></div><button class="game-title-btn" '+(info.lv>=10?'disabled':'')+' onclick="upgradeGameTitle(\''+key+'\')">'+(info.lv>=10?'MAX':info.cost+'C')+'</button>';panel.appendChild(row)});
-  panel.innerHTML+='<button class="game-reset" onclick="resetGameData()">ゲームデータをリセット</button>';
+  panel.innerHTML+='<button class="game-title-btn" style="width:100%;margin-top:8px;border-color:#ffd24a66;color:#ffd24a;background:#171303" onclick="toggleInfiniteStamina()">'+(g.infinite?'無限スタミナ：ON':'無限スタミナ：OFF')+'</button><button class="game-reset" onclick="resetGameData()">ゲームデータをリセット</button>';
   wrap.appendChild(panel);a.appendChild(wrap);
 }
 function attachTaskLongPress(btn,task){
@@ -2073,7 +2189,7 @@ function issueChargeTicket(task,opts={}){
   if(!Array.isArray(state.chargeTickets))state.chargeTickets=[];
   // v13.12.2: ハズレもチャージ機に渡して演出させる。
   // ただしロック対象ではないので、他UI操作は止めない。
-  state.chargeTickets.push({id:newId(),type:opts.type||'task',sourceId:task.id,name:task.name,force:outcome,outcome,tutorial:!!opts.tutorial,createdAt:Date.now()});
+  state.chargeTickets.push({id:newId(),type:opts.type||'task',sourceId:task.id,name:task.name,force:(opts.force||null),outcome,tutorial:!!opts.tutorial,createdAt:Date.now()});
   return true;
 }
 function chargeFrame(){return document.getElementById('chargeFrame')}
