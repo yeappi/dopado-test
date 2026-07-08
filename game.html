@@ -456,7 +456,19 @@ let firstCell=0,offset=0;
 function makeCell(g){const el=document.createElement('div');el.className='road-cell';if(g%10===0)el.classList.add('mark');return el}
 function updateRoadFuture(){[...$('road').children].forEach((el,i)=>{const g=firstCell+i;el.classList.toggle('past',g<=S.clearedG)})}
 function buildRoad(){const road=$('road');road.innerHTML='';firstCell=S.g-4;for(let i=0;i<11;i++)road.appendChild(makeCell(firstCell+i));offset=$('stage').offsetWidth/2-CELL_W/2-(S.g-firstCell)*CELL_W;road.style.transition='none';road.style.transform=`translateX(${offset}px)`;updateRoadFuture();requestAnimationFrame(()=>road.style.transition='transform .54s cubic-bezier(.22,.94,.25,1)')}
-function shiftRoad(){const road=$('road');offset-=CELL_W;road.style.transform=`translateX(${offset}px)`;setTimeout(()=>{road.firstElementChild.remove();road.appendChild(makeCell(firstCell+11));firstCell++;offset+=CELL_W;road.style.transition='none';road.style.transform=`translateX(${offset}px)`;updateRoadFuture();requestAnimationFrame(()=>road.style.transition='transform .54s cubic-bezier(.22,.94,.25,1)')},550)}
+function shiftRoad(){
+  const road=$('road');
+  road.style.transition='transform .54s cubic-bezier(.22,.94,.25,1)';
+  offset-=CELL_W;
+  road.style.transform=`translateX(${offset}px)`;
+
+  // iOS/Safariやiframe内で、先頭セルを末尾へリサイクルした直後のtransform復帰が
+  // 「進んだあと戻る」ように見えることがあるため、リサイクルではなく現在G基準で再構築する。
+  // アニメーション後の見た目とbuildRoad()後の見た目は同じなので、復帰ジャンプが見えない。
+  setTimeout(()=>{
+    buildRoad();
+  },560);
+}
 function chance(){let c=.014;if(S.zone==='morning')c+=.006;if(S.zone==='eve')c+=.018;if(S.zone==='night')c+=.032;c+=[0,.022,.048,.09,.20,.38][S.hint];if(S.zone==='night'&&S.hint>=3)c+=.08;if(S.g>=S.ceiling)c=1;return Math.min(c,.68)}
 function battleWinChance(){let w=.48;if(S.zone==='eve')w+=.05;if(S.zone==='night')w+=.08;w+=[0,.03,.07,.12,.22,.34][S.hint];return Math.min(w,.86)}
 function render(){$('gText').textContent=S.g;$('gText').classList.toggle('g-warning',S.g>=200)}
