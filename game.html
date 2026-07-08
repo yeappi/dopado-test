@@ -241,16 +241,28 @@ body{
 .controls{display:flex;flex-direction:column;gap:8px}.btn{width:100%;padding:16px;border-radius:17px;border:1px solid rgba(46,230,176,.88);background:linear-gradient(180deg,rgba(46,230,176,.11),rgba(46,230,176,.025)),#05090c;color:var(--teal);font-size:15px;font-weight:1000;letter-spacing:2px;box-shadow:inset 0 0 14px rgba(46,230,176,.07),0 0 22px rgba(46,230,176,.08)}
 .btn:active{transform:translateY(1px);filter:brightness(1.2)}.btn.locked{opacity:.62;filter:saturate(.7);background:repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0 6px,transparent 6px 12px),linear-gradient(180deg,rgba(46,230,176,.05),rgba(46,230,176,.015))}
 .log{min-height:38px;padding:9px 12px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font-size:12px;color:var(--dim);line-height:1.45}
+
+
+/* ===== embedded native GAME adjustments ===== */
+html,body{height:100%;overflow:hidden!important;}
+body{align-items:stretch!important;}
+.app{height:100%;max-width:none;padding:8px;gap:8px;}
+.cabinet{padding:6px;border-radius:22px;flex:1;min-height:0;display:flex;flex-direction:column;}
+.stage{height:auto!important;flex:1;min-height:0;border-radius:18px;}
+.controls{flex:0 0 auto;}
+.log{display:none!important;}
+.game-counter{position:absolute;left:10px;top:10px;z-index:32;padding:4px 8px;border-radius:10px;background:rgba(0,0,0,.48);border:1px solid rgba(46,230,176,.24);box-shadow:0 0 12px rgba(46,230,176,.12),inset 0 0 10px rgba(0,0,0,.38);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--teal);line-height:1;letter-spacing:.5px;}
+.game-counter b{font-size:15px;color:var(--teal);text-shadow:0 0 8px rgba(46,230,176,.58);}
+.game-counter span{font-size:9px;margin-left:2px;color:rgba(46,230,176,.78);}
+.stamina{display:none!important;}
+
 </style>
 </head>
 <body>
 <div class="app">
   <div class="cabinet">
-    <div class="top">
-      <div class="brand-panel"><div class="brand-kicker">DOPADO</div><div class="brand-name">FIELD SYSTEM</div></div>
-      <div class="gbox"><small>CEILING 240G</small><b id="gText">0</b></div>
-    </div>
     <div class="stage" id="stage">
+      <div class="game-counter"><b id="gText">0</b><span>G</span></div>
       <div class="sky morning" id="skyMorning"></div><div class="sky day on" id="skyDay"></div><div class="sky eve" id="skyEve"></div><div class="sky night" id="skyNight"></div>
       <div class="mist"></div><div class="particles" id="particles"></div><div class="edge-aura" id="edgeAura"></div>
       <div class="layer far" id="farLayer"></div><div class="layer mid" id="midLayer"></div><div class="layer near" id="nearLayer"></div><div class="layer front" id="frontLayer"></div>
@@ -283,8 +295,42 @@ const $=id=>document.getElementById(id);
 const rand=(a,b)=>a+Math.random()*(b-a);
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 const CELL_W=86;
-const S={g:0,clearedG:-1,stamina:Infinity,ceiling:240,hint:0,hintLeft:0,zone:'day',zoneLeft:0,state:'ROAM',locked:false,win:true};
+const S={g:0,clearedG:-1,stamina:Infinity,ceiling:240,hint:0,hintLeft:0,zone:'day',zoneLeft:0,state:'ROAM',locked:false,win:true,playerName:'DOPADO',playerTitle:'探知者',titleColor:'#34d399',level:0};
 const battleTints=['','tint-green','tint-blue','tint-purple','tint-red','tint-gold'];
+
+function readBridgeContext(){try{return JSON.parse(localStorage.getItem('DOPADO_GAME_CONTEXT')||'{}')||{}}catch(e){return {}}}
+function applyBridgeContext(){
+  const ctx=readBridgeContext();
+  if(ctx.playerName)S.playerName=String(ctx.playerName);
+  if(ctx.playerTitle)S.playerTitle=String(ctx.playerTitle);
+  if(ctx.titleColor)S.titleColor=String(ctx.titleColor);
+  if(Number.isFinite(Number(ctx.level)))S.level=Number(ctx.level);
+  if(Number.isFinite(Number(ctx.gCount)))S.g=Number(ctx.gCount);
+  if(Number.isFinite(Number(ctx.clearedG)))S.clearedG=Number(ctx.clearedG);
+  S.stamina=Infinity;
+  renderPlayerLabels();
+}
+function renderPlayerLabels(){
+  const title=escapeHtmlLocal(S.playerTitle||'探知者');
+  const name=escapeHtmlLocal(S.playerName||'DOPADO');
+  const lv=Math.max(0,Number(S.level)||0);
+  const color=S.titleColor||'#34d399';
+  document.querySelectorAll('.char-name,.player .label').forEach(el=>{
+    el.innerHTML='<span class="title" style="color:'+color+'">'+title+'</span> <span class="user">'+name+'</span> <span class="lv">Lv'+lv+'</span>';
+  });
+  const wn=document.querySelector('.win-name');
+  if(wn)wn.innerHTML='<span style="color:'+color+'">'+title+'</span> '+name+' <span style="color:#ffd45a">Lv'+lv+'</span>';
+}
+function escapeHtmlLocal(v){return String(v).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
+function sendProgress(){try{parent.postMessage({type:'DOPADO_GAME_PROGRESS',gCount:S.g,clearedG:S.clearedG,hint:S.hint,zone:S.zone},'*')}catch(e){}}
+function makeReward(){return {coins:120,xp:30,item:'BONUS FRAGMENT'}}
+function renderRewardLines(r){
+  document.querySelectorAll('.reward-line')[0].textContent='+'+r.coins+' COIN';
+  document.querySelectorAll('.reward-line')[1].textContent='+'+r.xp+' EXP';
+  document.querySelectorAll('.reward-line')[2].textContent=r.item;
+}
+function sendReward(r){try{parent.postMessage({type:'DOPADO_GAME_REWARD',reward:r},'*')}catch(e){}}
+
 
 function particleSetup(){const p=$('particles');for(let i=0;i<18;i++){const s=document.createElement('i');s.style.left=rand(2,98)+'%';s.style.top=rand(10,105)+'%';s.style.animationDuration=rand(8,18)+'s';s.style.animationDelay=(-rand(0,14))+'s';p.appendChild(s)}}
 function focusSetup(){const f=$('focusLines');for(let i=0;i<28;i++){const s=document.createElement('i');s.style.setProperty('--r',(i*360/28)+'deg');s.style.setProperty('--from',rand(130,220)+'px');s.style.animationDelay=rand(0,.42)+'s';f.appendChild(s)}}
@@ -367,7 +413,7 @@ function roam(){
   document.querySelector('.char-name').classList.add('hop');$('heroShadow').classList.add('hop');
 
   shiftRoad();layers.forEach(l=>l.shift(CELL_W));
-  rollHint();rollZone();render();
+  rollHint();rollZone();render();sendProgress();
 
   $('log').textContent=S.g>=200?'近い。':'進む。';
   lock(565);
@@ -386,10 +432,10 @@ function dustBurst(){const d=$('dust');d.innerHTML='';for(let i=0;i<18;i++){cons
 function attack(who){applyTint();const f=who==='p'?$('pF'):$('eF');const side=who==='p'?'enemy':'player';$('hitFx').className='hit '+(side==='enemy'?'enemy-side':'player-side');f.classList.add('attack');setTimeout(()=>{$('hitFx').classList.add('on');$('stage').classList.add('cam-hit');debris(side)},360);setTimeout(()=>{$('hitFx').classList.remove('on');$('stage').classList.remove('cam-hit')},700);setTimeout(()=>f.classList.remove('attack'),820);lock(880)}
 function clash(){S.state='CLASH';$('battle').classList.add('clash');$('focusLines').classList.add('on');$('stage').classList.add('cam-clash');$('mainBtn').textContent='押し切れ';$('log').textContent='押せ。';dustBurst();lock(1300);setTimeout(()=>$('stage').classList.remove('cam-clash'),1100)}
 function freezeBeforeResult(){S.state='FREEZE';$('battle').classList.remove('clash');$('focusLines').classList.remove('on');$('battle').classList.add('freeze');$('stage').classList.remove('cam-clash');$('mainBtn').textContent='――';$('log').textContent='';lock(460);setTimeout(()=>result(),430)}
-function result(){S.state='RESULT';$('battle').classList.remove('freeze');$('enemyHud').style.opacity='0';const p=$('pF'),e=$('eF');if(S.win){e.classList.add('lose');p.classList.add('win');setTimeout(()=>{$('winStage').classList.add('on');$('stage').classList.add('cam-win')},220);$('log').textContent='獲得。'}else{p.classList.add('lose');e.classList.add('win');setTimeout(()=>{$('loseFreeze').classList.add('on');$('stage').classList.remove('cam-win')},360);$('log').textContent=''}$('mainBtn').textContent='続ける';lock(1200)}
-function returnRoam(){$('flash').classList.remove('on');void $('flash').offsetWidth;$('flash').classList.add('on');lock(680);setTimeout(()=>{$('battle').className='battle';$('winStage').classList.remove('on');$('loseFreeze').classList.remove('on');$('enemyHud').style.opacity='1';$('pF').className='fighter player';$('eF').className='fighter enemy';$('dust').innerHTML='';$('debris').innerHTML='';$('focusLines').classList.remove('on');$('heroWrap').style.opacity='1';$('mainBtn').textContent='進む';$('stage').classList.remove('cam-win');if(S.win){S.g=0;S.clearedG=-1;setHint(0);buildRoad()}S.state='ROAM';$('log').textContent='進む。';render();updateRoadFuture()},430)}
+function result(){S.state='RESULT';$('battle').classList.remove('freeze');$('enemyHud').style.opacity='0';const p=$('pF'),e=$('eF');if(S.win){const reward=makeReward();renderRewardLines(reward);sendReward(reward);e.classList.add('lose');p.classList.add('win');setTimeout(()=>{$('winStage').classList.add('on');$('stage').classList.add('cam-win')},220);$('log').textContent='獲得。'}else{p.classList.add('lose');e.classList.add('win');setTimeout(()=>{$('loseFreeze').classList.add('on');$('stage').classList.remove('cam-win')},360);$('log').textContent=''}$('mainBtn').textContent='続ける';lock(1200)}
+function returnRoam(){$('flash').classList.remove('on');void $('flash').offsetWidth;$('flash').classList.add('on');lock(680);setTimeout(()=>{$('battle').className='battle';$('winStage').classList.remove('on');$('loseFreeze').classList.remove('on');$('enemyHud').style.opacity='1';$('pF').className='fighter player';$('eF').className='fighter enemy';$('dust').innerHTML='';$('debris').innerHTML='';$('focusLines').classList.remove('on');$('heroWrap').style.opacity='1';$('mainBtn').textContent='進む';$('stage').classList.remove('cam-win');if(S.win){S.g=0;S.clearedG=-1;setHint(0);buildRoad()}S.state='ROAM';$('log').textContent='進む。';render();updateRoadFuture();sendProgress()},430)}
 $('mainBtn').addEventListener('click',()=>{if(S.locked)return;if(S.state==='ROAM')return roam();if(S.state==='ATTACK1'){attack('p');S.state='ATTACK2';return}if(S.state==='ATTACK2'){attack('e');S.state='CLASH_READY';return}if(S.state==='CLASH_READY')return clash();if(S.state==='CLASH')return freezeBeforeResult();if(S.state==='RESULT')return returnRoam()});
-particleSetup();focusSetup();buildRoad();render();setHint(0);updateRoadFuture();
+particleSetup();focusSetup();applyBridgeContext();buildRoad();render();setHint(0);updateRoadFuture();sendProgress();
 </script>
 </body>
 </html>

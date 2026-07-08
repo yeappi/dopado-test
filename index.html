@@ -892,30 +892,17 @@ body.tutorial-active #miPrompt{
 .claude-game .cg-log{font-size:12px;min-height:62px;color:#d2deea;background:#0a101b;border-color:#172235}
 
 
-/* ===== v27.2 exact GAME embed ===== */
-#sf8[data-mode="game"] #statusBar{display:none!important;}
-#sf8[data-mode="game"] #ta{
-  top:calc(var(--safe-top) + var(--header-h))!important;
-  bottom:calc(86px + var(--safe-bottom))!important;
-  padding:0!important;
-  overflow:hidden!important;
-  background:#020409!important;
-}
-.game-v272-embed{
-  width:100%;
-  height:100%;
-  min-height:0!important;
-  padding:0!important;
-  margin:0!important;
-  display:block!important;
-}
-.game-v272-frame{
-  width:100%;
-  height:100%;
-  border:0;
-  display:block;
-  background:#020409;
-}
+/* ===== v27.2 native GAME bridge / no bottom input on GAME + HABIT ===== */
+#sf8[data-mode="game"] #inputBar,
+#sf8[data-mode="habits"] #inputBar{display:none!important;visibility:hidden!important;pointer-events:none!important;height:0!important;padding:0!important;border:0!important;}
+#sf8[data-mode="game"] #bottomDock,
+#sf8[data-mode="habits"] #bottomDock{height:calc(50px + var(--safe-bottom))!important;display:block!important;}
+#sf8[data-mode="game"] #ta,
+#sf8[data-mode="habits"] #ta{bottom:calc(50px + var(--safe-bottom))!important;padding-bottom:18px!important;}
+#sf8[data-mode="game"] #ta{top:calc(var(--safe-top) + var(--header-h))!important;background:#020409!important;overflow:hidden!important;padding:0!important;}
+.v27-native-game-wrap{height:100%;min-height:100%;padding:0!important;margin:0!important;display:block!important;}
+.dopado-v27-game-frame{width:100%;height:100%;border:0;display:block;background:#020409;border-radius:0;}
+
 </style>
 </head>
 <body>
@@ -2214,9 +2201,28 @@ function cgUpdateGameDom(g,opts={}){
   const btn=document.getElementById('cgMainBtn'),bm=document.getElementById('cgBtnMain'),bc=document.getElementById('cgBtnCost');if(btn&&bm&&bc&&(!cgBattle||cgBattle.phase==='idle')){btn.disabled=(g.stamina<=0&&!g.infinite);bm.textContent=(g.stamina<=0&&!g.infinite)?'タスクを終わらせてスタミナGET':'1G 進む';bc.textContent=g.infinite?'∞ TEST':(g.stamina<=0?'':'STAMINA −1')}
 }
 function renderGame(a){
+  const g=ensureGameState();
+  g.infinite=true;
+  if(typeof g.clearedG!=='number')g.clearedG=-1;
+  if(!Array.isArray(g.items))g.items=[];
+  const pl=levelFromXp(state.xp);
+  const nm=(state.profile.name||'DOPADO').trim()||'DOPADO';
+  const t=titleById(state.profile.titleId);
+  const ctx={
+    playerName:nm,
+    playerTitle:t?t.text:'探知者',
+    titleColor:t?TIERS[t.tier].color:'#34d399',
+    level:pl,
+    gCount:g.gCount||0,
+    clearedG:typeof g.clearedG==='number'?g.clearedG:-1,
+    coins:g.coins||0,
+    items:g.items||[],
+    infinite:true
+  };
+  try{localStorage.setItem('DOPADO_GAME_CONTEXT',JSON.stringify(ctx));}catch(e){}
   const wrap=document.createElement('div');
-  wrap.className='game-wrap game-v272-embed';
-  wrap.innerHTML='<iframe class="game-v272-frame" src="./game.html?v=27-2-exact" title="DOPADO GAME EXPERIENCE v27.2"></iframe>';
+  wrap.className='game-wrap v27-native-game-wrap';
+  wrap.innerHTML='<iframe id="dopadoV27GameFrame" class="dopado-v27-game-frame" src="./game.html?v=27-2-native" title="DOPADO GAME"></iframe>';
   a.appendChild(wrap);
 }
 
@@ -3118,6 +3124,39 @@ oneTimeDataResetForTutorial();
 loadState();cleanStaleTutorialData();initBaseViewport(true);syncViewport();renderHeader();render();renderChargeMini();resetPraiseInput();renderInputPrompt(true);scheduleInputPromptRotation();
 checkOnboarding();
 
+
+
+/* ===== v27.2 GAME bridge: iframe -> DOPADO state ===== */
+window.addEventListener('message',function(ev){
+  const msg=ev&&ev.data;
+  if(!msg||typeof msg!=='object'||!String(msg.type||'').startsWith('DOPADO_GAME_'))return;
+  const g=ensureGameState();
+  g.infinite=true;
+  if(!Array.isArray(g.items))g.items=[];
+  if(msg.type==='DOPADO_GAME_PROGRESS'){
+    g.gCount=Math.max(0,Number(msg.gCount)||0);
+    g.clearedG=Number.isFinite(Number(msg.clearedG))?Number(msg.clearedG):-1;
+    g.hintLevel=Math.max(0,Number(msg.hint)||0);
+    g.timePhase=String(msg.zone||g.timePhase||'day');
+    saveState();
+    return;
+  }
+  if(msg.type==='DOPADO_GAME_REWARD'){
+    const r=msg.reward||{};
+    const coins=Math.max(0,Number(r.coins)||0);
+    const xp=Math.max(0,Number(r.xp)||0);
+    const item=String(r.item||'').trim();
+    g.coins=Math.max(0,Number(g.coins)||0)+coins;
+    state.xp=Math.max(0,Number(state.xp)||0)+xp;
+    if(item)g.items.push({name:item,at:Date.now()});
+    g.gCount=0;
+    g.clearedG=-1;
+    g.lastLog='WIN。COIN +'+coins+' / EXP +'+xp+(item?' / '+item:'');
+    saveState();
+    renderHeader();
+    return;
+  }
+});
 </script>
 </body>
 </html>
