@@ -890,6 +890,32 @@ body.tutorial-active #miPrompt{
 .claude-game .cg-sil .item{position:absolute}.claude-game .cg-scene{position:absolute;inset:0;z-index:3;pointer-events:none;transition:opacity .7s ease}.claude-game .cg-scene.near{z-index:4;opacity:.82}.claude-game .cg-scene.far{opacity:.42}
 .claude-game .cg-dev-tools{margin-top:8px;border:1px dashed #2a3545;border-radius:12px;padding:8px;color:#8fa3b8;font-size:12px}.claude-game .cg-dev-tools summary{cursor:pointer;color:#8fa3b8}.claude-game .cg-dev-tools button{margin-top:8px;width:100%}
 .claude-game .cg-log{font-size:12px;min-height:62px;color:#d2deea;background:#0a101b;border-color:#172235}
+
+
+/* ===== v27.2 exact GAME embed ===== */
+#sf8[data-mode="game"] #statusBar{display:none!important;}
+#sf8[data-mode="game"] #ta{
+  top:calc(var(--safe-top) + var(--header-h))!important;
+  bottom:calc(86px + var(--safe-bottom))!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:#020409!important;
+}
+.game-v272-embed{
+  width:100%;
+  height:100%;
+  min-height:0!important;
+  padding:0!important;
+  margin:0!important;
+  display:block!important;
+}
+.game-v272-frame{
+  width:100%;
+  height:100%;
+  border:0;
+  display:block;
+  background:#020409;
+}
 </style>
 </head>
 <body>
@@ -2188,35 +2214,12 @@ function cgUpdateGameDom(g,opts={}){
   const btn=document.getElementById('cgMainBtn'),bm=document.getElementById('cgBtnMain'),bc=document.getElementById('cgBtnCost');if(btn&&bm&&bc&&(!cgBattle||cgBattle.phase==='idle')){btn.disabled=(g.stamina<=0&&!g.infinite);bm.textContent=(g.stamina<=0&&!g.infinite)?'タスクを終わらせてスタミナGET':'1G 進む';bc.textContent=g.infinite?'∞ TEST':(g.stamina<=0?'':'STAMINA −1')}
 }
 function renderGame(a){
-  const g=ensureGameState(),z=gameZone(),pl=levelFromXp(state.xp);
-  const name=(state.profile.name||'DOPADO').trim()||'DOPADO';
-  const displayName=escapeHtml(name.length>6?name.slice(0,6):name);
-  const equippedTitle=titleById(state.profile.titleId);
-  const titleMarkup=equippedTitle?'<span class="tag-title" style="color:'+TIERS[equippedTitle.tier].color+'">'+escapeHtml(equippedTitle.text)+'</span> ':'';
-  const nameMarkup=titleMarkup+'<span class="tag-name">'+displayName+'</span> <span class="tag-lv">Lv.'+pl+'</span>';
-  const biome=cgBiomeForG(g.gCount);
-  let timeClass=g.timePhase||'day',zoneLabel=z.name,aura='none';
-  if(z.key==='green')aura='green'; else if(z.key==='blue')aura='blue'; else if(z.key==='purple')aura='purple'; else if(z.key==='red')aura='red'; else if(z.key==='gold')aura='gold';
-  const auraMap={none:['transparent','transparent'],green:['rgba(52,211,153,.8)','rgba(52,211,153,.32)'],blue:['rgba(56,189,248,.8)','rgba(56,189,248,.35)'],purple:['rgba(167,139,250,.85)','rgba(167,139,250,.4)'],red:['rgba(248,113,113,.9)','rgba(248,113,113,.44)'],gold:['rgba(251,191,36,.92)','rgba(251,191,36,.48)']};
-  const aa=auraMap[aura]||auraMap.none;
-  let dots='';if(g.infinite){dots='<span class="rest">∞</span>';}else{const shown=Math.min(g.stamina,5);for(let i=0;i<5;i++)dots+='<span class="dot '+(i>=shown?'used':'')+'"></span>';dots+='<span class="rest">'+(g.stamina>5?('+'+(g.stamina-5)):(g.stamina===0?'0':''))+'</span>';}
-  const wrap=document.createElement('div');wrap.className='game-wrap v18-game';
-  wrap.innerHTML='<div class="claude-game" style="--cg-aura:'+aa[0]+';--cg-aura-strong:'+aa[1]+'">'+
-    '<div class="cg-top"><span class="cg-zone-label" id="cgBiomeLabel">'+escapeHtml(cgBiomeLabel(biome))+'</span><div class="cg-ginfo"><b id="cgG">'+g.gCount+'</b><small>／240G(天井まで<span id="cgLeft">'+Math.max(0,240-g.gCount)+'</span>)</small></div></div>'+
-    '<div class="cg-stage '+timeClass+'" id="cgStage"><div class="cg-sky day '+(timeClass==='day'?'on':'off')+'"></div><div class="cg-sky evening '+(timeClass==='evening'?'on':'off')+'"></div><div class="cg-sky night '+(timeClass==='night'?'on':'off')+'"></div><div class="cg-biome-tint '+cgBiomeTintClass(biome)+'" id="cgBiomeTint"></div><div class="cg-orb"></div><div class="cg-fog f1"></div><div class="cg-fog f2"></div><div class="cg-bokeh"><i style="left:12%;top:50%;width:24px;height:24px;animation-duration:7s"></i><i style="left:45%;top:42%;width:30px;height:30px;animation-duration:10s"></i><i style="left:76%;top:48%;width:21px;height:21px;animation-duration:8s"></i><i style="left:68%;top:70%;width:13px;height:13px;animation-duration:11s"></i></div>'+
-    '<div id="cgSceneMount" data-biome="'+biome+'">'+cgSceneHtml(biome)+'</div><div class="cg-groundband"></div><div class="cg-track"><div class="cg-cells" id="cgCells" style="transform:'+cgCurrentCellOffset(g.gCount)+'">'+cgBuildCellsHtml(g.gCount)+'</div></div>'+
-    '<div class="cg-slime-wrap"><div class="cg-name-tag">'+nameMarkup+'</div><div class="cg-shadow"></div><div class="cg-slime"><div class="body"></div></div></div>'+
-    '<div class="cg-battle" id="cgBattle"><div class="cg-attack-flash" id="cgAttackFlash"></div><div class="cg-enemy-hud" id="cgEnemyHud"><div class="name">ENEMY</div><div class="lv">Lv.'+(cgBattle?cgBattle.info.enemyLv:'?')+'</div><div class="stars">'+(cgBattle?('★'.repeat(Math.max(1,Math.min(5,Math.round(cgBattle.info.rate/20))))+'☆'.repeat(5-Math.max(1,Math.min(5,Math.round(cgBattle.info.rate/20))))):'☆☆☆☆☆')+'</div></div><div class="cg-battle-arena"><div class="cg-fighter player" id="cgPlayerFighter"><div class="tag">'+nameMarkup+'</div><div class="hit" id="cgPlayerHit"></div><div class="body"></div></div><div class="cg-fighter enemy" id="cgEnemyFighter"><div class="tag">ENEMY</div><div class="hit" id="cgEnemyHit"></div><div class="body"></div></div></div><div class="cg-clash-copy"></div></div>'+
-    '<div class="cg-result" id="cgResult"><div class="rays"></div><div class="word" id="cgResultWord">WIN</div></div>'+
-    '<div class="cg-grain"></div><div class="cg-vignette"></div><div class="cg-zone-badge" id="cgZoneBadge">'+escapeHtml(zoneLabel)+'</div><div class="cg-fire '+(aura==='none'?'':'on')+'"></div><div class="cg-stamina-hud '+(g.infinite?'inf ': '')+(g.stamina===0&&!g.infinite?'empty':'')+'" id="cgStaminaHud"><span class="lbl">STAMINA</span>'+dots+'</div></div>'+
-    '<button class="cg-advance" id="cgMainBtn" '+(g.stamina<=0&&!g.infinite?'disabled':'')+' onclick="cgButton()"><span id="cgBtnMain">'+(g.stamina<=0&&!g.infinite?'タスクを終わらせてスタミナGET':'1G 進む')+'</span><span class="cost" id="cgBtnCost">'+(g.infinite?'∞ TEST':(g.stamina<=0?'':'STAMINA −1'))+'</span></button>'+
-    '<div class="cg-log" id="cgLog">'+escapeHtml(g.lastLog||'探索開始。')+'</div></div>';
-  const panel=document.createElement('div');panel.className='game-panel';panel.innerHTML='<div class="game-panel-head">TITLE TRAINING / 自分Lv.'+pl+'</div>';
-  const infos=gameTitleInfo();
-  [['detector','遭遇UP'],['greed','報酬UP'],['saver','温存UP']].forEach(([key,effect])=>{const info=infos[key];const row=document.createElement('div');row.className='game-title-row';row.innerHTML='<div><div class="game-title-name">'+info.name+' Lv.'+info.lv+'/10</div><div class="game-title-meta">'+info.desc+' / '+effect+'</div></div><button class="game-title-btn" '+(info.lv>=10?'disabled':'')+' onclick="upgradeGameTitle(\''+key+'\')">'+(info.lv>=10?'MAX':info.cost+'C')+'</button>';panel.appendChild(row)});
-  panel.innerHTML+='<details class="cg-dev-tools"><summary>開発用メニュー</summary><button class="game-title-btn" onclick="toggleInfiniteStamina()">'+(g.infinite?'無限スタミナ：ON':'無限スタミナ：OFF')+'</button><button class="game-reset" onclick="resetGameData()">ゲームデータをリセット</button></details>';
-  wrap.appendChild(panel);a.appendChild(wrap);
+  const wrap=document.createElement('div');
+  wrap.className='game-wrap game-v272-embed';
+  wrap.innerHTML='<iframe class="game-v272-frame" src="./game.html?v=27-2-exact" title="DOPADO GAME EXPERIENCE v27.2"></iframe>';
+  a.appendChild(wrap);
 }
+
 
 function attachTaskLongPress(btn,task){
   if(!btn||!task||task.state==='done')return;
@@ -3116,42 +3119,5 @@ loadState();cleanStaleTutorialData();initBaseViewport(true);syncViewport();rende
 checkOnboarding();
 
 </script>
-
-
-<!-- DOPADO GAME v27.2 integration override: GAME tab uses standalone game.html prototype -->
-<style>
-#sf8[data-mode="game"] #ta{
-  top:calc(var(--safe-top) + var(--header-h))!important;
-  bottom:calc(86px + var(--safe-bottom))!important;
-  padding:8px 10px 110px!important;
-  overflow:hidden!important;
-  background:#05060d!important;
-}
-.game-v27-embed{
-  width:100%;
-  height:100%;
-  min-height:620px;
-  border:0;
-  border-radius:24px;
-  overflow:hidden;
-  background:#05060d;
-  box-shadow:0 18px 60px rgba(0,0,0,.45);
-}
-.game-v27-frame-wrap{
-  width:100%;
-  height:calc(100vh - var(--safe-top) - var(--header-h) - 98px - var(--safe-bottom));
-  min-height:640px;
-  overflow:hidden;
-  border-radius:24px;
-}
-</style>
-<script>
-(function(){
-  window.renderGame=function(a){
-    a.innerHTML='<div class="game-v27-frame-wrap"><iframe class="game-v27-embed" src="game.html" title="DOPADO GAME v27.2"></iframe></div>';
-  };
-})();
-</script>
-
 </body>
 </html>
