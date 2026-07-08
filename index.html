@@ -9,11 +9,11 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="DOPADO" />
 <meta name="mobile-web-app-capable" content="yes" />
-<link rel="manifest" href="./manifest.webmanifest?v=13-4" />
-<link rel="apple-touch-icon" href="./icon.png?v=13-4" />
+<link rel="manifest" href="./manifest.webmanifest?v=21" />
+<link rel="apple-touch-icon" href="./icon.png?v=21" />
 
 <title>DOPADO TASK SYSTEM</title>
-<!-- v17: GAME/chage bridge isolation hotfix -->
+<!-- v21: stability/cleanup pass: task render/input/swipe/edit guards -->
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Reggae+One&family=Orbitron:wght@700;900&display=swap');
@@ -1069,6 +1069,26 @@ body.tutorial-active #miPrompt{
 #sf8[data-mode="tasks"] #statusBar{display:none!important;}
 #sf8[data-mode="cal"] #statusBar{display:none!important;}
 
+
+/* ===== v21: stability cleanup / current UI source of truth ===== */
+#inputBar{gap:8px!important;overflow:hidden!important;}
+#inputBar #mi{height:40px!important;border-radius:20px!important;background:#0f0f20!important;padding:0 14px!important;font-size:16px!important;}
+#miPrompt{left:26px!important;right:62px!important;max-width:calc(100% - 88px)!important;clip-path:inset(0 round 20px)!important;}
+#miPrompt span{line-height:40px!important;}
+#db{width:40px!important;height:40px!important;}
+#sf8[data-mode="tasks"] #inputBar{height:58px!important;}
+.task{overflow:visible!important;}
+.task-card{position:relative!important;z-index:2!important;}
+.task-tools-panel{z-index:1!important;right:-14px!important;width:146px!important;}
+.task.open-tools .task-card{transform:translateX(-132px)!important;}
+.task-swipe-bg{pointer-events:none!important;}
+.task-delete-zone{width:100%!important;height:100%!important;touch-action:manipulation!important;}
+.task-extra{max-height:min(62dvh,520px)!important;overflow-y:auto!important;overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important;}
+.task-extra input,.task-extra textarea,.task-extra select,.edit-tag-input,.subtask-input,.task-edit-name{font-size:16px!important;}
+.edit-tag-list{max-height:30dvh!important;overflow-y:auto!important;overscroll-behavior:contain!important;padding-bottom:8px!important;}
+#ta{overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important;}
+html,body,#sf8{touch-action:manipulation;overscroll-behavior:none!important;}
+
 </style>
 </head>
 <body>
@@ -1087,7 +1107,7 @@ body.tutorial-active #miPrompt{
       <button type="button" onclick="chooseTopMenu('profile')">プロフィール</button>
     </div>
     <div class="meter charge-frame-shell charge-off top-charge" id="chargeMeter" aria-label="チャージ抽選窓">
-      <iframe id="chargeFrame" src="./charge.html?v=20" title="DOPADO CHARGE"></iframe>
+      <iframe id="chargeFrame" src="./charge.html?v=21" title="DOPADO CHARGE"></iframe>
     </div>
     <div class="identity" id="identity" onclick="openProfile()">
       <div class="id-text"><div class="id-name" id="hdName"></div><div class="id-lv"><span>Lv.<b id="hdLv">0</b></span><span class="free" id="hdFree">+0日</span></div></div>
@@ -1171,7 +1191,7 @@ body.tutorial-active #miPrompt{
   </div>
 
   <div id="bonusFrameOverlay">
-    <iframe id="bonusFrame" src="./bonus.html?v=13-4" title="DOPADO BONUS"></iframe>
+    <iframe id="bonusFrame" src="./bonus.html?v=21" title="DOPADO BONUS"></iframe>
   </div>
   <div class="overlay" id="onboardOverlay" style="display:none!important">
     <div class="popup">
@@ -1206,7 +1226,7 @@ body.tutorial-active #miPrompt{
 </div>
 
 <script>
-const APP_VERSION=20;
+const APP_VERSION=21;
 const STORAGE_KEY='dopaon_state_v6';
 const BACKUP_KEY='dopaon_state_v6_backup';
 const LEGACY_KEYS=['dopaon_state_v5','dopaon_state_v4','dopaon_state_v3','dopaon_state_v2','dopaon_state_v1'];
@@ -1505,8 +1525,9 @@ function normalizeState(s){
   out.tags=Array.isArray(out.tags)?out.tags.filter(Boolean).map(tg=>({id:(tg&&tg.id)||newId(),name:String((tg&&tg.name)||'').trim().slice(0,12),color:/^#[0-9a-fA-F]{6}$/.test((tg&&tg.color)||'')?tg.color:'#66ccff'})).filter(tg=>tg.name):[];
   out.repeats=Array.isArray(out.repeats)?out.repeats.filter(Boolean).map(normalizeRepeat):[];
   out.chargeTickets=Array.isArray(out.chargeTickets)?out.chargeTickets.filter(Boolean).map(x=>({id:(x&&x.id)||newId(),type:(x&&x.type)||'task',sourceId:(x&&x.sourceId)||'',name:(x&&x.name)||'',force:(x&&x.force)||null,outcome:(x&&x.outcome)||((x&&x.force)||null),tutorial:!!(x&&x.tutorial),createdAt:(x&&x.createdAt)||Date.now()})):[];
-  out.ui=Object.assign({completedOpen:false,mode:'tasks'},(s&&s.ui)||{});
-  if(!['tasks','habits','game'].includes(out.ui.mode))out.ui.mode='tasks';
+  out.ui=Object.assign({completedOpen:false,mode:'tasks',importantDay:'',importantUsedIds:[]},out.ui||{},(s&&s.ui)||{});
+  if(!['tasks','habits','game','cal'].includes(out.ui.mode))out.ui.mode='tasks';
+  if(!Array.isArray(out.ui.importantUsedIds))out.ui.importantUsedIds=[];
   out.version=APP_VERSION;
   return out;
 }
@@ -1737,7 +1758,11 @@ function onIn(e){
 function onInputFocus(){closeTaskExtras(false);clearTaskChargePreview(null,true);renderInputPrompt();setTimeout(()=>{initBaseViewport(false);syncViewport();resetPraiseInput()},40);setTimeout(syncViewport,120);setTimeout(syncViewport,260);setTimeout(syncViewport,520)}
 function onInputBlur(){renderInputPrompt(true);setTimeout(()=>{initBaseViewport(false);syncViewport()},120)}
 function onKey(e){if(e.key==='Enter'&&!isComposing){e.preventDefault();doDopa()}}
-function updateInputButtons(v){const db=document.getElementById('db'),ib=document.getElementById('ib');db.style.opacity=v?'1':'.4';ib.classList.toggle('ready',Boolean(v))}
+function updateInputButtons(v){
+  const db=document.getElementById('db'),ib=document.getElementById('ib');
+  if(db)db.style.opacity=v?'1':'.4';
+  if(ib)ib.classList.toggle('ready',Boolean(v));
+}
 let inputPromptTimer=null,currentInputPrompt='';
 function pickInputPrompt(){let msg=rnd(INPUT_PROMPTS);if(INPUT_PROMPTS.length>1&&msg===currentInputPrompt)msg=INPUT_PROMPTS[(INPUT_PROMPTS.indexOf(msg)+1)%INPUT_PROMPTS.length]||msg;currentInputPrompt=msg;return msg}
 function renderInputPrompt(force=false){const host=document.getElementById('miPrompt'),span=host&&host.querySelector('span'),input=document.getElementById('mi');if(!host||!span||!input)return;const tutOv=document.getElementById('tutOverlay');const tutorialShowing=!!(tutOv&&tutOv.style.display==='block');const visible=currentMode()==='tasks'&&!vl()&&document.activeElement!==input&&!tutorialShowing;host.classList.toggle('hide',!visible);if(!visible)return;if(force||!span.textContent)span.textContent=pickInputPrompt()}
@@ -1961,7 +1986,61 @@ function cycleTaskPriority(id){const t=state.tasks.find(x=>x.id===id);if(!t||t.s
   unsetTaskToday(id);showUndo('今日タグを外した',null);
 }
 
-function doQuickAdd(opts={}){closeTaskExtras(false);const v=vl();if(!v)return null;if(tut&&tut.active){const st=tutCurrentStep();const sid=st&&st.id;if(sid!=='t_add'){showToast('今はチュートリアルの光っている場所を操作してね');return null}if(tut.taskId){showToast('チュートリアル中は1つずつ進めよう');return null}if(currentMode()!=='tasks'){showToast('まずは日常タスクを1つ入れてね');return null}}let created=null,kind='task';if(currentMode()==='habits'){const slot=firstEmptyHabitSlot();if(slot===null){showToast('空き習慣スロットがない');return null}created=createHabit(v,{habitKind:'do',slot});state.habits.push(created);kind='habit';if(!opts.silent)showToast('習慣を追加した')}else{created=createTask(v);syncTaskDateFlags(created);state.tasks.unshift(created);if(!opts.silent)showToast('タスクを追加した')}document.getElementById('mi').value='';resetPraiseInput();updateInputButtons('');bumpInputPrompt();saveState();render();spawnPraise('add');if(kind==='habit')tutHook('habit_added',created);else tutHook('task_added',created);return{kind,item:created,name:v}}
+function normalizeTaskCollection(){
+  if(!Array.isArray(state.tasks))state.tasks=[];
+  const seen=new Set();
+  state.tasks=state.tasks.filter(Boolean).map(t=>normalizeTask(t)).filter(t=>{
+    if(seen.has(t.id))return false;
+    seen.add(t.id);
+    syncTaskDateFlags(t);
+    return true;
+  });
+}
+function flushTaskStateAndRender(){
+  normalizeTaskCollection();
+  saveState();
+  render();
+}
+function doQuickAdd(opts={}){
+  closeTaskExtras(false);
+  const input=document.getElementById('mi');
+  const v=vl();
+  if(!v)return null;
+  if(tut&&tut.active){
+    const st=tutCurrentStep();
+    const sid=st&&st.id;
+    if(sid!=='t_add'){showToast('今はチュートリアルの光っている場所を操作してね');return null}
+    if(tut.taskId){showToast('チュートリアル中は1つずつ進めよう');return null}
+    if(currentMode()!=='tasks'){showToast('まずは日常タスクを1つ入れてね');return null}
+  }
+  let created=null,kind='task';
+  if(currentMode()==='habits'){
+    const slot=firstEmptyHabitSlot();
+    if(slot===null){showToast('空き習慣スロットがない');return null}
+    created=createHabit(v,{habitKind:'do',slot});
+    state.habits.push(created);
+    kind='habit';
+    if(!opts.silent)showToast('習慣を追加した');
+  }else{
+    created=createTask(v,{createdAt:Date.now()});
+    syncTaskDateFlags(created);
+    recentAddedTaskId=created.id;
+    state.tasks=[created,...(Array.isArray(state.tasks)?state.tasks:[])];
+    taskSearchQuery='';
+    if(!state.ui)state.ui={};
+    state.ui.mode='tasks';
+    if(!opts.silent)showToast('タスクを追加した');
+  }
+  if(input)input.value='';
+  resetPraiseInput();
+  updateInputButtons('');
+  bumpInputPrompt();
+  flushTaskStateAndRender();
+  setTimeout(()=>{if(recentAddedTaskId===created.id){recentAddedTaskId=null;render()}},1300);
+  spawnPraise('add');
+  if(kind==='habit')tutHook('habit_added',created);else tutHook('task_added',created);
+  return{kind,item:created,name:v};
+}
 function doDopa(){const v=vl();if(!v)return;doQuickAdd({silent:false})}
 function deleteTask(id,fromMenu=false){if(openExtraTaskId===id)closeTaskExtras(false);const idx=state.tasks.findIndex(x=>x.id===id);if(idx<0)return;const removed=state.tasks[idx];const removedRepeat=removed.repeatId?state.repeats.find(r=>r.id===removed.repeatId):null;if(removedRepeat)state.repeats=state.repeats.filter(r=>r.id!==removed.repeatId);state.tasks.splice(idx,1);if(currentDopaonTaskId===id||taskChargingId===id)clearTaskChargePreview(null,false);saveState();render();if(fromMenu)closeTaskMenu();showUndo('タスクを削除した',()=>{state.tasks.splice(Math.min(idx,state.tasks.length),0,removed);if(removedRepeat&&!state.repeats.some(r=>r.id===removedRepeat.id))state.repeats.push(removedRepeat);saveState();render()})}
 function deleteHabit(id,fromMenu=false){const idx=state.habits.findIndex(x=>x.id===id);if(idx<0)return;const removed=state.habits[idx];const logs=state.habitLogs[id];state.habits.splice(idx,1);delete state.habitLogs[id];saveState();render();if(fromMenu)closeTaskMenu();showUndo('習慣を削除した',()=>{state.habits.push(removed);if(logs)state.habitLogs[id]=logs;saveState();render()})}
@@ -1970,7 +2049,26 @@ function tap(id){if(appLockedForCompletion())return;closeTaskExtras(false);const
 function formatDateLabel(s){if(!s)return '';const d=new Date(s+'T00:00:00');if(Number.isNaN(d.getTime()))return s;return (d.getMonth()+1)+'/'+d.getDate()+'('+WEEKDAYS[d.getDay()]+')'}
 function taskMeta(t){const tags=[];const today=appDayStr();if(isTaskToday(t))tags.push({cls:'today',txt:'今日'});if(t.dueDate){const overdue=t.state!=='done'&&t.dueDate<today;tags.push({cls:'due '+(overdue?'warn':''),txt:(overdue?'期限超過':formatDateLabel(t.dueDate))+(t.dueTime?' '+t.dueTime:'')})}if(t.repeatId){const rp=repeatById(t.repeatId);tags.push({cls:'repeat',txt:'↻ '+(rp?repeatLabel(rp):'リピート')})}return tags}
 function sortTasks(list){return list.slice().sort((a,b)=>{const ba=isTaskImportant(a)?0:isTaskToday(a)?1:!a.dueDate?2:3,bb=isTaskImportant(b)?0:isTaskToday(b)?1:!b.dueDate?2:3;if(ba!==bb)return ba-bb;if(ba===3&&a.dueDate!==b.dueDate)return a.dueDate.localeCompare(b.dueDate);if(a.dueDate&&a.dueDate===b.dueDate&&(a.dueTime||b.dueTime))return String(a.dueTime||'99:99').localeCompare(String(b.dueTime||'99:99'));return (b.createdAt||0)-(a.createdAt||0)})}
-function render(){expireDailyFlags(state);ensureGameState();ensureRepeatTasks();if(currentMode()!=='tasks'){openExtraTaskId=null;openSubtaskSwipeId=null}const a=document.getElementById('ta');a.innerHTML='';const sf8=document.getElementById('sf8');if(sf8)sf8.dataset.mode=currentMode();if(currentMode()==='game')renderGame(a);else if(currentMode()==='habits')renderHabits(a);else if(currentMode()==='cal')renderCalendar(a);else renderTasks(a);renderBottomBar();}
+function prepareStateForRender(){
+  expireDailyFlags(state);
+  normalizeTaskCollection();
+  ensureGameState();
+  ensureRepeatTasks();
+}
+function render(){
+  prepareStateForRender();
+  if(currentMode()!=='tasks'){openExtraTaskId=null;openSubtaskSwipeId=null;openEditTagTaskId=null}
+  const a=document.getElementById('ta');
+  if(!a)return;
+  a.innerHTML='';
+  const sf8=document.getElementById('sf8');
+  if(sf8)sf8.dataset.mode=currentMode();
+  if(currentMode()==='game')renderGame(a);
+  else if(currentMode()==='habits')renderHabits(a);
+  else if(currentMode()==='cal')renderCalendar(a);
+  else renderTasks(a);
+  renderBottomBar();
+}
 function renderTasks(a){
   taskSearchQuery='';
   if(!state.tasks.length){
@@ -1990,11 +2088,21 @@ function taskMatchesQuery(t,q){
 }
 function renderTaskList(a){
   a.innerHTML='';
-  const q=taskSearchQuery;
-  const act=sortTasks(state.tasks.filter(t=>t.state!=='done'&&taskMatchesQuery(t,q))),done=state.tasks.filter(t=>t.state==='done'&&taskMatchesQuery(t,q)).sort((a,b)=>(b.doneAt||0)-(a.doneAt||0));
+  normalizeTaskCollection();
+  const q=String(taskSearchQuery||'').trim();
+  const visible=state.tasks.filter(t=>taskMatchesQuery(t,q));
+  const act=sortTasks(visible.filter(t=>t.state!=='done'));
+  const done=visible.filter(t=>t.state==='done').sort((a,b)=>(b.doneAt||0)-(a.doneAt||0));
   if(q&&!act.length&&!done.length){a.innerHTML='<div class="empty" style="padding-top:30px"><div class="empty-text">「'+escapeHtml(q)+'」に一致なし</div></div>';return}
-  act.forEach((t,i)=>{const c=mkC(t);if(i===0&&!q)c.classList.add('tnew');a.appendChild(c)});
-  if(done.length){const s=document.createElement('div');s.className='completed';s.innerHTML='<div class="completed-head"><span class="completed-title">COMPLETED '+done.length+'</span><button class="completed-btn" onclick="toggleCompleted()">'+(state.ui.completedOpen?'隠す':'表示')+'</button><button class="completed-btn" onclick="clearCompleted()">整理</button></div>';a.appendChild(s);if(state.ui.completedOpen||q)done.forEach(t=>a.appendChild(mkC(t)))}
+  if(!act.length&&!done.length){a.innerHTML='<div class="empty"><div class="empty-icon">⚡</div><div class="empty-text">タスクはまだない</div><div class="empty-sub">下の欄に打ち込んで ✓ で追加</div></div>';return}
+  act.forEach((t,i)=>{const c=mkC(t);if((i===0&&!q)||recentAddedTaskId===t.id)c.classList.add('tnew');a.appendChild(c)});
+  if(done.length){
+    const s=document.createElement('div');
+    s.className='completed';
+    s.innerHTML='<div class="completed-head"><span class="completed-title">COMPLETED '+done.length+'</span><button class="completed-btn" onclick="toggleCompleted()">'+(state.ui.completedOpen?'隠す':'表示')+'</button><button class="completed-btn" onclick="clearCompleted()">整理</button></div>';
+    a.appendChild(s);
+    if(state.ui.completedOpen||q)done.forEach(t=>a.appendChild(mkC(t)));
+  }
 }
 function tagEl(cls,txt){const tag=document.createElement('span');tag.className='tag '+cls;tag.textContent=txt;return tag}
 function priorityPreview(task,big){
@@ -2116,10 +2224,22 @@ function createEditTag(id,value){const t=state.tasks.find(x=>x.id===id);if(!t)re
 function safeScrollEditInput(el){
   if(!el)return;
   const extra=el.closest('.task-extra');
-  try{el.scrollIntoView({block:'center',inline:'nearest',behavior:'smooth'});}catch(_){try{el.scrollIntoView(false)}catch(e){}}
-  if(extra){
-    setTimeout(()=>{try{extra.scrollTop=Math.max(0,extra.scrollTop+72)}catch(e){}},80);
+  const scroller=extra||document.getElementById('ta');
+  try{el.focus({preventScroll:true})}catch(e){}
+  if(scroller){
+    setTimeout(()=>{
+      try{
+        const er=el.getBoundingClientRect();
+        const sr=scroller.getBoundingClientRect();
+        const below=er.bottom-sr.bottom+88;
+        const above=sr.top-er.top+18;
+        if(below>0)scroller.scrollTop+=below;
+        else if(above>0)scroller.scrollTop-=above;
+      }catch(e){}
+    },80);
+    return;
   }
+  try{el.scrollIntoView({block:'center',inline:'nearest',behavior:'smooth'});}catch(_){try{el.scrollIntoView(false)}catch(e){}}
 }
 function renderTaskEditPanel(task){
   const p=document.createElement('div');p.className='task-edit-panel';
@@ -2604,7 +2724,7 @@ function renderGame(a){
   try{localStorage.setItem('DOPADO_GAME_CONTEXT',JSON.stringify(ctx));}catch(e){}
   const wrap=document.createElement('div');
   wrap.className='game-wrap v27-native-game-wrap';
-  wrap.innerHTML='<iframe id="dopadoV27GameFrame" class="dopado-v27-game-frame" src="./game.html?v=27-3-roadfix-v18" title="DOPADO GAME"></iframe>';
+  wrap.innerHTML='<iframe id="dopadoV27GameFrame" class="dopado-v27-game-frame" src="./game.html?v=27-3-roadfix-v21" title="DOPADO GAME"></iframe>';
   a.appendChild(wrap);
 }
 
