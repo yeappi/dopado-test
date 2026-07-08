@@ -1010,6 +1010,27 @@ body.tutorial-active #miPrompt{
 #sf8[data-mode="cal"] #dopadoTabBar{bottom:0!important}
 #sf8[data-mode="cal"] #ta{bottom:calc(50px + var(--safe-bottom))!important;padding-bottom:18px!important;overflow-y:auto!important}
 
+
+
+/* ===== v18: task organize cleanup / edit tab ===== */
+.task-tools-panel{width:112px!important;padding:0!important;background:linear-gradient(90deg,rgba(44,5,13,.18),#260812)!important;border:1px solid rgba(255,80,110,.25)!important;border-left:0!important;overflow:hidden!important}
+.task.open-tools .task-card{transform:translateX(-112px)!important}
+.task-delete-zone{width:100%;height:100%;border:0;background:linear-gradient(135deg,#2a0710,#13050a)!important;color:#ff7791!important;border-radius:0 14px 14px 0!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:5px!important;font-weight:1000!important;letter-spacing:1.4px!important;font-size:12px!important;font-family:'Orbitron',monospace!important}
+.task-delete-zone .x{font-size:24px;line-height:1;color:#ff8aa0;text-shadow:0 0 12px rgba(255,80,110,.45)}
+.task-delete-zone:active{filter:brightness(1.25)}
+.task-extra-tabs{grid-template-columns:1fr 1fr 1fr!important}
+.task-edit-panel{display:flex;flex-direction:column;gap:10px;padding:2px 0 0}
+.task-edit-name{width:100%;height:42px;border:1px solid #23234a;border-radius:12px;background:#06060e;color:#eaf2ff;padding:0 12px;font-size:16px;outline:none}
+.task-edit-name:focus{border-color:#00ffcc66;box-shadow:0 0 0 1px rgba(0,255,204,.10)}
+.task-edit-fold{border:1px solid rgba(35,35,74,.9);border-radius:14px;background:rgba(6,6,14,.72);overflow:hidden}
+.task-edit-fold summary{min-height:42px;display:flex;align-items:center;gap:9px;padding:0 12px;list-style:none;color:#9ab0d0;font-size:13px;font-weight:900;letter-spacing:.5px;cursor:pointer}
+.task-edit-fold summary::-webkit-details-marker{display:none}.task-edit-fold summary .ico{font-size:17px;color:#66ccff}.task-edit-fold[open] summary{border-bottom:1px solid rgba(35,35,74,.7);color:#dce8ff}
+.task-edit-fold-body{padding:11px 12px 12px;display:flex;flex-direction:column;gap:10px}.task-edit-row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.task-edit-row2 .form-input,.task-edit-row2 .form-select{height:40px;border-radius:11px}
+.edit-tag-box{border:1px solid rgba(35,35,74,.9);border-radius:14px;background:rgba(6,6,14,.72);padding:10px}.edit-tag-line{display:flex;gap:8px;align-items:center}.edit-tag-input{flex:1;height:38px;border:1px solid #23234a;border-radius:11px;background:#05050c;color:#eaf2ff;padding:0 11px;font-size:14px;outline:0}.edit-tag-input:focus{border-color:#00ffcc66}.edit-tag-add{width:42px;height:38px;border-radius:11px;border:1px solid #23234a;background:#090b15;color:#9ab0d0;font-weight:1000}.edit-tag-add:active{filter:brightness(1.2)}
+.edit-tag-list{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;animation:editTagDrop .16s ease both}.edit-tag-chip{border:1px solid #23234a;background:#06060e;color:#7890b8;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:900}.edit-tag-chip.on{background:#0a1018;box-shadow:0 0 12px rgba(0,255,204,.08)}.edit-tag-chip.system.today{color:#66ccff;border-color:#66ccff88}.edit-tag-chip.system.important{color:#ffd24a;border-color:#ffd24a88}.edit-tag-sep{width:100%;height:1px;background:rgba(255,255,255,.06);margin:1px 0 0}.edit-tag-empty{font-size:11px;color:#4a6080;padding:4px 2px 0}
+@keyframes editTagDrop{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.task-search-wrap{display:none!important}
+
 </style>
 </head>
 <body>
@@ -1139,7 +1160,7 @@ body.tutorial-active #miPrompt{
 </div>
 
 <script>
-const APP_VERSION=17;
+const APP_VERSION=18;
 const STORAGE_KEY='dopaon_state_v6';
 const BACKUP_KEY='dopaon_state_v6_backup';
 const LEGACY_KEYS=['dopaon_state_v5','dopaon_state_v4','dopaon_state_v3','dopaon_state_v2','dopaon_state_v1'];
@@ -1252,6 +1273,7 @@ let taskMenuImportant=false;
 let taskSearchQuery='';
 let menuSelectedTags=new Set();
 let menuRepeatDays=new Set();
+let openEditTagTaskId=null;
 let calMonth='',calSelDay='';
 /* ===== v14 tags / repeats core ===== */
 const TAG_COLORS=['#66ccff','#00e5bc','#ffd24a','#ff8bd8','#b98bff','#ff8c6b','#8affc1','#ff6f8c'];
@@ -1526,9 +1548,9 @@ let openExtraTaskId=null,openExtraTab='subtasks',openSubtaskSwipeId=null,subtask
 function taskExtras(t){if(!t.extras)t.extras=normalizeTaskExtras(null);else t.extras=normalizeTaskExtras(t.extras);return t.extras}
 function taskHasExtras(t){const ex=taskExtras(t);return ex.subtasks.length>0||String(ex.memo||'').trim().length>0}
 function preferredExtraTab(t){const ex=taskExtras(t);return ex.subtasks.length?'subtasks':(String(ex.memo||'').trim()?'memo':'subtasks')}
-function closeTaskExtras(doRender=false){if(openExtraTaskId||openSubtaskSwipeId||subtaskInputTaskId){openExtraTaskId=null;openSubtaskSwipeId=null;subtaskInputTaskId=null;if(doRender)render();tutHook('extras_close');return true}return false}
+function closeTaskExtras(doRender=false){if(openExtraTaskId||openSubtaskSwipeId||subtaskInputTaskId){openExtraTaskId=null;openSubtaskSwipeId=null;subtaskInputTaskId=null;openEditTagTaskId=null;if(doRender)render();tutHook('extras_close');return true}return false}
 function toggleTaskExtras(id){const t=state.tasks.find(x=>x.id===id);if(!t)return;clearTaskChargePreview(null,false);openSubtaskSwipeId=null;subtaskInputTaskId=null;if(openExtraTaskId===id){openExtraTaskId=null;saveState();render();tutHook('extras_close');return}openExtraTaskId=id;openExtraTab=preferredExtraTab(t);saveState();render();tutHook('extras_open',id)}
-function setTaskExtraTab(id,tab){if(openExtraTaskId!==id)return;openExtraTab=tab==='memo'?'memo':'subtasks';openSubtaskSwipeId=null;subtaskInputTaskId=null;render();if(tut&&tut.active)setTimeout(tutRender,60);if(tab==='memo')tutHook('memo_tab')}
+function setTaskExtraTab(id,tab){if(openExtraTaskId!==id)return;openExtraTab=(tab==='memo'||tab==='edit')?tab:'subtasks';openSubtaskSwipeId=null;subtaskInputTaskId=null;if(tab!=='edit')openEditTagTaskId=null;render();if(tut&&tut.active)setTimeout(tutRender,60);if(tab==='memo')tutHook('memo_tab')}
 function startSubtaskInput(id){
   const t=state.tasks.find(x=>x.id===id);if(!t)return;
   openExtraTaskId=id;openExtraTab='subtasks';openSubtaskSwipeId=null;subtaskInputTaskId=id;render();
@@ -1891,17 +1913,11 @@ function taskMeta(t){const tags=[];const today=appDayStr();if(isTaskToday(t))tag
 function sortTasks(list){return list.slice().sort((a,b)=>{const ba=isTaskImportant(a)?0:isTaskToday(a)?1:!a.dueDate?2:3,bb=isTaskImportant(b)?0:isTaskToday(b)?1:!b.dueDate?2:3;if(ba!==bb)return ba-bb;if(ba===3&&a.dueDate!==b.dueDate)return a.dueDate.localeCompare(b.dueDate);if(a.dueDate&&a.dueDate===b.dueDate&&(a.dueTime||b.dueTime))return String(a.dueTime||'99:99').localeCompare(String(b.dueTime||'99:99'));return (b.createdAt||0)-(a.createdAt||0)})}
 function render(){expireDailyFlags(state);ensureGameState();ensureRepeatTasks();if(currentMode()!=='tasks'){openExtraTaskId=null;openSubtaskSwipeId=null}const a=document.getElementById('ta');a.innerHTML='';const sf8=document.getElementById('sf8');if(sf8)sf8.dataset.mode=currentMode();if(currentMode()==='game')renderGame(a);else if(currentMode()==='habits')renderHabits(a);else if(currentMode()==='cal')renderCalendar(a);else renderTasks(a);renderBottomBar();}
 function renderTasks(a){
+  taskSearchQuery='';
   if(!state.tasks.length){
     const EM=INPUT_PROMPTS.concat(['ここにタスクを入力したらもう成功者だ。','最初の1個が人生を変える。いや、マジで。','タスクは置くだけでいい。後は脳がなんとかする。','このアプリを開いた時点で8割は終わってる。','やることを書き出した人が、未来を選べる人になる。','行動力のある人って、ただ書き出しただけだったりする。','今日の自分、ここに来ただけでもうえらい。','1個だけ入れて。それだけで今日は勝ち。','脳みそは覚えるより動く方が得意。外に出してやれ。','完璧じゃなくていい。とりあえず書いとくのが最強。']);
-    a.innerHTML='<div class="empty"><div class="empty-icon">⚡</div><div class="empty-text">'+EM[Math.floor(Math.random()*EM.length)]+'</div><div class="empty-sub">下の欄に打ち込んで ✓ で追加</div></div>';taskSearchQuery='';return}
-  const wrap=document.createElement('div');wrap.className='task-search-wrap'+(taskSearchQuery?' has-q':'');
-  const inp=document.createElement('input');inp.id='taskSearchInput';inp.className='task-search';inp.type='search';inp.placeholder='検索（名前・メモ・タグ）';inp.autocomplete='off';inp.value=taskSearchQuery;
-  const clr=document.createElement('button');clr.type='button';clr.className='task-search-clear';clr.textContent='×';
-  wrap.appendChild(inp);wrap.appendChild(clr);a.appendChild(wrap);
-  const listBox=document.createElement('div');listBox.id='taskListBox';a.appendChild(listBox);
-  inp.oninput=()=>{taskSearchQuery=inp.value;wrap.classList.toggle('has-q',!!taskSearchQuery);renderTaskList(listBox)};
-  clr.onclick=()=>{taskSearchQuery='';inp.value='';wrap.classList.remove('has-q');renderTaskList(listBox);inp.focus()};
-  renderTaskList(listBox);
+    a.innerHTML='<div class="empty"><div class="empty-icon">⚡</div><div class="empty-text">'+EM[Math.floor(Math.random()*EM.length)]+'</div><div class="empty-sub">下の欄に打ち込んで ✓ で追加</div></div>';return}
+  renderTaskList(a);
 }
 function taskMatchesQuery(t,q){
   if(!q)return true;
@@ -1964,9 +1980,7 @@ function mkC(task){
   el.dataset.id=task.id;
   const bg=document.createElement('div');bg.className='task-swipe-bg';bg.textContent='';el.appendChild(bg);
   const panel=document.createElement('div');panel.className='task-tools-panel';
-  if(iD){const u=document.createElement('button');u.className='mini-btn undo';u.textContent='↩';u.onclick=e=>{e.stopPropagation();clearInlineDopaon(false);undoTask(task.id)};panel.appendChild(u)}
-  const edit=document.createElement('button');edit.className='mini-btn';edit.textContent='⚙';edit.onclick=e=>{e.stopPropagation();clearInlineDopaon(false);openTaskMenu(task.id,'task')};panel.appendChild(edit);
-  const del=document.createElement('button');del.className='mini-btn danger';del.textContent='×';del.onclick=e=>{e.stopPropagation();clearInlineDopaon(false);deleteTask(task.id)};panel.appendChild(del);
+  const del=document.createElement('button');del.className='task-delete-zone';del.innerHTML='<span class="x">×</span><span>削除</span>';del.onclick=e=>{e.stopPropagation();clearInlineDopaon(false);deleteTask(task.id)};panel.appendChild(del);
   el.appendChild(panel);
   const card=document.createElement('div');card.className='task-card';
   const main=document.createElement('div');main.className='task-main';
@@ -2001,8 +2015,12 @@ function mkC(task){
 function renderTaskExtra(task){
   const ex=taskExtras(task),box=document.createElement('div');box.className='task-extra';box.onclick=e=>e.stopPropagation();
   const tabs=document.createElement('div');tabs.className='task-extra-tabs';
-  [['subtasks','追加タスク'],['memo','メモ']].forEach(([key,label])=>{const b=document.createElement('button');b.type='button';const has=(key==='subtasks'?ex.subtasks.length>0:String(ex.memo||'').trim().length>0);b.className='task-extra-tab'+(openExtraTab===key?' on':'')+(has?' has-content':'');b.textContent=label;b.onclick=e=>{e.stopPropagation();setTaskExtraTab(task.id,key)};tabs.appendChild(b)});
+  [['subtasks','子タスク'],['memo','メモ'],['edit','編集']].forEach(([key,label])=>{const b=document.createElement('button');b.type='button';const has=(key==='subtasks'?ex.subtasks.length>0:key==='memo'?String(ex.memo||'').trim().length>0:false);b.className='task-extra-tab'+(openExtraTab===key?' on':'')+(has?' has-content':'');b.textContent=label;b.onclick=e=>{e.stopPropagation();setTaskExtraTab(task.id,key)};tabs.appendChild(b)});
   box.appendChild(tabs);
+  if(openExtraTab==='edit'){
+    box.appendChild(renderTaskEditPanel(task));
+    return box;
+  }
   if(openExtraTab==='memo'){
     const ta=document.createElement('textarea');ta.className='task-memo';ta.placeholder='メモを書く...';ta.value=ex.memo||'';ta.oninput=e=>{updateTaskMemo(task.id,e.target.value);if(e.target.value)tutHook('memo_input')};ta.onclick=e=>e.stopPropagation();ta.ontouchstart=e=>e.stopPropagation();
     box.appendChild(ta);const note=document.createElement('div');note.className='task-memo-note';note.textContent='AUTO SAVE';box.appendChild(note);return box;
@@ -2019,6 +2037,50 @@ function renderTaskExtra(task){
   ex.subtasks.forEach(st=>list.appendChild(renderSubtaskRow(task.id,st)));
   box.appendChild(list);return box;
 }
+
+function repeatFreqForTask(t){const rp=t&&t.repeatId?repeatById(t.repeatId):null;return rp?rp.freq:'none'}
+function setTaskEditName(id,v){const t=state.tasks.find(x=>x.id===id);if(!t)return;t.name=String(v||'').trim()||t.name;const rp=t.repeatId?repeatById(t.repeatId):null;if(rp)rp.name=t.name;saveState();render()}
+function setTaskEditDate(id,v){const t=state.tasks.find(x=>x.id===id);if(!t)return;const old=t.dueDate;t.dueDate=v||'';syncTaskDateFlags(t);maybeAwardSchedulePoint(t,old,t.dueDate);saveState();render()}
+function setTaskEditTime(id,v){const t=state.tasks.find(x=>x.id===id);if(!t)return;t.dueTime=/^\d{2}:\d{2}$/.test(v||'')?v:'';const rp=t.repeatId?repeatById(t.repeatId):null;if(rp)rp.dueTime=t.dueTime;saveState();render()}
+function setTaskEditRepeat(id,freq){const t=state.tasks.find(x=>x.id===id);if(!t)return;freq=['none','daily','weekly','monthly'].includes(freq)?freq:'none';if(freq==='none'){if(t.repeatId)state.repeats=state.repeats.filter(r=>r.id!==t.repeatId);t.repeatId=null;saveState();render();return}let rp=t.repeatId?repeatById(t.repeatId):null;if(!rp){rp=normalizeRepeat({name:t.name});state.repeats.push(rp);t.repeatId=rp.id}rp.name=t.name;rp.freq=freq;const d=new Date((t.dueDate||appDayStr())+'T00:00:00');rp.days=freq==='weekly'?[d.getDay()]:freq==='monthly'?[d.getDate()]:[];rp.dueTime=t.dueTime||'';rp.tags=(t.tags||[]).slice();rp.active=true;rp.lastGenDay=repeatDueOn(rp,appDayStr())?appDayStr():'';saveState();render()}
+function toggleEditSystemTag(id,type){const t=state.tasks.find(x=>x.id===id);if(!t)return;clearTaskChargePreview(null,false);const day=appDayStr();if(type==='today'){
+  if(isTaskToday(t)){t.todayDate='';t.importantDate='';t.swipeCycle=0;if(t.dueDate===day)t.dueDate='';showUndo('今日タグを外した',null)}
+  else{const old=t.dueDate;t.dueDate=day;t.todayDate=day;if(!t.swipeCycle)t.swipeCycle=1;maybeAwardSchedulePoint(t,old,t.dueDate);showUndo('今日タグを付けた',null)}
+}else if(type==='important'){
+  if(isTaskImportant(t)){t.importantDate='';t.swipeCycle=3;showUndo('重要を外した',null)}
+  else{const old=t.dueDate;if(!isTaskToday(t)){t.dueDate=day;t.todayDate=day;maybeAwardSchedulePoint(t,old,t.dueDate)}if(!claimImportant(t)){showUndo(importantFullText(),null);return}t.swipeCycle=2;showUndo(importantUsageText(t),null)}
+}
+syncTaskDateFlags(t);saveState();render()}
+function toggleEditUserTag(id,tagId){const t=state.tasks.find(x=>x.id===id);if(!t)return;const arr=Array.isArray(t.tags)?t.tags:[];if(arr.includes(tagId))t.tags=arr.filter(x=>x!==tagId);else t.tags=[...arr,tagId];const rp=t.repeatId?repeatById(t.repeatId):null;if(rp)rp.tags=(t.tags||[]).slice();saveState();render()}
+function createEditTag(id,value){const t=state.tasks.find(x=>x.id===id);if(!t)return;const name=String(value||'').trim().slice(0,12);if(!name){openEditTagTaskId=id;render();return}let tg=(state.tags||[]).find(x=>x.name===name);if(!tg){tg={id:newId(),name,color:TAG_COLORS[(state.tags||[]).length%TAG_COLORS.length]};if(!Array.isArray(state.tags))state.tags=[];state.tags.push(tg)}if(!Array.isArray(t.tags))t.tags=[];if(!t.tags.includes(tg.id))t.tags.push(tg.id);const rp=t.repeatId?repeatById(t.repeatId):null;if(rp)rp.tags=(t.tags||[]).slice();openEditTagTaskId=id;saveState();render()}
+function renderTaskEditPanel(task){
+  const p=document.createElement('div');p.className='task-edit-panel';
+  const nm=document.createElement('input');nm.className='task-edit-name';nm.value=task.name||'';nm.placeholder='タスク名';nm.onchange=e=>setTaskEditName(task.id,e.target.value);nm.onclick=e=>e.stopPropagation();nm.ontouchstart=e=>e.stopPropagation();p.appendChild(nm);
+  const clock=document.createElement('details');clock.className='task-edit-fold';
+  const rp=task.repeatId?repeatById(task.repeatId):null;
+  clock.innerHTML='<summary><span class="ico">◷</span><span>'+(task.dueDate?formatDateLabel(task.dueDate):'日付なし')+(task.dueTime?' '+task.dueTime:'')+(rp?' / ↻ '+repeatLabel(rp):'')+'</span></summary><div class="task-edit-fold-body"><div class="task-edit-row2"><input class="form-input" id="editDue_'+task.id+'" type="date" value="'+escapeHtml(task.dueDate||'')+'"><input class="form-input" id="editTime_'+task.id+'" type="time" value="'+escapeHtml(task.dueTime||'')+'"></div><select class="form-select" id="editRepeat_'+task.id+'"><option value="none">リピートなし</option><option value="daily">毎日</option><option value="weekly">毎週</option><option value="monthly">毎月</option></select></div>';
+  p.appendChild(clock);
+  setTimeout(()=>{const d=document.getElementById('editDue_'+task.id),tm=document.getElementById('editTime_'+task.id),rf=document.getElementById('editRepeat_'+task.id);if(d)d.onchange=e=>setTaskEditDate(task.id,e.target.value);if(tm)tm.onchange=e=>setTaskEditTime(task.id,e.target.value);if(rf){rf.value=repeatFreqForTask(task);rf.onchange=e=>setTaskEditRepeat(task.id,e.target.value)}},0);
+  const tagBox=document.createElement('div');tagBox.className='edit-tag-box';
+  const line=document.createElement('div');line.className='edit-tag-line';
+  const inp=document.createElement('input');inp.className='edit-tag-input';inp.setAttribute('data-edit-tag-input',task.id);inp.placeholder=(task.tags||[]).map(id=>{const tg=tagById(id);return tg?tg.name:''}).filter(Boolean).join(', ')||'タグ';
+  function openTagList(){if(openEditTagTaskId!==task.id){openEditTagTaskId=task.id;render();setTimeout(()=>{const x=document.querySelector('[data-edit-tag-input="'+task.id+'"]');if(x)x.focus({preventScroll:true})},30)}}
+  inp.onclick=e=>{e.stopPropagation();openTagList()};inp.onfocus=openTagList;inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();createEditTag(task.id,inp.value)}};line.appendChild(inp);
+  const add=document.createElement('button');add.type='button';add.className='edit-tag-add';add.textContent='＋';add.onclick=e=>{e.stopPropagation();createEditTag(task.id,inp.value)};line.appendChild(add);tagBox.appendChild(line);
+  if(openEditTagTaskId===task.id){
+    const list=document.createElement('div');list.className='edit-tag-list';
+    const today=document.createElement('button');today.type='button';today.className='edit-tag-chip system today'+(isTaskToday(task)?' on':'');today.textContent='今日';today.onclick=e=>{e.stopPropagation();toggleEditSystemTag(task.id,'today')};list.appendChild(today);
+    const imp=document.createElement('button');imp.type='button';imp.className='edit-tag-chip system important'+(isTaskImportant(task)?' on':'');imp.textContent='重要';imp.onclick=e=>{e.stopPropagation();toggleEditSystemTag(task.id,'important')};list.appendChild(imp);
+    const sep=document.createElement('div');sep.className='edit-tag-sep';list.appendChild(sep);
+    if(!(state.tags||[]).length){const emp=document.createElement('div');emp.className='edit-tag-empty';emp.textContent='ユーザータグはまだない';list.appendChild(emp)}
+    (state.tags||[]).forEach(tg=>{const b=document.createElement('button');b.type='button';const on=(task.tags||[]).includes(tg.id);b.className='edit-tag-chip'+(on?' on':'');b.textContent=tg.name;b.style.color=tg.color;b.style.borderColor=tg.color+'77';b.onclick=e=>{e.stopPropagation();toggleEditUserTag(task.id,tg.id)};list.appendChild(b)});
+    tagBox.appendChild(list);
+  }
+  p.appendChild(tagBox);
+  const adv=document.createElement('details');adv.className='task-edit-fold';adv.innerHTML='<summary><span class="ico">⋯</span><span>詳細</span></summary><div class="task-edit-fold-body"><div class="form-help">種別は通常タスク固定。習慣化や細かい整理は管理モード側で扱う想定。</div></div>';p.appendChild(adv);
+  return p;
+}
+
 function renderSubtaskRow(taskId,st){
   const wrap=document.createElement('div');wrap.className='subtask-wrap'+(st.done?' done':'')+(openSubtaskSwipeId===st.id?' swiped':'');
   const del=document.createElement('button');del.type='button';del.className='subtask-delete';del.textContent='削除';del.onclick=e=>{e.stopPropagation();deleteSubtask(taskId,st.id)};wrap.appendChild(del);
@@ -2050,7 +2112,7 @@ function attachTaskSwipe(el,task){
     if(gestureDir==='right'&&dx>0&&!isHabit&&task.state!=='done'){
       const x=Math.min(dx,186),big=x>=RIGHT_BIG,armed=x>=RIGHT_SMALL,p=priorityPreview(task,big);el.classList.remove('swipe-left-preview','tier1','tier2','remove','max','full');el.classList.add('swipe-right-preview',armed?p.cls:'tier1');if(bg)bg.textContent=armed?p.txt:'もう少し';if(card)card.style.transform='translateX('+x.toFixed(1)+'px)';
     }else if(gestureDir==='left'&&dx<0){
-      const x=Math.max(dx,-132);el.classList.remove('swipe-right-preview','tier1','tier2','remove','max','full');el.classList.add('swipe-left-preview');if(bg)bg.textContent='管理';if(card)card.style.transform='translateX('+x.toFixed(1)+'px)';
+      const x=Math.max(dx,-132);el.classList.remove('swipe-right-preview','tier1','tier2','remove','max','full');el.classList.add('swipe-left-preview');if(bg)bg.textContent='削除';if(card)card.style.transform='translateX('+x.toFixed(1)+'px)';
     }
   },{passive:false});
   el.addEventListener('touchend',e=>{if(!tracking)return;tracking=false;if(!drag)return;const finalDx=dx,dir=gestureDir;const big=finalDx>=RIGHT_BIG;resetVisual();if(dir==='right'&&finalDx>=RIGHT_SMALL&&!isHabit&&task.state!=='done'){applyPrioritySwipe(task,big);return}if(dir==='left'&&finalDx<=LEFT_OPEN){closeTaskExtras(false);clearInlineDopaon(false);el.classList.add('open-tools');return}if(dir==='left')el.classList.remove('open-tools')},{passive:true});
@@ -2423,7 +2485,7 @@ function renderGame(a){
   try{localStorage.setItem('DOPADO_GAME_CONTEXT',JSON.stringify(ctx));}catch(e){}
   const wrap=document.createElement('div');
   wrap.className='game-wrap v27-native-game-wrap';
-  wrap.innerHTML='<iframe id="dopadoV27GameFrame" class="dopado-v27-game-frame" src="./game.html?v=27-3-roadfix-v17" title="DOPADO GAME"></iframe>';
+  wrap.innerHTML='<iframe id="dopadoV27GameFrame" class="dopado-v27-game-frame" src="./game.html?v=27-3-roadfix-v18" title="DOPADO GAME"></iframe>';
   a.appendChild(wrap);
 }
 
