@@ -9,11 +9,11 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="DOPADO" />
 <meta name="mobile-web-app-capable" content="yes" />
-<link rel="manifest" href="./manifest.webmanifest?v=22" />
-<link rel="apple-touch-icon" href="./icon.png?v=22" />
+<link rel="manifest" href="./manifest.webmanifest?v=23" />
+<link rel="apple-touch-icon" href="./icon.png?v=23" />
 
 <title>DOPADO TASK SYSTEM</title>
-<!-- v22: swipe visual/input prompt/profile stack cleanup -->
+<!-- v23: task screen visual refine -->
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Reggae+One&family=Orbitron:wght@700;900&display=swap');
@@ -1219,6 +1219,284 @@ html,body,#sf8{touch-action:manipulation;overscroll-behavior:none!important;}
 }
 .header .id-lv .free{display:none!important;}
 
+
+/* ===== v23: TASK screen visual refine / low-glow compact cards ===== */
+:root{
+  --bg:#05060d;
+  --card:rgba(12,14,26,.60);
+  --line:rgba(140,150,200,.16);
+  --line-strong:rgba(140,150,200,.28);
+  --mint:#43f5c2;
+  --gold:#f5c243;
+  --red:#f0506e;
+  --text-1:rgba(232,238,248,.92);
+  --text-2:rgba(190,200,220,.55);
+  --text-3:rgba(170,185,210,.30);
+  --radius-card:14px;
+  --radius-chip:999px;
+  --radius-check:6px;
+}
+html,body,#sf8{background:var(--bg)!important;color:var(--text-1)!important;}
+#sf8[data-mode="tasks"] #ta{
+  padding:12px 16px 132px!important;
+  background:radial-gradient(circle at 50% -12%,rgba(67,245,194,.045),transparent 34%),var(--bg)!important;
+}
+#sf8[data-mode="tasks"] .completed{
+  margin-top:24px!important;
+  padding-top:12px!important;
+  border-top:1px solid var(--line)!important;
+}
+#sf8[data-mode="tasks"] .completed-head{margin-bottom:8px!important;gap:8px!important;}
+#sf8[data-mode="tasks"] .completed-title{
+  font-family:'Orbitron',monospace!important;
+  font-size:10px!important;
+  letter-spacing:.3em!important;
+  color:var(--text-3)!important;
+  font-weight:700!important;
+}
+#sf8[data-mode="tasks"] .completed-btn{
+  border:1px solid var(--line)!important;
+  background:transparent!important;
+  color:var(--text-2)!important;
+  border-radius:var(--radius-chip)!important;
+  box-shadow:none!important;
+}
+#sf8[data-mode="tasks"] .task{
+  margin-bottom:8px!important;
+  border-radius:var(--radius-card)!important;
+  overflow:hidden!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+#sf8[data-mode="tasks"] .task-card{
+  min-height:64px!important;
+  max-height:80px!important;
+  padding:12px 14px!important;
+  border-radius:var(--radius-card)!important;
+  border:1px solid var(--line)!important;
+  background:var(--card)!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  align-items:center!important;
+  gap:8px!important;
+  transition:transform .16s ease,border-color .16s ease,background .16s ease,opacity .18s ease!important;
+}
+#sf8[data-mode="tasks"] .task-card:active{border-color:var(--line-strong)!important;background:rgba(18,21,38,.66)!important;}
+#sf8[data-mode="tasks"] .task.today-task .task-card{border-left:1px solid var(--line)!important;}
+#sf8[data-mode="tasks"] .task.important-task:not(.done) .task-card{
+  border-color:var(--line)!important;
+  border-left:3px solid var(--red)!important;
+  background:var(--card)!important;
+  box-shadow:none!important;
+}
+#sf8[data-mode="tasks"] .task.done .task-card{
+  opacity:.58!important;
+  background:rgba(8,10,18,.58)!important;
+  border-color:rgba(140,150,200,.10)!important;
+}
+#sf8[data-mode="tasks"] .task-main{gap:6px!important;min-width:0!important;}
+#sf8[data-mode="tasks"] .task-top-row{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 32px!important;
+  gap:8px!important;
+  align-items:center!important;
+  min-height:28px!important;
+  width:100%!important;
+}
+#sf8[data-mode="tasks"] .task-name{
+  font-size:15px!important;
+  font-weight:500!important;
+  line-height:1.4!important;
+  color:var(--text-1)!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  word-break:normal!important;
+  padding:0!important;
+}
+#sf8[data-mode="tasks"] .task.done .task-name{color:var(--text-2)!important;text-decoration:none!important;}
+#sf8[data-mode="tasks"] .task-action{align-self:center!important;justify-self:end!important;padding:0!important;gap:0!important;}
+#sf8[data-mode="tasks"] .task-btn,
+#sf8[data-mode="tasks"] .done-mark{
+  width:28px!important;
+  height:28px!important;
+  min-width:28px!important;
+  border-radius:50%!important;
+  border:1px solid var(--line-strong)!important;
+  background:transparent!important;
+  color:var(--text-2)!important;
+  box-shadow:none!important;
+  filter:none!important;
+  animation:none!important;
+  text-shadow:none!important;
+  font-size:13px!important;
+}
+#sf8[data-mode="tasks"] .task-btn::after{display:none!important;}
+#sf8[data-mode="tasks"] .task-btn .dpa-label{
+  font-size:7px!important;
+  letter-spacing:-.5px!important;
+  text-shadow:none!important;
+  color:currentColor!important;
+}
+#sf8[data-mode="tasks"] .task-btn.dpa-ready{
+  border-color:rgba(245,194,67,.42)!important;
+  color:var(--gold)!important;
+  background:transparent!important;
+}
+#sf8[data-mode="tasks"] .task-btn.dpa-important{
+  border-color:rgba(240,80,110,.50)!important;
+  color:var(--red)!important;
+  background:transparent!important;
+}
+#sf8[data-mode="tasks"] .push{display:none!important;}
+#sf8[data-mode="tasks"] .done-mark{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  color:var(--mint)!important;
+  background:rgba(67,245,194,.12)!important;
+  border-color:var(--mint)!important;
+}
+#sf8[data-mode="tasks"] .task-meta{
+  height:22px!important;
+  min-height:22px!important;
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+  gap:8px!important;
+  margin:0!important;
+  overflow:hidden!important;
+}
+#sf8[data-mode="tasks"] .tag{
+  height:22px!important;
+  min-height:22px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  padding:0 10px!important;
+  border-radius:var(--radius-chip)!important;
+  border:1px solid var(--line)!important;
+  background:transparent!important;
+  color:var(--text-2)!important;
+  font-size:11px!important;
+  line-height:22px!important;
+  letter-spacing:.06em!important;
+  font-family:system-ui,-apple-system,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif!important;
+  white-space:nowrap!important;
+  box-shadow:none!important;
+  filter:none!important;
+  text-shadow:none!important;
+}
+#sf8[data-mode="tasks"] .tag.today,
+#sf8[data-mode="tasks"] .tag.due,
+#sf8[data-mode="tasks"] .tag.repeat{
+  border-color:transparent!important;
+  background:transparent!important;
+  padding:0!important;
+  color:var(--text-2)!important;
+}
+#sf8[data-mode="tasks"] .tag.warn,
+#sf8[data-mode="tasks"] .tag.important{
+  border-color:rgba(240,80,110,.55)!important;
+  color:var(--red)!important;
+  background:transparent!important;
+}
+#sf8[data-mode="tasks"] .tag.user{
+  color:var(--text-2)!important;
+  border-color:var(--line)!important;
+  background:transparent!important;
+}
+#sf8[data-mode="tasks"] .task-menu-toggle{
+  height:22px!important;
+  min-width:22px!important;
+  width:22px!important;
+  border:1px solid transparent!important;
+  background:transparent!important;
+  color:rgba(170,185,210,.18)!important;
+  box-shadow:none!important;
+  font-size:12px!important;
+  padding:0!important;
+  flex:0 0 22px!important;
+}
+#sf8[data-mode="tasks"] .task-menu-toggle.has-extra,
+#sf8[data-mode="tasks"] .task-menu-toggle.open{
+  color:var(--text-2)!important;
+  border-color:var(--line)!important;
+}
+#sf8[data-mode="tasks"] .task-tools-panel{box-shadow:none!important;filter:none!important;}
+#sf8[data-mode="tasks"] .task-delete-zone{box-shadow:none!important;text-shadow:none!important;}
+
+#sf8[data-mode="tasks"] #inputBar{
+  height:64px!important;
+  padding:8px 16px!important;
+  gap:8px!important;
+  border-top:1px solid var(--line)!important;
+  background:rgba(5,6,13,.92)!important;
+}
+#sf8[data-mode="tasks"] #inputBar::before{
+  left:16px!important;
+  right:68px!important;
+  top:8px!important;
+  height:48px!important;
+  border-radius:12px!important;
+  border:1px solid var(--line)!important;
+  background:rgba(12,14,26,.60)!important;
+  box-shadow:none!important;
+}
+#sf8[data-mode="tasks"] #mi{
+  height:48px!important;
+  border-radius:12px!important;
+  color:var(--text-1)!important;
+  padding:0 14px!important;
+  font-size:16px!important;
+}
+#sf8[data-mode="tasks"] #mi:focus{border-color:transparent!important;}
+#sf8[data-mode="tasks"] #miPrompt{
+  left:30px!important;
+  right:76px!important;
+  top:8px!important;
+  height:48px!important;
+  border-radius:12px!important;
+  color:var(--text-3)!important;
+}
+#sf8[data-mode="tasks"] #miPrompt span{line-height:1.2!important;color:var(--text-3)!important;text-shadow:none!important;}
+#sf8[data-mode="tasks"] #miPrompt::after{opacity:.28!important;}
+#sf8[data-mode="tasks"] #db{
+  width:44px!important;
+  height:44px!important;
+  border-radius:12px!important;
+  border:1px solid var(--mint)!important;
+  background:rgba(67,245,194,.08)!important;
+  color:var(--mint)!important;
+  box-shadow:none!important;
+  filter:none!important;
+  margin:0!important;
+  flex:0 0 44px!important;
+}
+#bottomDock{background:rgba(5,6,13,.94)!important;border-top:1px solid var(--line)!important;}
+#dopadoTabBar{padding:6px 16px calc(6px + var(--safe-bottom))!important;gap:8px!important;}
+.dopado-tab{
+  height:44px!important;
+  border-radius:12px!important;
+  border:1px solid transparent!important;
+  background:transparent!important;
+  color:var(--text-3)!important;
+  box-shadow:none!important;
+  font-family:'Orbitron',monospace!important;
+  font-size:9px!important;
+  letter-spacing:.16em!important;
+}
+.dopado-tab.on{
+  border-color:var(--mint)!important;
+  color:var(--mint)!important;
+  background:rgba(67,245,194,.035)!important;
+  box-shadow:none!important;
+}
+.task-extra-tab{box-shadow:none!important;}
+.task-extra-tab.on{box-shadow:none!important;background:rgba(67,245,194,.10)!important;color:var(--mint)!important;border-color:var(--mint)!important;}
+.task-extra-tab.has-content:not(.on){box-shadow:none!important;color:var(--gold)!important;border-color:rgba(245,194,67,.36)!important;background:transparent!important;}
+#sf8[data-mode="tasks"] *{transition-duration:.18s;}
+#sf8[data-mode="tasks"] .task.tut-swipe-right .task-card{box-shadow:none!important;border-color:rgba(245,194,67,.60)!important;}
+
 </style>
 </head>
 <body>
@@ -1237,7 +1515,7 @@ html,body,#sf8{touch-action:manipulation;overscroll-behavior:none!important;}
       <button type="button" onclick="chooseTopMenu('profile')">プロフィール</button>
     </div>
     <div class="meter charge-frame-shell charge-off top-charge" id="chargeMeter" aria-label="チャージ抽選窓">
-      <iframe id="chargeFrame" src="./charge.html?v=22" title="DOPADO CHARGE"></iframe>
+      <iframe id="chargeFrame" src="./charge.html?v=23" title="DOPADO CHARGE"></iframe>
     </div>
     <div class="identity" id="identity" onclick="openProfile()">
       <div class="id-text"><div class="id-title" id="hdTitle"></div><div class="id-name" id="hdName"></div><div class="id-lv"><span>Lv.<b id="hdLv">0</b></span><span class="free" id="hdFree">+0日</span></div></div>
@@ -1321,7 +1599,7 @@ html,body,#sf8{touch-action:manipulation;overscroll-behavior:none!important;}
   </div>
 
   <div id="bonusFrameOverlay">
-    <iframe id="bonusFrame" src="./bonus.html?v=22" title="DOPADO BONUS"></iframe>
+    <iframe id="bonusFrame" src="./bonus.html?v=23" title="DOPADO BONUS"></iframe>
   </div>
   <div class="overlay" id="onboardOverlay" style="display:none!important">
     <div class="popup">
@@ -1356,7 +1634,7 @@ html,body,#sf8{touch-action:manipulation;overscroll-behavior:none!important;}
 </div>
 
 <script>
-const APP_VERSION=22;
+const APP_VERSION=23;
 const STORAGE_KEY='dopaon_state_v6';
 const BACKUP_KEY='dopaon_state_v6_backup';
 const LEGACY_KEYS=['dopaon_state_v5','dopaon_state_v4','dopaon_state_v3','dopaon_state_v2','dopaon_state_v1'];

@@ -1,5 +1,5 @@
 
-const APP_VERSION=22;
+const APP_VERSION=23;
 const STORAGE_KEY='dopaon_state_v6';
 const BACKUP_KEY='dopaon_state_v6_backup';
 const LEGACY_KEYS=['dopaon_state_v5','dopaon_state_v4','dopaon_state_v3','dopaon_state_v2','dopaon_state_v1'];
