@@ -9,8 +9,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="DOPADO" />
 <meta name="mobile-web-app-capable" content="yes" />
-<link rel="manifest" href="./manifest.webmanifest?v=23" />
-<link rel="apple-touch-icon" href="./icon.png?v=23" />
+<link rel="manifest" href="./manifest.webmanifest?v=24" />
+<link rel="apple-touch-icon" href="./icon.png?v=24" />
 
 <title>DOPADO TASK SYSTEM</title>
 <!-- v23: task screen visual refine -->
@@ -1497,6 +1497,37 @@ html,body,#sf8{background:var(--bg)!important;color:var(--text-1)!important;}
 #sf8[data-mode="tasks"] *{transition-duration:.18s;}
 #sf8[data-mode="tasks"] .task.tut-swipe-right .task-card{box-shadow:none!important;border-color:rgba(245,194,67,.60)!important;}
 
+
+
+/* ===== v24: variable task cards / left dpa checkbox / clearer menu / no long-press transparency ===== */
+#sf8[data-mode="tasks"] .task{overflow:hidden!important;background:transparent!important;border-radius:14px!important;}
+#sf8[data-mode="tasks"] .task-card{display:flex!important;align-items:flex-start!important;gap:10px!important;min-height:64px!important;max-height:none!important;height:auto!important;padding:12px 14px!important;overflow:visible!important;border:1px solid var(--line)!important;border-left:1px solid var(--line)!important;border-radius:14px!important;background:var(--card)!important;box-shadow:none!important;opacity:1!important;}
+#sf8[data-mode="tasks"] .task-card *{max-height:none;}
+#sf8[data-mode="tasks"] .task-main{flex:1 1 auto!important;min-width:0!important;display:flex!important;flex-direction:column!important;gap:6px!important;opacity:1!important;}
+#sf8[data-mode="tasks"] .task-top-row{display:block!important;min-height:0!important;width:100%!important;}
+#sf8[data-mode="tasks"] .task-name{display:block!important;max-width:100%!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;}
+#sf8[data-mode="tasks"] .task-action{order:0!important;flex:0 0 44px!important;width:44px!important;height:44px!important;display:flex!important;align-items:flex-start!important;justify-content:center!important;padding:0!important;margin:0!important;align-self:flex-start!important;opacity:1!important;}
+#sf8[data-mode="tasks"] .task-btn,#sf8[data-mode="tasks"] .done-mark{width:34px!important;height:34px!important;min-width:34px!important;margin:0!important;border-radius:9px!important;border:1.5px solid var(--line-strong)!important;background:rgba(255,255,255,.018)!important;color:var(--text-2)!important;box-shadow:none!important;filter:none!important;animation:none!important;text-shadow:none!important;display:flex!important;align-items:center!important;justify-content:center!important;}
+#sf8[data-mode="tasks"] .task-btn::after{display:none!important;}
+#sf8[data-mode="tasks"] .task-btn .dpa-label{font-family:'Orbitron',monospace!important;font-size:8px!important;font-weight:900!important;letter-spacing:-.45px!important;line-height:1!important;color:currentColor!important;text-shadow:none!important;}
+#sf8[data-mode="tasks"] .task.today-task:not(.important-task) .task-btn,#sf8[data-mode="tasks"] .task.today-task:not(.important-task) .task-btn.dpa-ready{border-color:rgba(67,245,194,.75)!important;color:var(--mint)!important;background:rgba(67,245,194,.08)!important;}
+#sf8[data-mode="tasks"] .task.important-task:not(.done) .task-btn,#sf8[data-mode="tasks"] .task.important-task:not(.done) .task-btn.dpa-important{border-color:rgba(240,80,110,.78)!important;color:var(--red)!important;background:rgba(240,80,110,.075)!important;}
+#sf8[data-mode="tasks"] .task.done .done-mark{border-color:var(--mint)!important;color:var(--mint)!important;background:rgba(67,245,194,.12)!important;font-size:18px!important;font-weight:900!important;}
+#sf8[data-mode="tasks"] .task.done .task-card{opacity:.64!important;background:rgba(8,10,18,.58)!important;border-color:rgba(140,150,200,.10)!important;}
+#sf8[data-mode="tasks"] .task.done .task-main{opacity:.70!important;}
+#sf8[data-mode="tasks"] .task.important-task:not(.done) .task-card,#sf8[data-mode="tasks"] .task.important-task.done .task-card,#sf8[data-mode="tasks"] .task.today-task .task-card{border:1px solid var(--line)!important;border-left:1px solid var(--line)!important;background:var(--card)!important;box-shadow:none!important;}
+#sf8[data-mode="tasks"] .tag.important{border-color:rgba(240,80,110,.50)!important;color:var(--red)!important;background:transparent!important;}
+#sf8[data-mode="tasks"] .task-extra,#sf8[data-mode="tasks"] .task-dopaon{width:100%!important;overflow:visible!important;max-height:none!important;}
+#sf8[data-mode="tasks"] .task-menu-toggle{opacity:0!important;pointer-events:none!important;width:0!important;min-width:0!important;flex:0 0 0!important;margin:0!important;border:0!important;padding:0!important;}
+#sf8[data-mode="tasks"] .task-menu-toggle.has-extra,#sf8[data-mode="tasks"] .task-menu-toggle.open{opacity:1!important;pointer-events:auto!important;width:22px!important;min-width:22px!important;flex:0 0 22px!important;border:1px solid var(--line)!important;}
+#sf8[data-mode="tasks"] .task.longpress,#sf8[data-mode="tasks"] .task.long-press,#sf8[data-mode="tasks"] .task.is-longpress,#sf8[data-mode="tasks"] .task.holding,#sf8[data-mode="tasks"] .task-card.longpress,#sf8[data-mode="tasks"] .task-card.holding{opacity:1!important;background:transparent!important;}
+#sf8[data-mode="tasks"] .task.longpress .task-card,#sf8[data-mode="tasks"] .task.holding .task-card,#sf8[data-mode="tasks"] .task-card:focus-within{opacity:1!important;border-color:var(--line-strong)!important;background:rgba(18,21,38,.66)!important;}
+#sf8[data-mode="tasks"] .task:not(.open-tools):not(.swiping):not(.swipe-left-preview):not(.swipe-right-preview) .task-tools-panel,#sf8[data-mode="tasks"] .task:not(.open-tools):not(.swiping):not(.swipe-left-preview):not(.swipe-right-preview) .task-swipe-bg{opacity:0!important;visibility:hidden!important;pointer-events:none!important;}
+#sf8[data-mode="tasks"] .menu-brand,.header .menu-brand{display:flex!important;flex-direction:column!important;justify-content:center!important;gap:2px!important;min-height:44px!important;padding:5px 7px!important;border:1px solid rgba(140,150,200,.16)!important;background:rgba(12,14,26,.42)!important;border-radius:12px!important;}
+#sf8[data-mode="tasks"] .menu-brand .logo,.header .menu-brand .logo{font-size:14px!important;letter-spacing:1.2px!important;line-height:1!important;}
+#sf8[data-mode="tasks"] .menu-brand .sub,.header .menu-brand .sub{display:block!important;font-family:'Orbitron',monospace!important;font-size:8px!important;letter-spacing:1.8px!important;color:rgba(67,245,194,.68)!important;line-height:1!important;}
+#sf8[data-mode="tasks"] .top-menu,.top-menu{border-color:rgba(140,150,200,.22)!important;background:rgba(7,8,16,.98)!important;box-shadow:0 18px 48px rgba(0,0,0,.58)!important;}
+
 </style>
 </head>
 <body>
@@ -1515,7 +1546,7 @@ html,body,#sf8{background:var(--bg)!important;color:var(--text-1)!important;}
       <button type="button" onclick="chooseTopMenu('profile')">プロフィール</button>
     </div>
     <div class="meter charge-frame-shell charge-off top-charge" id="chargeMeter" aria-label="チャージ抽選窓">
-      <iframe id="chargeFrame" src="./charge.html?v=23" title="DOPADO CHARGE"></iframe>
+      <iframe id="chargeFrame" src="./charge.html?v=24" title="DOPADO CHARGE"></iframe>
     </div>
     <div class="identity" id="identity" onclick="openProfile()">
       <div class="id-text"><div class="id-title" id="hdTitle"></div><div class="id-name" id="hdName"></div><div class="id-lv"><span>Lv.<b id="hdLv">0</b></span><span class="free" id="hdFree">+0日</span></div></div>
@@ -1599,7 +1630,7 @@ html,body,#sf8{background:var(--bg)!important;color:var(--text-1)!important;}
   </div>
 
   <div id="bonusFrameOverlay">
-    <iframe id="bonusFrame" src="./bonus.html?v=23" title="DOPADO BONUS"></iframe>
+    <iframe id="bonusFrame" src="./bonus.html?v=24" title="DOPADO BONUS"></iframe>
   </div>
   <div class="overlay" id="onboardOverlay" style="display:none!important">
     <div class="popup">
@@ -1634,7 +1665,7 @@ html,body,#sf8{background:var(--bg)!important;color:var(--text-1)!important;}
 </div>
 
 <script>
-const APP_VERSION=23;
+const APP_VERSION=24;
 const STORAGE_KEY='dopaon_state_v6';
 const BACKUP_KEY='dopaon_state_v6_backup';
 const LEGACY_KEYS=['dopaon_state_v5','dopaon_state_v4','dopaon_state_v3','dopaon_state_v2','dopaon_state_v1'];
@@ -2570,10 +2601,10 @@ function mkC(task){
     b.className='task-btn'+(iC?' cbtn':'')+(!iC&&todayActive?' dpa-ready':'')+(!iC&&important?' dpa-important':'');
     b.onclick=e=>{e.stopPropagation();tap(task.id)};attachTaskLongPress(b,task);
     b.setAttribute('aria-label',iC?'完了確定':'夢物語を開く');
-    b.innerHTML=iC?'<span style="font-family:\'Orbitron\',monospace;font-size:7px;font-weight:700;">確定</span>':(todayActive?'<span class="dpa-label">dpa</span>':'<span style="font-size:17px;">✓</span>');
+    b.innerHTML=iC?'<span style="font-family:\'Orbitron\',monospace;font-size:7px;font-weight:700;">確定</span>':'<span class="dpa-label">dpa</span>';
     w.appendChild(b);if(iC){const h=document.createElement('span');h.className='push';h.textContent='PUSH';w.appendChild(h)}
   }else{const ic=document.createElement('span');ic.className='done-mark';ic.textContent='✓';w.appendChild(ic)}
-  top.appendChild(w);main.appendChild(top);
+  main.appendChild(top);
   const meta=document.createElement('div');meta.className='task-meta';
   const mb=document.createElement('button');mb.type='button';mb.className='task-menu-toggle'+(taskHasExtras(task)?' has-extra':'')+(openExtraTaskId===task.id?' open':'');mb.textContent='☰';mb.setAttribute('aria-label','追加タスクとメモ');mb.onclick=e=>{e.stopPropagation();toggleTaskExtras(task.id)};meta.appendChild(mb);
   taskMeta(task).forEach(m=>meta.appendChild(tagEl(m.cls,m.txt)));
@@ -2587,7 +2618,7 @@ function mkC(task){
     const close=dp.querySelector('.dopa-close');if(close)close.onclick=e=>{e.stopPropagation();closeInlineDopaon(task.id)};
     main.appendChild(dp);
   }
-  card.appendChild(main);el.appendChild(card);attachTaskSwipe(el,task);return el;
+  card.appendChild(w);card.appendChild(main);el.appendChild(card);attachTaskSwipe(el,task);return el;
 }
 
 function renderTaskExtra(task){
@@ -3135,7 +3166,7 @@ function renderGame(a){
   try{localStorage.setItem('DOPADO_GAME_CONTEXT',JSON.stringify(ctx));}catch(e){}
   const wrap=document.createElement('div');
   wrap.className='game-wrap v27-native-game-wrap';
-  wrap.innerHTML='<iframe id="dopadoV27GameFrame" class="dopado-v27-game-frame" src="./game.html?v=27-3-roadfix-v22" title="DOPADO GAME"></iframe>';
+  wrap.innerHTML='<iframe id="dopadoV27GameFrame" class="dopado-v27-game-frame" src="./game.html?v=27-3-roadfix-v24" title="DOPADO GAME"></iframe>';
   a.appendChild(wrap);
 }
 
