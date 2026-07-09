@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ja">
 <head>
+<!-- DOPADO_DEPLOY_MARKER v32 inline-index no-index-js -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
@@ -1360,7 +1361,7 @@ html,body,#sf8{touch-action:manipulation;overscroll-behavior:none!important;}
       <button type="button" onclick="chooseTopMenu('profile')">プロフィール</button>
     </div>
     <div class="meter charge-frame-shell charge-off top-charge" id="chargeMeter" aria-label="チャージ抽選窓">
-      <iframe id="chargeFrame" src="./charge.html?v=31" title="DOPADO CHARGE"></iframe>
+      <iframe id="chargeFrame" src="./charge.html?v=32" title="DOPADO CHARGE"></iframe>
     </div>
     <div class="identity" id="identity" onclick="openProfile()">
       <div class="id-text"><div class="id-title" id="hdTitle"></div><div class="id-name" id="hdName"></div><div class="id-lv"><span>Lv.<b id="hdLv">0</b></span><span class="free" id="hdFree">+0日</span></div></div>
@@ -1444,7 +1445,7 @@ html,body,#sf8{touch-action:manipulation;overscroll-behavior:none!important;}
   </div>
 
   <div id="bonusFrameOverlay">
-    <iframe id="bonusFrame" src="./bonus.html?v=31" title="DOPADO BONUS"></iframe>
+    <iframe id="bonusFrame" src="./bonus.html?v=32" title="DOPADO BONUS"></iframe>
   </div>
   <div class="overlay" id="onboardOverlay" style="display:none!important">
     <div class="popup">
@@ -1480,7 +1481,7 @@ html,body,#sf8{touch-action:manipulation;overscroll-behavior:none!important;}
 
 <script>
 // DOPADO v30 inline app script
-const APP_VERSION=31;
+const APP_VERSION=32;
 const STORAGE_KEY='dopaon_state_v6';
 const BACKUP_KEY='dopaon_state_v6_backup';
 const LEGACY_KEYS=['dopaon_state_v5','dopaon_state_v4','dopaon_state_v3','dopaon_state_v2','dopaon_state_v1'];
@@ -2989,7 +2990,7 @@ function renderGame(a){
   try{localStorage.setItem('DOPADO_GAME_CONTEXT',JSON.stringify(ctx));}catch(e){}
   const wrap=document.createElement('div');
   wrap.className='game-wrap v27-native-game-wrap';
-  wrap.innerHTML='<iframe id="dopadoV27GameFrame" class="dopado-v27-game-frame" src="./game.html?v=31" title="DOPADO GAME"></iframe>';
+  wrap.innerHTML='<iframe id="dopadoV27GameFrame" class="dopado-v27-game-frame" src="./game.html?v=32" title="DOPADO GAME"></iframe>';
   a.appendChild(wrap);
 }
 
