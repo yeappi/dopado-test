@@ -1221,8 +1221,9 @@ html,body,#sf8{touch-action:manipulation;overscroll-behavior:none!important;}
 
 
 
-/* ===== v29: TASK UI stable polish / clean final overrides =====
-   Base: v26 index.js構成。機能は変えず、TASK画面のサイズ・角丸・密度・過剰ラベル感だけを整理。 */
+
+/* ===== v31: TASK focused polish / right toggle + compact input =====
+   index.html一本化版。既存機能は変えず、TASK画面の最後の見た目だけを整理。 */
 #sf8[data-mode="tasks"]{
   --task-bg:#05060d;
   --task-card:rgba(12,14,26,.62);
@@ -1230,7 +1231,6 @@ html,body,#sf8{touch-action:manipulation;overscroll-behavior:none!important;}
   --task-line:rgba(140,150,200,.15);
   --task-line-strong:rgba(140,150,200,.28);
   --task-mint:#43f5c2;
-  --task-gold:#f5c243;
   --task-red:#f0506e;
   --task-text-1:rgba(232,238,248,.92);
   --task-text-2:rgba(190,200,220,.52);
@@ -1240,7 +1240,7 @@ html,body,#sf8{touch-action:manipulation;overscroll-behavior:none!important;}
   --task-radius-input:12px;
 }
 #sf8[data-mode="tasks"] #ta{
-  padding:12px 16px 128px!important;
+  padding:12px 16px 120px!important;
   background:radial-gradient(circle at 50% -12%,rgba(67,245,194,.035),transparent 34%),var(--task-bg)!important;
 }
 #sf8[data-mode="tasks"] .completed{margin-top:24px!important;padding-top:12px!important;border-top:1px solid var(--task-line)!important;}
@@ -1248,7 +1248,7 @@ html,body,#sf8{touch-action:manipulation;overscroll-behavior:none!important;}
 #sf8[data-mode="tasks"] .completed-title{font-family:'Orbitron',monospace!important;font-size:10px!important;letter-spacing:.28em!important;color:var(--task-text-3)!important;font-weight:700!important;}
 #sf8[data-mode="tasks"] .completed-btn{height:26px!important;border:1px solid var(--task-line)!important;border-radius:999px!important;background:transparent!important;color:var(--task-text-2)!important;box-shadow:none!important;filter:none!important;}
 
-/* Row/swap: delete panel is hidden unless explicitly open */
+/* delete plate */
 #sf8[data-mode="tasks"] .task{position:relative!important;margin:0 0 8px!important;border-radius:var(--task-radius-card)!important;overflow:hidden!important;background:transparent!important;box-shadow:none!important;}
 #sf8[data-mode="tasks"] .task-swipe-bg{display:none!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important;}
 #sf8[data-mode="tasks"] .task-tools-panel{position:absolute!important;top:0!important;right:0!important;bottom:0!important;width:112px!important;z-index:1!important;border-radius:0 var(--task-radius-card) var(--task-radius-card) 0!important;background:#2a0710!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important;overflow:hidden!important;box-shadow:none!important;filter:none!important;}
@@ -1258,83 +1258,78 @@ html,body,#sf8{touch-action:manipulation;overscroll-behavior:none!important;}
 #sf8[data-mode="tasks"] .task.open-tools .task-card{transform:translateX(-112px)!important;}
 #sf8[data-mode="tasks"] .task.swiping .task-card{transition:none!important;}
 
-/* Card: actual 2-column layout. Left is dpa hit-area, right is content. */
+/* card */
 #sf8[data-mode="tasks"] .task-card{position:relative!important;z-index:2!important;display:grid!important;grid-template-columns:44px minmax(0,1fr)!important;grid-template-areas:'dpa main'!important;column-gap:8px!important;align-items:start!important;min-height:58px!important;height:auto!important;max-height:none!important;padding:12px!important;border:1px solid var(--task-line)!important;border-radius:var(--task-radius-card)!important;background:var(--task-card)!important;box-shadow:none!important;filter:none!important;backdrop-filter:none!important;overflow:visible!important;opacity:1!important;transition:transform .16s ease,border-color .16s ease,background .16s ease,opacity .18s ease!important;}
-#sf8[data-mode="tasks"] .task-card:active,
-#sf8[data-mode="tasks"] .task-card:focus-within{border-color:var(--task-line-strong)!important;background:var(--task-card-active)!important;}
-#sf8[data-mode="tasks"] .task.today-task .task-card,
-#sf8[data-mode="tasks"] .task.important-task:not(.done) .task-card,
-#sf8[data-mode="tasks"] .task.important-task.done .task-card{border-left:1px solid var(--task-line)!important;border-color:var(--task-line)!important;background:var(--task-card)!important;box-shadow:none!important;}
+#sf8[data-mode="tasks"] .task-card:active,#sf8[data-mode="tasks"] .task-card:focus-within{border-color:var(--task-line-strong)!important;background:var(--task-card-active)!important;}
+#sf8[data-mode="tasks"] .task.today-task .task-card,#sf8[data-mode="tasks"] .task.important-task .task-card{border-left:1px solid var(--task-line)!important;border-color:var(--task-line)!important;background:var(--task-card)!important;box-shadow:none!important;}
 #sf8[data-mode="tasks"] .task.done .task-card{background:rgba(8,10,18,.58)!important;border-color:rgba(140,150,200,.10)!important;}
 #sf8[data-mode="tasks"] .task.done .task-main{opacity:.58!important;}
 
-/* dpa button: 44px tap area, 34px visual button */
+/* dpa button: 44px hit area, 34px visual */
 #sf8[data-mode="tasks"] .task-action{grid-area:dpa!important;width:44px!important;min-width:44px!important;max-width:44px!important;height:44px!important;display:flex!important;align-items:flex-start!important;justify-content:center!important;padding:1px 0 0!important;margin:0!important;gap:0!important;align-self:start!important;opacity:1!important;position:relative!important;transform:none!important;}
-#sf8[data-mode="tasks"] .task-btn,
-#sf8[data-mode="tasks"] .done-mark{width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;padding:0!important;margin:0!important;border-radius:var(--task-radius-control)!important;border:1px solid var(--task-line-strong)!important;background:transparent!important;color:var(--task-text-2)!important;display:flex!important;align-items:center!important;justify-content:center!important;box-shadow:none!important;filter:none!important;text-shadow:none!important;animation:none!important;}
+#sf8[data-mode="tasks"] .task-btn,#sf8[data-mode="tasks"] .done-mark{width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;padding:0!important;margin:0!important;border-radius:var(--task-radius-control)!important;border:1px solid var(--task-line-strong)!important;background:transparent!important;color:var(--task-text-2)!important;display:flex!important;align-items:center!important;justify-content:center!important;box-shadow:none!important;filter:none!important;text-shadow:none!important;animation:none!important;}
 #sf8[data-mode="tasks"] .task-btn::after{display:none!important;content:none!important;}
 #sf8[data-mode="tasks"] .task-btn .dpa-label{font-family:'Orbitron',monospace!important;font-size:9px!important;font-weight:800!important;letter-spacing:.01em!important;line-height:1!important;color:currentColor!important;text-transform:lowercase!important;text-shadow:none!important;}
-#sf8[data-mode="tasks"] .task.today-task:not(.important-task) .task-btn,
-#sf8[data-mode="tasks"] .task.today-task:not(.important-task) .task-btn.dpa-ready{border-color:rgba(67,245,194,.42)!important;color:var(--task-mint)!important;background:rgba(67,245,194,.055)!important;}
-#sf8[data-mode="tasks"] .task.important-task:not(.done) .task-btn,
-#sf8[data-mode="tasks"] .task.important-task:not(.done) .task-btn.dpa-important{border-color:rgba(240,80,110,.56)!important;color:var(--task-red)!important;background:rgba(240,80,110,.055)!important;}
+#sf8[data-mode="tasks"] .task.today-task:not(.important-task) .task-btn,#sf8[data-mode="tasks"] .task.today-task:not(.important-task) .task-btn.dpa-ready{border-color:rgba(67,245,194,.42)!important;color:var(--task-mint)!important;background:rgba(67,245,194,.055)!important;}
+#sf8[data-mode="tasks"] .task.important-task:not(.done) .task-btn,#sf8[data-mode="tasks"] .task.important-task:not(.done) .task-btn.dpa-important{border-color:rgba(240,80,110,.56)!important;color:var(--task-red)!important;background:rgba(240,80,110,.055)!important;}
 #sf8[data-mode="tasks"] .task.done .done-mark{border-color:rgba(67,245,194,.54)!important;color:var(--task-mint)!important;background:rgba(67,245,194,.08)!important;font-size:17px!important;font-weight:800!important;}
 #sf8[data-mode="tasks"] .task.done .task-action{opacity:.78!important;}
 #sf8[data-mode="tasks"] .push{display:none!important;}
 
-/* Main copy: task title is the visual lead, metadata recedes */
+/* main row */
 #sf8[data-mode="tasks"] .task-main{grid-area:main!important;min-width:0!important;width:100%!important;display:flex!important;flex-direction:column!important;gap:6px!important;padding:0!important;margin:0!important;overflow:visible!important;}
-#sf8[data-mode="tasks"] .task-top-row{display:flex!important;align-items:flex-start!important;justify-content:space-between!important;gap:8px!important;width:100%!important;min-height:20px!important;margin:0!important;padding:0!important;}
-#sf8[data-mode="tasks"] .task-name{flex:1 1 auto!important;min-width:0!important;margin:0!important;padding:0!important;font-size:15px!important;font-weight:560!important;line-height:1.35!important;color:var(--task-text-1)!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;word-break:normal!important;}
+#sf8[data-mode="tasks"] .task-top-row{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:start!important;gap:8px!important;width:100%!important;min-height:20px!important;margin:0!important;padding:0!important;}
+#sf8[data-mode="tasks"] .task-name{min-width:0!important;margin:0!important;padding:0!important;font-size:15px!important;font-weight:560!important;line-height:1.35!important;color:var(--task-text-1)!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;word-break:normal!important;}
 #sf8[data-mode="tasks"] .task.done .task-name{color:var(--task-text-2)!important;text-decoration:none!important;}
+
+/* right-fixed task toggle: count then caret */
+#sf8[data-mode="tasks"] .task-menu-toggle{display:inline-flex!important;align-items:center!important;justify-content:flex-end!important;gap:3px!important;width:auto!important;min-width:34px!important;height:20px!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;color:var(--task-text-3)!important;opacity:.58!important;box-shadow:none!important;filter:none!important;font-family:'Orbitron',monospace!important;font-size:10px!important;font-weight:800!important;line-height:1!important;white-space:nowrap!important;justify-self:end!important;}
+#sf8[data-mode="tasks"] .task-menu-toggle.has-extra{opacity:.78!important;color:var(--task-text-2)!important;}
+#sf8[data-mode="tasks"] .task-menu-toggle.open{opacity:1!important;color:var(--task-mint)!important;}
+#sf8[data-mode="tasks"] .task-menu-toggle .count{display:inline-flex!important;align-items:center!important;justify-content:center!important;height:18px!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;color:inherit!important;font-size:10px!important;letter-spacing:.02em!important;opacity:.82!important;}
+#sf8[data-mode="tasks"] .task-menu-toggle .chev{display:inline-flex!important;align-items:center!important;font-size:12px!important;line-height:1!important;color:inherit!important;opacity:.78!important;transform:translateY(-1px)!important;}
+
+/* meta */
 #sf8[data-mode="tasks"] .task-meta{display:flex!important;align-items:center!important;flex-wrap:wrap!important;gap:6px 8px!important;min-height:20px!important;height:auto!important;margin:0!important;padding:0!important;overflow:visible!important;}
 #sf8[data-mode="tasks"] .tag{height:auto!important;min-height:0!important;line-height:1.2!important;padding:0!important;margin:0!important;border:0!important;border-radius:0!important;background:transparent!important;color:var(--task-text-2)!important;font-size:11px!important;font-weight:400!important;letter-spacing:.02em!important;font-family:system-ui,-apple-system,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif!important;box-shadow:none!important;filter:none!important;text-shadow:none!important;white-space:nowrap!important;opacity:.58!important;}
 #sf8[data-mode="tasks"] .tag.today{color:var(--task-mint)!important;opacity:.58!important;}
-#sf8[data-mode="tasks"] .tag.due,
-#sf8[data-mode="tasks"] .tag.repeat{color:var(--task-text-2)!important;opacity:.46!important;}
+#sf8[data-mode="tasks"] .tag.due,#sf8[data-mode="tasks"] .tag.repeat{color:var(--task-text-2)!important;opacity:.46!important;}
 #sf8[data-mode="tasks"] .tag.warn{color:var(--task-red)!important;opacity:.68!important;}
 #sf8[data-mode="tasks"] .tag.important{display:none!important;}
 #sf8[data-mode="tasks"] .tag.user{display:inline-flex!important;align-items:center!important;height:20px!important;padding:0 8px!important;border-radius:999px!important;border:1px solid var(--task-line)!important;background:transparent!important;color:var(--task-text-2)!important;opacity:.68!important;font-size:10.5px!important;letter-spacing:.04em!important;}
 
-/* Extras toggle: small, readable chevron + count only when useful */
-#sf8[data-mode="tasks"] .task-menu-toggle{order:99!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;width:auto!important;height:20px!important;min-width:18px!important;flex:0 0 auto!important;margin:0!important;padding:0 2px!important;border:0!important;border-radius:0!important;background:transparent!important;color:var(--task-text-3)!important;opacity:.48!important;box-shadow:none!important;filter:none!important;font-family:'Orbitron',monospace!important;font-size:12px!important;font-weight:700!important;line-height:1!important;}
-#sf8[data-mode="tasks"] .task-menu-toggle.has-extra{opacity:.78!important;color:var(--task-text-2)!important;}
-#sf8[data-mode="tasks"] .task-menu-toggle.open{opacity:1!important;color:var(--task-mint)!important;}
-#sf8[data-mode="tasks"] .task-menu-toggle .chev{font-size:14px!important;line-height:1!important;}
-#sf8[data-mode="tasks"] .task-menu-toggle .count{font-size:9px!important;letter-spacing:.02em!important;color:inherit!important;opacity:.78!important;border:1px solid var(--task-line)!important;border-radius:999px!important;padding:1px 5px!important;}
-
-/* Expanded content */
+/* expanded content */
 #sf8[data-mode="tasks"] .task-extra{margin-top:8px!important;padding-top:10px!important;border-top:1px solid var(--task-line)!important;max-height:min(62dvh,520px)!important;overflow-y:auto!important;overflow-x:hidden!important;background:transparent!important;box-shadow:none!important;overscroll-behavior:contain!important;}
 #sf8[data-mode="tasks"] .task-extra-tabs{gap:6px!important;margin-bottom:8px!important;}
 #sf8[data-mode="tasks"] .task-extra-tab{height:28px!important;border-radius:9px!important;border:1px solid var(--task-line)!important;background:transparent!important;color:var(--task-text-2)!important;box-shadow:none!important;font-size:9px!important;letter-spacing:.08em!important;}
 #sf8[data-mode="tasks"] .task-extra-tab.on{border-color:rgba(67,245,194,.46)!important;color:var(--task-mint)!important;background:rgba(67,245,194,.055)!important;}
-#sf8[data-mode="tasks"] .task-extra-tab.has-content:not(.on){border-color:rgba(245,194,67,.28)!important;color:rgba(245,194,67,.74)!important;background:transparent!important;}
 #sf8[data-mode="tasks"] .subtask-list{border-left:1px solid var(--task-line)!important;margin-left:10px!important;padding-left:10px!important;}
 #sf8[data-mode="tasks"] .subtask-row{background:transparent!important;border-color:var(--task-line)!important;box-shadow:none!important;border-radius:10px!important;}
-#sf8[data-mode="tasks"] .subtask-check{width:20px!important;height:20px!important;min-width:20px!important;border-radius:50%!important;}
+#sf8[data-mode="tasks"] .subtask-check{width:20px!important;height:20px!important;border-radius:50%!important;}
 
-/* Header menu: obvious enough, but not button-like */
-.header .menu-brand,
-#sf8[data-mode="tasks"] .menu-brand{width:auto!important;min-width:92px!important;max-width:116px!important;min-height:40px!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;padding:4px 2px!important;margin:0!important;border:0!important;background:transparent!important;border-radius:0!important;box-shadow:none!important;text-align:left!important;}
-.header .menu-brand:active,
-#sf8[data-mode="tasks"] .menu-brand:active{background:rgba(255,255,255,.035)!important;border-radius:8px!important;}
-.header .menu-brand .logo,
-#sf8[data-mode="tasks"] .menu-brand .logo{font-size:14px!important;line-height:1!important;letter-spacing:1.35px!important;white-space:nowrap!important;}
-.header .menu-brand .sub,
-#sf8[data-mode="tasks"] .menu-brand .sub{display:none!important;}
-.header .menu-caret,
-#sf8[data-mode="tasks"] .menu-caret{font-size:10px!important;color:rgba(67,245,194,.72)!important;margin-left:3px!important;}
+/* header menu */
+.header .menu-brand,#sf8[data-mode="tasks"] .menu-brand{width:auto!important;min-width:92px!important;max-width:116px!important;min-height:40px!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;padding:4px 2px!important;margin:0!important;border:0!important;background:transparent!important;border-radius:0!important;box-shadow:none!important;text-align:left!important;}
+.header .menu-brand:active,#sf8[data-mode="tasks"] .menu-brand:active{background:rgba(255,255,255,.035)!important;border-radius:8px!important;}
+.header .menu-brand .logo,#sf8[data-mode="tasks"] .menu-brand .logo{font-size:14px!important;line-height:1!important;letter-spacing:1.35px!important;white-space:nowrap!important;}
+.header .menu-brand .sub,#sf8[data-mode="tasks"] .menu-brand .sub{display:none!important;}
+.header .menu-caret,#sf8[data-mode="tasks"] .menu-caret{font-size:10px!important;color:rgba(67,245,194,.72)!important;margin-left:3px!important;}
 .top-menu{border:1px solid rgba(140,150,200,.22)!important;border-radius:12px!important;background:rgba(7,8,16,.98)!important;box-shadow:0 18px 44px rgba(0,0,0,.52)!important;}
 .top-menu button{height:34px!important;border:0!important;border-radius:8px!important;background:transparent!important;color:rgba(232,238,248,.82)!important;font-size:12px!important;}
 .top-menu button:active{background:rgba(67,245,194,.07)!important;filter:none!important;}
 
-/* Input and bottom tabs */
-#sf8[data-mode="tasks"] #inputBar{height:56px!important;min-height:56px!important;padding:4px 12px!important;gap:8px!important;overflow:hidden!important;background:rgba(5,6,13,.96)!important;border-top:1px solid var(--task-line)!important;}
-#sf8[data-mode="tasks"] #mi{height:48px!important;min-height:48px!important;border-radius:var(--task-radius-input)!important;border:1px solid var(--task-line)!important;background:rgba(12,14,26,.72)!important;color:var(--task-text-1)!important;font-size:16px!important;padding:0 14px!important;box-shadow:none!important;filter:none!important;}
+/* input: unified bar, smaller add button */
+#sf8[data-mode="tasks"] #inputBar{height:54px!important;min-height:54px!important;padding:5px 12px!important;gap:0!important;overflow:hidden!important;background:rgba(5,6,13,.96)!important;border-top:1px solid var(--task-line)!important;position:absolute!important;}
+#sf8[data-mode="tasks"] #mi{width:100%!important;height:44px!important;min-height:44px!important;border-radius:var(--task-radius-input)!important;border:1px solid var(--task-line)!important;background:rgba(12,14,26,.72)!important;color:var(--task-text-1)!important;font-size:16px!important;padding:0 54px 0 14px!important;box-shadow:none!important;filter:none!important;}
 #sf8[data-mode="tasks"] #mi:focus{border-color:var(--task-line-strong)!important;outline:none!important;}
-#sf8[data-mode="tasks"] #miPrompt{height:48px!important;line-height:48px!important;opacity:.26!important;pointer-events:none!important;overflow:hidden!important;}
-#sf8[data-mode="tasks"] #mi:focus~#miPrompt{opacity:0!important;}
-#sf8[data-mode="tasks"] #db{width:48px!important;height:48px!important;min-width:48px!important;border-radius:12px!important;border:1px solid rgba(67,245,194,.56)!important;background:rgba(67,245,194,.08)!important;color:var(--task-mint)!important;box-shadow:none!important;filter:none!important;font-size:20px!important;}
+#sf8[data-mode="tasks"] #miPrompt{left:26px!important;right:70px!important;top:50%!important;transform:translateY(-50%)!important;height:44px!important;line-height:44px!important;opacity:.18!important;pointer-events:none!important;overflow:hidden!important;max-width:none!important;clip-path:inset(0 round var(--task-radius-input))!important;}
+#sf8[data-mode="tasks"] #miPrompt span{line-height:44px!important;color:rgba(190,200,220,.52)!important;}
+#sf8[data-mode="tasks"] #miPrompt::after{opacity:.35!important;filter:blur(1px)!important;}
+#sf8[data-mode="tasks"] #mi:focus~#miPrompt,#sf8[data-mode="tasks"] #mi:not(:placeholder-shown)~#miPrompt{opacity:0!important;}
+#sf8[data-mode="tasks"] #db{position:absolute!important;right:17px!important;top:50%!important;transform:translateY(-50%)!important;width:34px!important;height:34px!important;min-width:34px!important;border-radius:10px!important;border:1px solid rgba(67,245,194,.42)!important;background:rgba(67,245,194,.07)!important;color:var(--task-mint)!important;box-shadow:none!important;filter:none!important;font-size:17px!important;line-height:1!important;padding:0!important;display:flex!important;align-items:center!important;justify-content:center!important;}
+#sf8[data-mode="tasks"] #db.ready{transform:translateY(-50%)!important;box-shadow:none!important;filter:none!important;opacity:1!important;}
+#sf8[data-mode="tasks"] #db:not(.ready){opacity:.42!important;transform:translateY(-50%)!important;}
+
+/* bottom tabs */
 #bottomDock{background:rgba(5,6,13,.96)!important;border-top:1px solid rgba(140,150,200,.13)!important;}
 #dopadoTabBar{height:44px!important;padding:0 10px calc(0px + var(--safe-bottom))!important;gap:0!important;}
 .dopado-tab{position:relative!important;height:44px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;filter:none!important;color:rgba(170,185,210,.32)!important;font-family:'Orbitron',monospace!important;font-size:9px!important;font-weight:800!important;letter-spacing:.12em!important;padding:0 2px!important;}
@@ -1342,15 +1337,10 @@ html,body,#sf8{touch-action:manipulation;overscroll-behavior:none!important;}
 .dopado-tab.on{color:var(--task-mint)!important;border:0!important;background:transparent!important;box-shadow:none!important;}
 .dopado-tab.on::after{background:var(--task-mint)!important;}
 
-/* Holding/preview states must never reveal hidden delete plate */
-#sf8[data-mode="tasks"] .task.longpress,
-#sf8[data-mode="tasks"] .task.long-press,
-#sf8[data-mode="tasks"] .task.is-longpress,
-#sf8[data-mode="tasks"] .task.holding,
-#sf8[data-mode="tasks"] .task-card.longpress,
-#sf8[data-mode="tasks"] .task-card.holding{opacity:1!important;background:transparent!important;}
-#sf8[data-mode="tasks"] .task.longpress .task-card,
-#sf8[data-mode="tasks"] .task.holding .task-card{border-color:var(--task-line-strong)!important;background:var(--task-card-active)!important;}
+/* holding/preview states must never reveal hidden delete plate */
+#sf8[data-mode="tasks"] .task.longpress,#sf8[data-mode="tasks"] .task.long-press,#sf8[data-mode="tasks"] .task.is-longpress,#sf8[data-mode="tasks"] .task.holding,#sf8[data-mode="tasks"] .task-card.longpress,#sf8[data-mode="tasks"] .task-card.holding{opacity:1!important;background:transparent!important;}
+#sf8[data-mode="tasks"] .task.longpress .task-card,#sf8[data-mode="tasks"] .task.holding .task-card{border-color:var(--task-line-strong)!important;background:var(--task-card-active)!important;}
+#sf8[data-mode="game"] #inputBar,#sf8[data-mode="habits"] #inputBar,#sf8[data-mode="cal"] #inputBar{display:none!important;visibility:hidden!important;pointer-events:none!important;height:0!important;padding:0!important;border:0!important;}
 
 </style>
 </head>
@@ -1370,7 +1360,7 @@ html,body,#sf8{touch-action:manipulation;overscroll-behavior:none!important;}
       <button type="button" onclick="chooseTopMenu('profile')">プロフィール</button>
     </div>
     <div class="meter charge-frame-shell charge-off top-charge" id="chargeMeter" aria-label="チャージ抽選窓">
-      <iframe id="chargeFrame" src="./charge.html?v=30" title="DOPADO CHARGE"></iframe>
+      <iframe id="chargeFrame" src="./charge.html?v=31" title="DOPADO CHARGE"></iframe>
     </div>
     <div class="identity" id="identity" onclick="openProfile()">
       <div class="id-text"><div class="id-title" id="hdTitle"></div><div class="id-name" id="hdName"></div><div class="id-lv"><span>Lv.<b id="hdLv">0</b></span><span class="free" id="hdFree">+0日</span></div></div>
@@ -1454,7 +1444,7 @@ html,body,#sf8{touch-action:manipulation;overscroll-behavior:none!important;}
   </div>
 
   <div id="bonusFrameOverlay">
-    <iframe id="bonusFrame" src="./bonus.html?v=30" title="DOPADO BONUS"></iframe>
+    <iframe id="bonusFrame" src="./bonus.html?v=31" title="DOPADO BONUS"></iframe>
   </div>
   <div class="overlay" id="onboardOverlay" style="display:none!important">
     <div class="popup">
@@ -1490,7 +1480,7 @@ html,body,#sf8{touch-action:manipulation;overscroll-behavior:none!important;}
 
 <script>
 // DOPADO v30 inline app script
-const APP_VERSION=30;
+const APP_VERSION=31;
 const STORAGE_KEY='dopaon_state_v6';
 const BACKUP_KEY='dopaon_state_v6_backup';
 const LEGACY_KEYS=['dopaon_state_v5','dopaon_state_v4','dopaon_state_v3','dopaon_state_v2','dopaon_state_v1'];
@@ -2429,8 +2419,6 @@ function mkC(task){
     b.innerHTML=iC?'<span style="font-family:\'Orbitron\',monospace;font-size:7px;font-weight:700;">確定</span>':'<span class="dpa-label">dpa</span>';
     w.appendChild(b);if(iC){const h=document.createElement('span');h.className='push';h.textContent='PUSH';w.appendChild(h)}
   }else{const ic=document.createElement('span');ic.className='done-mark';ic.textContent='✓';w.appendChild(ic)}
-  main.appendChild(top);
-  const meta=document.createElement('div');meta.className='task-meta';
   const mb=document.createElement('button');mb.type='button';
   const exForToggle=taskExtras(task);
   const subTotal=exForToggle.subtasks.length;
@@ -2438,8 +2426,10 @@ function mkC(task){
   const hasMemo=String(exForToggle.memo||'').trim().length>0;
   const extraCount=subTotal?`${subDone}/${subTotal}`:(hasMemo?'memo':'');
   mb.className='task-menu-toggle'+(taskHasExtras(task)?' has-extra':'')+(openExtraTaskId===task.id?' open':'');
-  mb.innerHTML='<span class="chev">'+(openExtraTaskId===task.id?'⌃':'⌄')+'</span>'+(extraCount?'<span class="count">'+escapeHtml(extraCount)+'</span>':'');
-  mb.setAttribute('aria-label','子タスクとメモ');mb.onclick=e=>{e.stopPropagation();toggleTaskExtras(task.id)};meta.appendChild(mb);
+  mb.innerHTML=(extraCount?'<span class="count">'+escapeHtml(extraCount)+'</span>':'')+'<span class="chev">'+(openExtraTaskId===task.id?'⌄':'^')+'</span>';
+  mb.setAttribute('aria-label','子タスクとメモ');mb.onclick=e=>{e.stopPropagation();toggleTaskExtras(task.id)};top.appendChild(mb);
+  main.appendChild(top);
+  const meta=document.createElement('div');meta.className='task-meta';
   taskMeta(task).forEach(m=>meta.appendChild(tagEl(m.cls,m.txt)));
   if(important)meta.appendChild(tagEl('important','重要'));
   (task.tags||[]).forEach(tid=>{const tg=tagById(tid);if(!tg)return;const s=tagEl('user',tg.name);s.style.color=tg.color;s.style.borderColor=tg.color+'66';meta.appendChild(s)});
@@ -2999,7 +2989,7 @@ function renderGame(a){
   try{localStorage.setItem('DOPADO_GAME_CONTEXT',JSON.stringify(ctx));}catch(e){}
   const wrap=document.createElement('div');
   wrap.className='game-wrap v27-native-game-wrap';
-  wrap.innerHTML='<iframe id="dopadoV27GameFrame" class="dopado-v27-game-frame" src="./game.html?v=30" title="DOPADO GAME"></iframe>';
+  wrap.innerHTML='<iframe id="dopadoV27GameFrame" class="dopado-v27-game-frame" src="./game.html?v=31" title="DOPADO GAME"></iframe>';
   a.appendChild(wrap);
 }
 
