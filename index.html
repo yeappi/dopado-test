@@ -1528,6 +1528,45 @@ html,body,#sf8{background:var(--bg)!important;color:var(--text-1)!important;}
 #sf8[data-mode="tasks"] .menu-brand .sub,.header .menu-brand .sub{display:block!important;font-family:'Orbitron',monospace!important;font-size:8px!important;letter-spacing:1.8px!important;color:rgba(67,245,194,.68)!important;line-height:1!important;}
 #sf8[data-mode="tasks"] .top-menu,.top-menu{border-color:rgba(140,150,200,.22)!important;background:rgba(7,8,16,.98)!important;box-shadow:0 18px 48px rgba(0,0,0,.58)!important;}
 
+
+/* ===== v25: force actual left dpa layout ===== */
+#sf8[data-mode="tasks"] .task-card{
+  display:grid!important;
+  grid-template-columns:44px minmax(0,1fr)!important;
+  grid-template-areas:"dpa main"!important;
+  column-gap:10px!important;
+  align-items:flex-start!important;
+}
+#sf8[data-mode="tasks"] .task-action{
+  grid-area:dpa!important;
+  order:initial!important;
+  width:44px!important;
+  min-width:44px!important;
+  max-width:44px!important;
+  height:44px!important;
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  padding:0!important;
+  margin:0!important;
+  position:relative!important;
+  left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
+  transform:none!important;
+}
+#sf8[data-mode="tasks"] .task-main{
+  grid-area:main!important;
+  min-width:0!important;
+  width:100%!important;
+}
+#sf8[data-mode="tasks"] .task-btn,#sf8[data-mode="tasks"] .done-mark{
+  width:34px!important;height:34px!important;min-width:34px!important;
+  border-radius:9px!important;
+}
+#sf8[data-mode="tasks"] .task.done .task-action{opacity:.72!important;}
+#sf8[data-mode="tasks"] .task.done .done-mark{display:flex!important;align-items:center!important;justify-content:center!important;}
+#sf8[data-mode="tasks"] .task-card>.task-main:first-child{grid-area:main!important;}
+#sf8[data-mode="tasks"] .task-card>.task-action:last-child{grid-area:dpa!important;}
+
 </style>
 </head>
 <body>
@@ -1546,7 +1585,7 @@ html,body,#sf8{background:var(--bg)!important;color:var(--text-1)!important;}
       <button type="button" onclick="chooseTopMenu('profile')">プロフィール</button>
     </div>
     <div class="meter charge-frame-shell charge-off top-charge" id="chargeMeter" aria-label="チャージ抽選窓">
-      <iframe id="chargeFrame" src="./charge.html?v=24" title="DOPADO CHARGE"></iframe>
+      <iframe id="chargeFrame" src="./charge.html?v=25" title="DOPADO CHARGE"></iframe>
     </div>
     <div class="identity" id="identity" onclick="openProfile()">
       <div class="id-text"><div class="id-title" id="hdTitle"></div><div class="id-name" id="hdName"></div><div class="id-lv"><span>Lv.<b id="hdLv">0</b></span><span class="free" id="hdFree">+0日</span></div></div>
@@ -1630,7 +1669,7 @@ html,body,#sf8{background:var(--bg)!important;color:var(--text-1)!important;}
   </div>
 
   <div id="bonusFrameOverlay">
-    <iframe id="bonusFrame" src="./bonus.html?v=24" title="DOPADO BONUS"></iframe>
+    <iframe id="bonusFrame" src="./bonus.html?v=25" title="DOPADO BONUS"></iframe>
   </div>
   <div class="overlay" id="onboardOverlay" style="display:none!important">
     <div class="popup">
@@ -1665,7 +1704,7 @@ html,body,#sf8{background:var(--bg)!important;color:var(--text-1)!important;}
 </div>
 
 <script>
-const APP_VERSION=24;
+const APP_VERSION=25;
 const STORAGE_KEY='dopaon_state_v6';
 const BACKUP_KEY='dopaon_state_v6_backup';
 const LEGACY_KEYS=['dopaon_state_v5','dopaon_state_v4','dopaon_state_v3','dopaon_state_v2','dopaon_state_v1'];
@@ -3166,7 +3205,7 @@ function renderGame(a){
   try{localStorage.setItem('DOPADO_GAME_CONTEXT',JSON.stringify(ctx));}catch(e){}
   const wrap=document.createElement('div');
   wrap.className='game-wrap v27-native-game-wrap';
-  wrap.innerHTML='<iframe id="dopadoV27GameFrame" class="dopado-v27-game-frame" src="./game.html?v=27-3-roadfix-v24" title="DOPADO GAME"></iframe>';
+  wrap.innerHTML='<iframe id="dopadoV27GameFrame" class="dopado-v27-game-frame" src="./game.html?v=27-3-roadfix-v25-leftdpa" title="DOPADO GAME"></iframe>';
   a.appendChild(wrap);
 }
 
