@@ -1,5 +1,5 @@
 // DOPADO v26 externalized app script
-const APP_VERSION=26;
+const APP_VERSION=27;
 const STORAGE_KEY='dopaon_state_v6';
 const BACKUP_KEY='dopaon_state_v6_backup';
 const LEGACY_KEYS=['dopaon_state_v5','dopaon_state_v4','dopaon_state_v3','dopaon_state_v2','dopaon_state_v1'];
@@ -929,6 +929,10 @@ function mkC(task){
   const main=document.createElement('div');main.className='task-main';
   const top=document.createElement('div');top.className='task-top-row';
   const nm=document.createElement('div');nm.className='task-name';nm.textContent=task.name;top.appendChild(nm);
+  const exForToggle=taskExtras(task),subTotal=(exForToggle.subtasks||[]).length,subDone=(exForToggle.subtasks||[]).filter(st=>st&&st.done).length;
+  const mb=document.createElement('button');mb.type='button';mb.className='task-menu-toggle'+(subTotal>0||String(exForToggle.memo||'').trim()?' has-extra':'')+(openExtraTaskId===task.id?' open':'');
+  mb.innerHTML='<span class="chev">'+(openExtraTaskId===task.id?'⌃':'⌄')+'</span>'+(subTotal>0?'<span class="count">'+subDone+'/'+subTotal+'</span>':'');
+  mb.setAttribute('aria-label','追加タスクとメモ');mb.onclick=e=>{e.stopPropagation();toggleTaskExtras(task.id)};top.appendChild(mb);
   const w=document.createElement('div');w.className='task-action';
   if(!iD){
     const b=document.createElement('button');
@@ -940,7 +944,6 @@ function mkC(task){
   }else{const ic=document.createElement('span');ic.className='done-mark';ic.textContent='✓';w.appendChild(ic)}
   main.appendChild(top);
   const meta=document.createElement('div');meta.className='task-meta';
-  const mb=document.createElement('button');mb.type='button';mb.className='task-menu-toggle'+(taskHasExtras(task)?' has-extra':'')+(openExtraTaskId===task.id?' open':'');mb.textContent='☰';mb.setAttribute('aria-label','追加タスクとメモ');mb.onclick=e=>{e.stopPropagation();toggleTaskExtras(task.id)};meta.appendChild(mb);
   taskMeta(task).forEach(m=>meta.appendChild(tagEl(m.cls,m.txt)));
   if(important)meta.appendChild(tagEl('important','重要'));
   (task.tags||[]).forEach(tid=>{const tg=tagById(tid);if(!tg)return;const s=tagEl('user',tg.name);s.style.color=tg.color;s.style.borderColor=tg.color+'66';meta.appendChild(s)});

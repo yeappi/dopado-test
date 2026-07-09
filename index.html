@@ -1567,6 +1567,228 @@ html,body,#sf8{background:var(--bg)!important;color:var(--text-1)!important;}
 #sf8[data-mode="tasks"] .task-card>.task-main:first-child{grid-area:main!important;}
 #sf8[data-mode="tasks"] .task-card>.task-action:last-child{grid-area:dpa!important;}
 
+
+
+/* ===== v27: de-imo task screen sizing / tighter controls / underline tabs ===== */
+#sf8[data-mode="tasks"] .task{
+  margin-bottom:8px!important;
+}
+#sf8[data-mode="tasks"] .task-card{
+  grid-template-columns:44px minmax(0,1fr)!important;
+  column-gap:10px!important;
+  min-height:0!important;
+  padding:16px 14px!important;
+  border-radius:14px!important;
+  align-items:flex-start!important;
+}
+#sf8[data-mode="tasks"] .task-action{
+  width:44px!important;
+  min-width:44px!important;
+  max-width:44px!important;
+  height:44px!important;
+  align-items:flex-start!important;
+  justify-content:flex-start!important;
+}
+#sf8[data-mode="tasks"] .task-btn,
+#sf8[data-mode="tasks"] .done-mark{
+  width:42px!important;
+  height:42px!important;
+  min-width:42px!important;
+  border-radius:10px!important;
+  border-width:1px!important;
+  box-shadow:none!important;
+  filter:none!important;
+  animation:none!important;
+  background:rgba(255,255,255,.014)!important;
+}
+#sf8[data-mode="tasks"] .task-btn .dpa-label{
+  font-size:9px!important;
+  letter-spacing:-.35px!important;
+  text-shadow:none!important;
+}
+#sf8[data-mode="tasks"] .task.today-task:not(.important-task) .task-btn,
+#sf8[data-mode="tasks"] .task.today-task:not(.important-task) .task-btn.dpa-ready{
+  border-color:rgba(67,245,194,.72)!important;
+  color:var(--mint)!important;
+  background:rgba(67,245,194,.055)!important;
+}
+#sf8[data-mode="tasks"] .task.important-task:not(.done) .task-btn,
+#sf8[data-mode="tasks"] .task.important-task:not(.done) .task-btn.dpa-important{
+  border-color:rgba(240,80,110,.74)!important;
+  color:var(--red)!important;
+  background:rgba(240,80,110,.055)!important;
+}
+#sf8[data-mode="tasks"] .task.done .done-mark{
+  color:var(--mint)!important;
+  border-color:rgba(67,245,194,.72)!important;
+  background:rgba(67,245,194,.08)!important;
+  font-size:20px!important;
+}
+#sf8[data-mode="tasks"] .task.important-task:not(.done) .task-card,
+#sf8[data-mode="tasks"] .task.important-task.done .task-card,
+#sf8[data-mode="tasks"] .task.today-task .task-card{
+  border-left:1px solid var(--line)!important;
+  border-color:var(--line)!important;
+  background:var(--card)!important;
+}
+#sf8[data-mode="tasks"] .task-main{
+  gap:6px!important;
+}
+#sf8[data-mode="tasks"] .task-top-row{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  align-items:start!important;
+  gap:8px!important;
+}
+#sf8[data-mode="tasks"] .task-name{
+  font-size:15px!important;
+  line-height:1.38!important;
+  font-weight:500!important;
+  padding-top:1px!important;
+}
+#sf8[data-mode="tasks"] .task-meta{
+  min-height:22px!important;
+  height:auto!important;
+  gap:8px!important;
+  opacity:.78!important;
+}
+#sf8[data-mode="tasks"] .tag.date,
+#sf8[data-mode="tasks"] .tag.today,
+#sf8[data-mode="tasks"] .tag.repeat{
+  border-color:transparent!important;
+  background:transparent!important;
+  padding:0!important;
+  height:auto!important;
+  min-height:0!important;
+  color:rgba(190,200,220,.40)!important;
+  font-size:11px!important;
+  letter-spacing:.04em!important;
+}
+#sf8[data-mode="tasks"] .tag.user,
+#sf8[data-mode="tasks"] .tag.important{
+  min-height:22px!important;
+  height:22px!important;
+  padding:0 10px!important;
+  border-radius:999px!important;
+  font-size:11px!important;
+  letter-spacing:.06em!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+#sf8[data-mode="tasks"] .task-menu-toggle{
+  opacity:1!important;
+  pointer-events:auto!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:4px!important;
+  width:auto!important;
+  min-width:24px!important;
+  height:22px!important;
+  flex:0 0 auto!important;
+  padding:0 5px!important;
+  border:0!important;
+  border-radius:8px!important;
+  background:transparent!important;
+  color:rgba(190,200,220,.38)!important;
+  font-size:13px!important;
+  line-height:1!important;
+  box-shadow:none!important;
+}
+#sf8[data-mode="tasks"] .task-menu-toggle .count{
+  min-width:24px!important;
+  height:18px!important;
+  padding:0 5px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border:1px solid var(--line)!important;
+  border-radius:999px!important;
+  font-family:'Orbitron',monospace!important;
+  font-size:9px!important;
+  letter-spacing:.04em!important;
+  color:rgba(190,200,220,.48)!important;
+}
+#sf8[data-mode="tasks"] .task-menu-toggle.open{
+  color:var(--mint)!important;
+}
+#sf8[data-mode="tasks"] .task-extra{
+  margin-top:6px!important;
+}
+#sf8[data-mode="tasks"] .subtask-list{
+  margin-left:4px!important;
+  padding-left:12px!important;
+  border-left:1px solid rgba(140,150,200,.16)!important;
+}
+#sf8[data-mode="tasks"] .subtask-row{
+  min-height:32px!important;
+  padding:6px 0!important;
+}
+#sf8[data-mode="tasks"] .subtask-check{
+  width:20px!important;
+  height:20px!important;
+  min-width:20px!important;
+  border-radius:50%!important;
+  font-size:12px!important;
+}
+#sf8[data-mode="tasks"] #inputBar{
+  height:56px!important;
+  padding:4px 12px!important;
+  gap:8px!important;
+}
+#sf8[data-mode="tasks"] #mi{
+  height:48px!important;
+  min-height:48px!important;
+  border-radius:12px!important;
+  padding:0 14px!important;
+  font-size:16px!important;
+}
+#sf8[data-mode="tasks"] #miPrompt{
+  top:4px!important;
+  left:12px!important;
+  right:68px!important;
+  height:48px!important;
+  border-radius:12px!important;
+  display:flex!important;
+  align-items:center!important;
+  padding-left:14px!important;
+}
+#sf8[data-mode="tasks"] #db{
+  width:48px!important;
+  height:48px!important;
+  min-width:48px!important;
+  flex:0 0 48px!important;
+  border-radius:12px!important;
+  font-size:20px!important;
+}
+#dopadoTabBar{
+  padding:4px 16px calc(5px + var(--safe-bottom))!important;
+  gap:16px!important;
+}
+.dopado-tab{
+  position:relative!important;
+  height:44px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:var(--text-3)!important;
+  padding:0 2px!important;
+}
+.dopado-tab::after{
+  content:'';
+  position:absolute;
+  left:8px;right:8px;bottom:5px;
+  height:2px;
+  border-radius:999px;
+  background:transparent;
+}
+.dopado-tab.on{
+  border:0!important;
+  background:transparent!important;
+  color:var(--mint)!important;
+}
+.dopado-tab.on::after{background:var(--mint)!important;}
+
 </style>
 </head>
 <body>
@@ -1585,7 +1807,7 @@ html,body,#sf8{background:var(--bg)!important;color:var(--text-1)!important;}
       <button type="button" onclick="chooseTopMenu('profile')">プロフィール</button>
     </div>
     <div class="meter charge-frame-shell charge-off top-charge" id="chargeMeter" aria-label="チャージ抽選窓">
-      <iframe id="chargeFrame" src="./charge.html?v=26" title="DOPADO CHARGE"></iframe>
+      <iframe id="chargeFrame" src="./charge.html?v=27" title="DOPADO CHARGE"></iframe>
     </div>
     <div class="identity" id="identity" onclick="openProfile()">
       <div class="id-text"><div class="id-title" id="hdTitle"></div><div class="id-name" id="hdName"></div><div class="id-lv"><span>Lv.<b id="hdLv">0</b></span><span class="free" id="hdFree">+0日</span></div></div>
@@ -1669,7 +1891,7 @@ html,body,#sf8{background:var(--bg)!important;color:var(--text-1)!important;}
   </div>
 
   <div id="bonusFrameOverlay">
-    <iframe id="bonusFrame" src="./bonus.html?v=26" title="DOPADO BONUS"></iframe>
+    <iframe id="bonusFrame" src="./bonus.html?v=27" title="DOPADO BONUS"></iframe>
   </div>
   <div class="overlay" id="onboardOverlay" style="display:none!important">
     <div class="popup">
@@ -1703,6 +1925,6 @@ html,body,#sf8{background:var(--bg)!important;color:var(--text-1)!important;}
 
 </div>
 
-<script src="./index.js?v=26"></script>
+<script src="./index.js?v=27"></script>
 </body>
 </html>
