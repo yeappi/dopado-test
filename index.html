@@ -1569,225 +1569,279 @@ html,body,#sf8{background:var(--bg)!important;color:var(--text-1)!important;}
 
 
 
-/* ===== v27: de-imo task screen sizing / tighter controls / underline tabs ===== */
+/* ===== v28 final TASK polish / conservative CSS source of truth =====
+   基準: v26 left-dpa構成。v27の過剰なサイズ・角丸・光り方を避ける。
+   目的: 既存機能を変えず、TASK画面の安っぽさだけを微調整で潰す。 */
+#sf8[data-mode="tasks"]{
+  --v28-bg:#05060d;
+  --v28-card:rgba(12,14,26,.62);
+  --v28-card-strong:rgba(15,18,32,.82);
+  --v28-line:rgba(140,150,200,.15);
+  --v28-line-strong:rgba(140,150,200,.28);
+  --v28-mint:#43f5c2;
+  --v28-gold:#f5c243;
+  --v28-red:#f0506e;
+  --v28-text-1:rgba(232,238,248,.92);
+  --v28-text-2:rgba(190,200,220,.52);
+  --v28-text-3:rgba(170,185,210,.30);
+  --v28-r-card:14px;
+  --v28-r-control:10px;
+  --v28-r-input:12px;
+}
+
+/* TASK canvas: 余白を4pxグリッド寄りに固定 */
+#sf8[data-mode="tasks"] #ta{
+  padding:12px 16px 128px!important;
+  background:radial-gradient(circle at 50% -10%,rgba(67,245,194,.035),transparent 34%),var(--v28-bg)!important;
+}
 #sf8[data-mode="tasks"] .task{
-  margin-bottom:8px!important;
+  margin:0 0 8px!important;
+  border-radius:var(--v28-r-card)!important;
+  overflow:hidden!important;
+  background:transparent!important;
+  box-shadow:none!important;
 }
+
+/* Swipe delete: 通常時は絶対に透けない。開いた時だけ背面赤板。 */
+#sf8[data-mode="tasks"] .task-swipe-bg{display:none!important;opacity:0!important;}
+#sf8[data-mode="tasks"] .task-tools-panel{
+  position:absolute!important;
+  top:0!important;right:0!important;bottom:0!important;
+  width:112px!important;
+  border-radius:0 var(--v28-r-card) var(--v28-r-card) 0!important;
+  background:#2a0710!important;
+  opacity:0!important;
+  pointer-events:none!important;
+  z-index:1!important;
+  overflow:hidden!important;
+}
+#sf8[data-mode="tasks"] .task.open-tools .task-tools-panel{opacity:1!important;pointer-events:auto!important;}
+#sf8[data-mode="tasks"] .task-delete-zone{
+  width:100%!important;height:100%!important;
+  border:0!important;border-radius:0 var(--v28-r-card) var(--v28-r-card) 0!important;
+  background:#2a0710!important;color:rgba(255,245,248,.86)!important;
+  display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;
+  font-size:11px!important;font-weight:800!important;
+  box-shadow:none!important;filter:none!important;
+}
+#sf8[data-mode="tasks"] .task-delete-zone .x{font-size:19px!important;line-height:1!important;font-weight:700!important;}
+#sf8[data-mode="tasks"] .task.open-tools .task-card{transform:translateX(-112px)!important;}
+#sf8[data-mode="tasks"] .task.swiping .task-card{transition:none!important;}
+
+/* Card layout: 左dpa / 右本文。可変高さ。中身を殺さない。 */
 #sf8[data-mode="tasks"] .task-card{
+  position:relative!important;z-index:2!important;
+  display:grid!important;
   grid-template-columns:44px minmax(0,1fr)!important;
-  column-gap:10px!important;
-  min-height:0!important;
-  padding:16px 14px!important;
-  border-radius:14px!important;
-  align-items:flex-start!important;
+  column-gap:8px!important;
+  align-items:start!important;
+  min-height:58px!important;
+  max-height:none!important;
+  height:auto!important;
+  padding:12px 12px!important;
+  border-radius:var(--v28-r-card)!important;
+  border:1px solid var(--v28-line)!important;
+  background:var(--v28-card)!important;
+  box-shadow:none!important;filter:none!important;backdrop-filter:none!important;
+  overflow:visible!important;
+  opacity:1!important;
+  transition:transform .16s ease,border-color .16s ease,background .16s ease,opacity .18s ease!important;
 }
+#sf8[data-mode="tasks"] .task-card:active,
+#sf8[data-mode="tasks"] .task-card:focus-within{
+  border-color:var(--v28-line-strong)!important;
+  background:var(--v28-card-strong)!important;
+}
+#sf8[data-mode="tasks"] .task.important-task:not(.done) .task-card,
+#sf8[data-mode="tasks"] .task.today-task .task-card{
+  border-left:1px solid var(--v28-line)!important;
+  border-color:var(--v28-line)!important;
+  background:var(--v28-card)!important;
+  box-shadow:none!important;
+}
+#sf8[data-mode="tasks"] .task.done .task-card{
+  opacity:1!important;
+  background:rgba(8,10,18,.58)!important;
+  border-color:rgba(140,150,200,.10)!important;
+}
+#sf8[data-mode="tasks"] .task.done .task-main{opacity:.56!important;}
+
+/* dpa completion button: 押せる領域44、中身は小さく。 */
 #sf8[data-mode="tasks"] .task-action{
-  width:44px!important;
-  min-width:44px!important;
-  max-width:44px!important;
-  height:44px!important;
-  align-items:flex-start!important;
-  justify-content:flex-start!important;
+  grid-column:1!important;grid-row:1!important;
+  width:44px!important;height:44px!important;min-width:44px!important;
+  display:flex!important;align-items:flex-start!important;justify-content:center!important;
+  padding:2px 0 0!important;margin:0!important;gap:0!important;align-self:start!important;
+  opacity:1!important;
 }
 #sf8[data-mode="tasks"] .task-btn,
 #sf8[data-mode="tasks"] .done-mark{
-  width:42px!important;
-  height:42px!important;
-  min-width:42px!important;
-  border-radius:10px!important;
-  border-width:1px!important;
-  box-shadow:none!important;
-  filter:none!important;
-  animation:none!important;
-  background:rgba(255,255,255,.014)!important;
+  width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;
+  border-radius:8px!important;
+  border:1px solid var(--v28-line-strong)!important;
+  background:transparent!important;color:var(--v28-text-2)!important;
+  box-shadow:none!important;filter:none!important;animation:none!important;text-shadow:none!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  padding:0!important;margin:0!important;
 }
+#sf8[data-mode="tasks"] .task-btn::after{display:none!important;content:none!important;}
 #sf8[data-mode="tasks"] .task-btn .dpa-label{
-  font-size:9px!important;
-  letter-spacing:-.35px!important;
-  text-shadow:none!important;
+  font-family:'Orbitron',monospace!important;
+  font-size:9px!important;font-weight:800!important;letter-spacing:.02em!important;line-height:1!important;
+  color:currentColor!important;text-shadow:none!important;text-transform:lowercase!important;
 }
-#sf8[data-mode="tasks"] .task.today-task:not(.important-task) .task-btn,
 #sf8[data-mode="tasks"] .task.today-task:not(.important-task) .task-btn.dpa-ready{
-  border-color:rgba(67,245,194,.72)!important;
-  color:var(--mint)!important;
-  background:rgba(67,245,194,.055)!important;
+  border-color:rgba(67,245,194,.42)!important;color:var(--v28-mint)!important;background:rgba(67,245,194,.055)!important;
 }
 #sf8[data-mode="tasks"] .task.important-task:not(.done) .task-btn,
 #sf8[data-mode="tasks"] .task.important-task:not(.done) .task-btn.dpa-important{
-  border-color:rgba(240,80,110,.74)!important;
-  color:var(--red)!important;
-  background:rgba(240,80,110,.055)!important;
+  border-color:rgba(240,80,110,.56)!important;color:var(--v28-red)!important;background:rgba(240,80,110,.055)!important;
 }
-#sf8[data-mode="tasks"] .task.done .done-mark{
-  color:var(--mint)!important;
-  border-color:rgba(67,245,194,.72)!important;
-  background:rgba(67,245,194,.08)!important;
-  font-size:20px!important;
+#sf8[data-mode="tasks"] .done-mark{
+  color:var(--v28-mint)!important;border-color:rgba(67,245,194,.54)!important;background:rgba(67,245,194,.08)!important;
+  font-size:17px!important;font-weight:800!important;
 }
-#sf8[data-mode="tasks"] .task.important-task:not(.done) .task-card,
-#sf8[data-mode="tasks"] .task.important-task.done .task-card,
-#sf8[data-mode="tasks"] .task.today-task .task-card{
-  border-left:1px solid var(--line)!important;
-  border-color:var(--line)!important;
-  background:var(--card)!important;
-}
+#sf8[data-mode="tasks"] .push{display:none!important;}
+
+/* Main content hierarchy */
 #sf8[data-mode="tasks"] .task-main{
-  gap:6px!important;
+  grid-column:2!important;grid-row:1!important;
+  min-width:0!important;width:100%!important;
+  display:flex!important;flex-direction:column!important;gap:6px!important;
+  padding:0!important;margin:0!important;overflow:visible!important;
 }
 #sf8[data-mode="tasks"] .task-top-row{
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr) auto!important;
-  align-items:start!important;
-  gap:8px!important;
+  display:flex!important;align-items:flex-start!important;justify-content:space-between!important;gap:8px!important;
+  width:100%!important;min-height:20px!important;margin:0!important;padding:0!important;
 }
 #sf8[data-mode="tasks"] .task-name{
-  font-size:15px!important;
-  line-height:1.38!important;
-  font-weight:500!important;
-  padding-top:1px!important;
+  flex:1 1 auto!important;min-width:0!important;
+  font-size:15px!important;font-weight:560!important;line-height:1.35!important;
+  color:var(--v28-text-1)!important;
+  white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  padding:0!important;margin:0!important;word-break:normal!important;
 }
+#sf8[data-mode="tasks"] .task.done .task-name{color:var(--v28-text-2)!important;text-decoration:none!important;}
+
+/* Meta: 日付/今日/リピートはチップ感を落とす。ユーザータグだけ薄いチップ。 */
 #sf8[data-mode="tasks"] .task-meta{
-  min-height:22px!important;
-  height:auto!important;
-  gap:8px!important;
-  opacity:.78!important;
+  min-height:20px!important;height:auto!important;
+  display:flex!important;align-items:center!important;flex-wrap:wrap!important;
+  gap:6px 8px!important;margin:0!important;padding:0!important;overflow:visible!important;
 }
-#sf8[data-mode="tasks"] .tag.date,
-#sf8[data-mode="tasks"] .tag.today,
-#sf8[data-mode="tasks"] .tag.repeat{
-  border-color:transparent!important;
-  background:transparent!important;
-  padding:0!important;
-  height:auto!important;
-  min-height:0!important;
-  color:rgba(190,200,220,.40)!important;
-  font-size:11px!important;
-  letter-spacing:.04em!important;
+#sf8[data-mode="tasks"] .tag{
+  height:auto!important;min-height:0!important;line-height:1.2!important;
+  padding:0!important;margin:0!important;border:0!important;border-radius:0!important;background:transparent!important;
+  color:var(--v28-text-2)!important;font-size:11px!important;font-weight:400!important;letter-spacing:.02em!important;
+  font-family:system-ui,-apple-system,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif!important;
+  box-shadow:none!important;filter:none!important;text-shadow:none!important;white-space:nowrap!important;opacity:.62!important;
 }
-#sf8[data-mode="tasks"] .tag.user,
-#sf8[data-mode="tasks"] .tag.important{
-  min-height:22px!important;
-  height:22px!important;
-  padding:0 10px!important;
-  border-radius:999px!important;
-  font-size:11px!important;
-  letter-spacing:.06em!important;
-  background:transparent!important;
-  box-shadow:none!important;
+#sf8[data-mode="tasks"] .tag.today{color:var(--v28-mint)!important;opacity:.58!important;}
+#sf8[data-mode="tasks"] .tag.due,
+#sf8[data-mode="tasks"] .tag.repeat{color:var(--v28-text-2)!important;opacity:.46!important;}
+#sf8[data-mode="tasks"] .tag.warn{color:var(--v28-red)!important;opacity:.68!important;}
+#sf8[data-mode="tasks"] .tag.important{display:none!important;}
+#sf8[data-mode="tasks"] .tag.user{
+  display:inline-flex!important;align-items:center!important;height:20px!important;
+  padding:0 8px!important;border-radius:999px!important;
+  border:1px solid var(--v28-line)!important;background:transparent!important;
+  color:var(--v28-text-2)!important;opacity:.68!important;font-size:10.5px!important;letter-spacing:.04em!important;
 }
+
+/* Extras toggle: 常時でかいボタン化しない。chevron + 必要時だけ小カウント */
 #sf8[data-mode="tasks"] .task-menu-toggle{
-  opacity:1!important;
-  pointer-events:auto!important;
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  gap:4px!important;
-  width:auto!important;
-  min-width:24px!important;
-  height:22px!important;
-  flex:0 0 auto!important;
-  padding:0 5px!important;
-  border:0!important;
-  border-radius:8px!important;
-  background:transparent!important;
-  color:rgba(190,200,220,.38)!important;
-  font-size:13px!important;
-  line-height:1!important;
-  box-shadow:none!important;
+  order:99!important;
+  display:inline-flex!important;align-items:center!important;gap:4px!important;
+  width:auto!important;height:20px!important;min-width:18px!important;flex:0 0 auto!important;
+  margin:0!important;padding:0 2px!important;
+  border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;filter:none!important;
+  color:var(--v28-text-3)!important;opacity:.48!important;
+  font-family:'Orbitron',monospace!important;font-size:12px!important;font-weight:700!important;line-height:1!important;
 }
+#sf8[data-mode="tasks"] .task-menu-toggle.has-extra{opacity:.86!important;color:var(--v28-text-2)!important;}
+#sf8[data-mode="tasks"] .task-menu-toggle.open{opacity:1!important;color:var(--v28-mint)!important;}
+#sf8[data-mode="tasks"] .task-menu-toggle .chev{font-size:14px!important;line-height:1!important;}
 #sf8[data-mode="tasks"] .task-menu-toggle .count{
-  min-width:24px!important;
-  height:18px!important;
-  padding:0 5px!important;
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  border:1px solid var(--line)!important;
-  border-radius:999px!important;
-  font-family:'Orbitron',monospace!important;
-  font-size:9px!important;
-  letter-spacing:.04em!important;
-  color:rgba(190,200,220,.48)!important;
+  font-size:9px!important;letter-spacing:.02em!important;color:inherit!important;opacity:.78!important;
+  border:1px solid var(--v28-line)!important;border-radius:999px!important;padding:1px 5px!important;
 }
-#sf8[data-mode="tasks"] .task-menu-toggle.open{
-  color:var(--mint)!important;
-}
+
+/* Expanded content: 親カード内で自然に伸びる。グローなし。 */
 #sf8[data-mode="tasks"] .task-extra{
-  margin-top:6px!important;
+  margin-top:8px!important;padding-top:10px!important;border-top:1px solid var(--v28-line)!important;
+  max-height:min(62dvh,520px)!important;overflow-y:auto!important;overflow-x:hidden!important;
+  background:transparent!important;box-shadow:none!important;overscroll-behavior:contain!important;
 }
-#sf8[data-mode="tasks"] .subtask-list{
-  margin-left:4px!important;
-  padding-left:12px!important;
-  border-left:1px solid rgba(140,150,200,.16)!important;
+#sf8[data-mode="tasks"] .task-extra-tabs{gap:6px!important;margin-bottom:8px!important;}
+#sf8[data-mode="tasks"] .task-extra-tab{
+  height:28px!important;border-radius:9px!important;border:1px solid var(--v28-line)!important;background:transparent!important;color:var(--v28-text-2)!important;
+  box-shadow:none!important;font-size:9px!important;letter-spacing:.08em!important;
 }
-#sf8[data-mode="tasks"] .subtask-row{
-  min-height:32px!important;
-  padding:6px 0!important;
+#sf8[data-mode="tasks"] .task-extra-tab.on{border-color:rgba(67,245,194,.46)!important;color:var(--v28-mint)!important;background:rgba(67,245,194,.055)!important;}
+#sf8[data-mode="tasks"] .subtask-list{border-left:1px solid var(--v28-line)!important;margin-left:10px!important;padding-left:10px!important;}
+#sf8[data-mode="tasks"] .subtask-row{background:transparent!important;border-color:var(--v28-line)!important;box-shadow:none!important;border-radius:10px!important;}
+#sf8[data-mode="tasks"] .subtask-check{width:20px!important;height:20px!important;border-radius:50%!important;}
+
+/* Header menu: ロゴはロゴのまま。MENUラベル/枠でダサくしない。 */
+.header .menu-brand,
+#sf8[data-mode="tasks"] .menu-brand{
+  width:auto!important;min-width:92px!important;max-width:116px!important;min-height:40px!important;
+  display:flex!important;align-items:center!important;justify-content:flex-start!important;
+  padding:4px 2px!important;margin:0!important;
+  border:0!important;background:transparent!important;border-radius:0!important;box-shadow:none!important;
+  text-align:left!important;
 }
-#sf8[data-mode="tasks"] .subtask-check{
-  width:20px!important;
-  height:20px!important;
-  min-width:20px!important;
-  border-radius:50%!important;
-  font-size:12px!important;
-}
+.header .menu-brand:active,
+#sf8[data-mode="tasks"] .menu-brand:active{background:rgba(255,255,255,.035)!important;border-radius:8px!important;}
+.header .menu-brand .logo,
+#sf8[data-mode="tasks"] .menu-brand .logo{font-size:14px!important;line-height:1!important;letter-spacing:1.35px!important;white-space:nowrap!important;}
+.header .menu-brand .sub,
+#sf8[data-mode="tasks"] .menu-brand .sub{display:none!important;}
+.header .menu-caret,
+#sf8[data-mode="tasks"] .menu-caret{font-size:10px!important;color:rgba(67,245,194,.72)!important;margin-left:3px!important;}
+.top-menu{border:1px solid rgba(140,150,200,.22)!important;border-radius:12px!important;background:rgba(7,8,16,.98)!important;box-shadow:0 18px 44px rgba(0,0,0,.52)!important;}
+.top-menu button{border:0!important;background:transparent!important;border-radius:8px!important;color:rgba(232,238,248,.82)!important;height:34px!important;font-size:12px!important;}
+.top-menu button:active{background:rgba(67,245,194,.07)!important;filter:none!important;}
+
+/* Input bar: 主役にしない。高さを48基準に固定。 */
 #sf8[data-mode="tasks"] #inputBar{
-  height:56px!important;
-  padding:4px 12px!important;
-  gap:8px!important;
+  height:56px!important;min-height:56px!important;padding:4px 12px!important;gap:8px!important;overflow:hidden!important;
+  background:rgba(5,6,13,.96)!important;border-top:1px solid var(--v28-line)!important;
 }
 #sf8[data-mode="tasks"] #mi{
-  height:48px!important;
-  min-height:48px!important;
-  border-radius:12px!important;
-  padding:0 14px!important;
-  font-size:16px!important;
+  height:48px!important;min-height:48px!important;border-radius:12px!important;border:1px solid var(--v28-line)!important;
+  background:rgba(12,14,26,.72)!important;color:var(--v28-text-1)!important;font-size:16px!important;padding:0 14px!important;
+  box-shadow:none!important;filter:none!important;
 }
-#sf8[data-mode="tasks"] #miPrompt{
-  top:4px!important;
-  left:12px!important;
-  right:68px!important;
-  height:48px!important;
-  border-radius:12px!important;
-  display:flex!important;
-  align-items:center!important;
-  padding-left:14px!important;
-}
+#sf8[data-mode="tasks"] #mi:focus{border-color:var(--v28-line-strong)!important;outline:none!important;}
 #sf8[data-mode="tasks"] #db{
-  width:48px!important;
-  height:48px!important;
-  min-width:48px!important;
-  flex:0 0 48px!important;
-  border-radius:12px!important;
-  font-size:20px!important;
+  width:48px!important;height:48px!important;min-width:48px!important;border-radius:12px!important;border:1px solid rgba(67,245,194,.56)!important;
+  background:rgba(67,245,194,.08)!important;color:var(--v28-mint)!important;box-shadow:none!important;filter:none!important;font-size:20px!important;
 }
-#dopadoTabBar{
-  padding:4px 16px calc(5px + var(--safe-bottom))!important;
-  gap:16px!important;
-}
+#sf8[data-mode="tasks"] #miPrompt{height:48px!important;line-height:48px!important;opacity:.28!important;pointer-events:none!important;overflow:hidden!important;}
+#sf8[data-mode="tasks"] #mi:focus~#miPrompt{opacity:0!important;}
+
+/* Bottom tabs: 全部裸。アクティブだけ下線+ミント。 */
+#bottomDock{background:rgba(5,6,13,.96)!important;border-top:1px solid rgba(140,150,200,.13)!important;}
+#dopadoTabBar{height:44px!important;padding:0 10px calc(0px + var(--safe-bottom))!important;gap:0!important;}
 .dopado-tab{
+  height:44px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;filter:none!important;
+  color:rgba(170,185,210,.32)!important;font-family:'Orbitron',monospace!important;font-size:9px!important;font-weight:800!important;letter-spacing:.12em!important;
   position:relative!important;
-  height:44px!important;
-  border:0!important;
-  border-radius:0!important;
-  background:transparent!important;
-  color:var(--text-3)!important;
-  padding:0 2px!important;
 }
-.dopado-tab::after{
-  content:'';
-  position:absolute;
-  left:8px;right:8px;bottom:5px;
-  height:2px;
-  border-radius:999px;
-  background:transparent;
-}
-.dopado-tab.on{
-  border:0!important;
-  background:transparent!important;
-  color:var(--mint)!important;
-}
-.dopado-tab.on::after{background:var(--mint)!important;}
+.dopado-tab::after{content:'';position:absolute;left:22%;right:22%;bottom:5px;height:2px;border-radius:2px;background:transparent;}
+.dopado-tab.on{color:var(--v28-mint)!important;border:0!important;background:transparent!important;box-shadow:none!important;}
+.dopado-tab.on::after{background:var(--v28-mint)!important;}
+
+/* Long-press/preview should never reveal hidden delete plate. */
+#sf8[data-mode="tasks"] .task.longpress,
+#sf8[data-mode="tasks"] .task.long-press,
+#sf8[data-mode="tasks"] .task.is-longpress,
+#sf8[data-mode="tasks"] .task.holding,
+#sf8[data-mode="tasks"] .task-card.longpress,
+#sf8[data-mode="tasks"] .task-card.holding{opacity:1!important;background:transparent!important;}
+#sf8[data-mode="tasks"] .task.longpress .task-card,
+#sf8[data-mode="tasks"] .task.holding .task-card{border-color:var(--v28-line-strong)!important;background:var(--v28-card-strong)!important;}
 
 </style>
 </head>
@@ -1807,7 +1861,7 @@ html,body,#sf8{background:var(--bg)!important;color:var(--text-1)!important;}
       <button type="button" onclick="chooseTopMenu('profile')">プロフィール</button>
     </div>
     <div class="meter charge-frame-shell charge-off top-charge" id="chargeMeter" aria-label="チャージ抽選窓">
-      <iframe id="chargeFrame" src="./charge.html?v=27" title="DOPADO CHARGE"></iframe>
+      <iframe id="chargeFrame" src="./charge.html?v=28" title="DOPADO CHARGE"></iframe>
     </div>
     <div class="identity" id="identity" onclick="openProfile()">
       <div class="id-text"><div class="id-title" id="hdTitle"></div><div class="id-name" id="hdName"></div><div class="id-lv"><span>Lv.<b id="hdLv">0</b></span><span class="free" id="hdFree">+0日</span></div></div>
@@ -1891,7 +1945,7 @@ html,body,#sf8{background:var(--bg)!important;color:var(--text-1)!important;}
   </div>
 
   <div id="bonusFrameOverlay">
-    <iframe id="bonusFrame" src="./bonus.html?v=27" title="DOPADO BONUS"></iframe>
+    <iframe id="bonusFrame" src="./bonus.html?v=28" title="DOPADO BONUS"></iframe>
   </div>
   <div class="overlay" id="onboardOverlay" style="display:none!important">
     <div class="popup">
@@ -1925,6 +1979,6 @@ html,body,#sf8{background:var(--bg)!important;color:var(--text-1)!important;}
 
 </div>
 
-<script src="./index.js?v=27"></script>
+<script src="./index.js?v=28"></script>
 </body>
 </html>
