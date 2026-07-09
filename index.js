@@ -1,5 +1,5 @@
-
-const APP_VERSION=23;
+// DOPADO v26 externalized app script
+const APP_VERSION=26;
 const STORAGE_KEY='dopaon_state_v6';
 const BACKUP_KEY='dopaon_state_v6_backup';
 const LEGACY_KEYS=['dopaon_state_v5','dopaon_state_v4','dopaon_state_v3','dopaon_state_v2','dopaon_state_v1'];
@@ -935,10 +935,10 @@ function mkC(task){
     b.className='task-btn'+(iC?' cbtn':'')+(!iC&&todayActive?' dpa-ready':'')+(!iC&&important?' dpa-important':'');
     b.onclick=e=>{e.stopPropagation();tap(task.id)};attachTaskLongPress(b,task);
     b.setAttribute('aria-label',iC?'完了確定':'夢物語を開く');
-    b.innerHTML=iC?'<span style="font-family:\'Orbitron\',monospace;font-size:7px;font-weight:700;">確定</span>':(todayActive?'<span class="dpa-label">dpa</span>':'<span style="font-size:17px;">✓</span>');
+    b.innerHTML=iC?'<span style="font-family:\'Orbitron\',monospace;font-size:7px;font-weight:700;">確定</span>':'<span class="dpa-label">dpa</span>';
     w.appendChild(b);if(iC){const h=document.createElement('span');h.className='push';h.textContent='PUSH';w.appendChild(h)}
   }else{const ic=document.createElement('span');ic.className='done-mark';ic.textContent='✓';w.appendChild(ic)}
-  top.appendChild(w);main.appendChild(top);
+  main.appendChild(top);
   const meta=document.createElement('div');meta.className='task-meta';
   const mb=document.createElement('button');mb.type='button';mb.className='task-menu-toggle'+(taskHasExtras(task)?' has-extra':'')+(openExtraTaskId===task.id?' open':'');mb.textContent='☰';mb.setAttribute('aria-label','追加タスクとメモ');mb.onclick=e=>{e.stopPropagation();toggleTaskExtras(task.id)};meta.appendChild(mb);
   taskMeta(task).forEach(m=>meta.appendChild(tagEl(m.cls,m.txt)));
@@ -952,7 +952,7 @@ function mkC(task){
     const close=dp.querySelector('.dopa-close');if(close)close.onclick=e=>{e.stopPropagation();closeInlineDopaon(task.id)};
     main.appendChild(dp);
   }
-  card.appendChild(main);el.appendChild(card);attachTaskSwipe(el,task);return el;
+  card.appendChild(w);card.appendChild(main);el.appendChild(card);attachTaskSwipe(el,task);return el;
 }
 
 function renderTaskExtra(task){
@@ -1500,7 +1500,7 @@ function renderGame(a){
   try{localStorage.setItem('DOPADO_GAME_CONTEXT',JSON.stringify(ctx));}catch(e){}
   const wrap=document.createElement('div');
   wrap.className='game-wrap v27-native-game-wrap';
-  wrap.innerHTML='<iframe id="dopadoV27GameFrame" class="dopado-v27-game-frame" src="./game.html?v=27-3-roadfix-v22" title="DOPADO GAME"></iframe>';
+  wrap.innerHTML='<iframe id="dopadoV27GameFrame" class="dopado-v27-game-frame" src="./game.html?v=27-3-roadfix-v25-leftdpa" title="DOPADO GAME"></iframe>';
   a.appendChild(wrap);
 }
 
