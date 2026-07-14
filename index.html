@@ -4558,6 +4558,7 @@ function recordRecentActivity(n=8){return (Array.isArray(state.activityLog)?stat
 function renderRecordScreen(){
   const body=document.getElementById('recordBody');if(!body)return;
   const today=appDayStr(),month=recordMonthFromDay(today),tasks=state.tasks||[];
+  const activity=recordActivityStats();
   const active=recordActiveTasks(),doneToday=Math.max(tasks.filter(t=>recordIsDoneOnDay(t,today)).length,activity.completed||0);
   const createdToday=Math.max(tasks.filter(t=>recordIsCreatedOnDay(t,today)).length,activity.created||0);
   const todayOpen=tasks.filter(t=>t.state!=='done'&&isTaskToday(t)).length;
@@ -4571,7 +4572,7 @@ function renderRecordScreen(){
   const skima=(state.tasks||[]).filter(t=>t.state!=='done'&&isTaskSkima(t)).length;
   const hold=(state.tasks||[]).filter(t=>t.state!=='done'&&!isTaskSkima(t)&&t.organizeHoldUntil&&today<t.organizeHoldUntil).length;
   const overdue=recordOverdueTasks().length,breakdown=recordBreakdownTasks().length,stale=recordStaleTasks().length,mgmt=recordManagementScore();
-  const brain=recordBrainStats(),ai=recordAiStats(),activity=recordActivityStats();
+  const brain=recordBrainStats(),ai=recordAiStats();
   const issueRows=[
     ['期限超過',overdue,'通常画面にも出る、最優先の詰まり'],
     ['要分解',breakdown,'大きすぎて止まりやすいタスク'],
