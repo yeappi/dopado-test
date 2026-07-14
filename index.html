@@ -3937,7 +3937,6 @@ body.keyboard-open #sf8[data-mode="tasks"] #quickAddBar,
 .manager-filter-footer{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.manager-filter-footer button{height:40px;border:1px solid rgba(140,150,200,.16);border-radius:10px;background:rgba(255,255,255,.025);color:rgba(220,230,246,.72);font-size:10px;font-weight:900}.manager-filter-footer .primary{border-color:rgba(185,139,255,.40);background:rgba(185,139,255,.08);color:#c7a7ff}
 .manager-filter-saved{margin-top:15px}.manager-filter-saved h4{margin:0 2px 8px;font-size:10px;color:rgba(170,185,210,.45)}.manager-filter-saved-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;gap:5px;margin-bottom:6px}.manager-filter-saved-row button{height:34px;border:1px solid rgba(140,150,200,.13);border-radius:8px;background:rgba(255,255,255,.018);color:rgba(205,215,232,.64);font-size:9px;font-weight:850}.manager-filter-saved-row .name{text-align:left;padding:0 9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.manager-filter-saved-row .fav.on{color:#ffd24a}.manager-filter-saved-row .del{color:#ff7a8f}
 
-
 /* ===== v49.26 AI ORGANIZER ===== */
 .task-manager-ai-btn{height:38px;min-width:42px;padding:0 9px;border:1px solid rgba(102,204,255,.38);border-radius:10px;background:rgba(102,204,255,.065);color:#82d8ff;font-size:11px;font-weight:900}
 .task-manager-ai-btn.on{background:rgba(102,204,255,.14);box-shadow:0 0 18px rgba(102,204,255,.10)}
@@ -4013,6 +4012,121 @@ body.keyboard-open #sf8[data-mode="tasks"] #quickAddBar,
   .ai-org-tabs{padding:0 11px 7px!important}
   .ai-org-panel{padding-left:11px!important;padding-right:11px!important}
 }
+
+
+/* ===== v49.33 BRAIN DUMP CALM ORB INTRO ===== */
+/* ===== v49.37 RECORD SCREEN ===== */
+#recordScreen{position:fixed;inset:0;z-index:760;display:none;flex-direction:column;background:radial-gradient(110% 90% at 50% -8%,rgba(67,245,194,.055),transparent 54%),radial-gradient(95% 80% at 50% 110%,rgba(91,140,255,.04),transparent 58%),linear-gradient(180deg,#05060d,#070812 58%,#04050c);color:#eaf2ff;overflow:hidden}
+#recordScreen.open{display:flex}
+.record-head{flex:0 0 auto;display:grid;grid-template-columns:42px 1fr 42px;align-items:center;gap:8px;padding:calc(env(safe-area-inset-top) + 10px) 14px 10px;border-bottom:1px solid rgba(140,150,200,.14);background:rgba(7,8,18,.98);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.record-back,.record-refresh{width:38px;height:38px;border:1px solid rgba(140,150,200,.17);border-radius:10px;background:rgba(255,255,255,.025);color:rgba(220,230,246,.82);font-size:22px;font-weight:900}
+.record-refresh{font-size:16px;color:#43f5c2;border-color:rgba(67,245,194,.32);background:rgba(67,245,194,.055)}
+.record-kicker{text-align:center;font-family:"Orbitron",monospace;font-size:10px;letter-spacing:.28em;text-indent:.28em;color:rgba(67,245,194,.68)}
+.record-title{text-align:center;margin-top:2px;font-family:"Orbitron",monospace;font-size:13px;letter-spacing:.15em;color:rgba(235,244,255,.94)}
+.record-body{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 14px calc(28px + env(safe-area-inset-bottom));}
+.record-hero{position:relative;border:1px solid rgba(67,245,194,.22);border-radius:22px;padding:18px 16px 16px;background:linear-gradient(180deg,rgba(67,245,194,.075),rgba(12,14,26,.72));box-shadow:0 16px 42px rgba(0,0,0,.24);overflow:hidden}
+.record-hero::after{content:"";position:absolute;right:-42px;top:-46px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(67,245,194,.18),transparent 68%);filter:blur(3px);pointer-events:none}
+.record-hero-label{font-family:"Orbitron",monospace;font-size:9px;letter-spacing:.2em;color:rgba(190,255,238,.58)}
+.record-hero-main{display:flex;align-items:flex-end;gap:8px;margin-top:8px}
+.record-hero-main b{font-family:"Orbitron",monospace;font-size:52px;line-height:.9;color:#43f5c2;text-shadow:0 0 22px rgba(67,245,194,.25)}
+.record-hero-main span{font-size:13px;font-weight:900;color:rgba(235,244,255,.72);padding-bottom:6px}
+.record-hero-sub{margin-top:12px;font-size:12px;line-height:1.7;color:rgba(190,205,225,.68)}
+.record-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}
+.record-card{border:1px solid rgba(140,150,200,.13);border-radius:16px;background:rgba(12,14,26,.58);padding:12px 11px;min-height:82px}
+.record-card.wide{grid-column:1/-1}
+.record-card-label{font-size:10px;font-weight:900;letter-spacing:.08em;color:rgba(170,185,210,.46)}
+.record-card-value{margin-top:7px;font-family:"Orbitron",monospace;font-size:25px;color:rgba(235,244,255,.92);line-height:1}
+.record-card-value.mint{color:#43f5c2}.record-card-value.blue{color:#82d8ff}.record-card-value.gold{color:#ffd24a}.record-card-value.red{color:#ff7890}
+.record-card-sub{margin-top:8px;font-size:11px;color:rgba(190,205,225,.52);line-height:1.5}
+.record-section{margin-top:16px;border:1px solid rgba(140,150,200,.13);border-radius:18px;background:rgba(12,14,26,.46);overflow:hidden}
+.record-section-head{display:flex;justify-content:space-between;align-items:center;padding:12px 12px 8px;border-bottom:1px solid rgba(255,255,255,.055)}
+.record-section-title{font-size:11px;font-weight:900;letter-spacing:.12em;color:rgba(232,238,248,.85)}
+.record-section-note{font-size:10px;color:rgba(170,185,210,.42)}
+.record-week{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;align-items:end;padding:14px 12px 13px;height:146px}
+.record-day{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:7px;min-width:0;height:100%}
+.record-bar-wrap{width:100%;height:88px;border-radius:999px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.055);display:flex;align-items:flex-end;overflow:hidden}
+.record-bar{width:100%;min-height:4px;border-radius:999px;background:linear-gradient(180deg,rgba(67,245,194,.92),rgba(91,140,255,.62));box-shadow:0 0 12px rgba(67,245,194,.22)}
+.record-day-num{font-family:"Orbitron",monospace;font-size:10px;color:rgba(232,238,248,.72)}
+.record-day-label{font-size:9px;color:rgba(170,185,210,.42)}
+.record-list{display:grid;gap:8px;padding:11px}
+.record-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;border:1px solid rgba(255,255,255,.065);border-radius:13px;background:rgba(255,255,255,.03);padding:10px}
+.record-row b{display:block;font-size:12px;color:rgba(235,244,255,.9)}
+.record-row span{display:block;margin-top:3px;font-size:10px;color:rgba(190,205,225,.50);line-height:1.45}
+.record-row em{font-style:normal;font-family:"Orbitron",monospace;color:#43f5c2;font-size:16px}
+.record-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:13px}
+.record-actions button{height:40px;border-radius:12px;border:1px solid rgba(67,245,194,.22);background:rgba(67,245,194,.055);color:#cffff4;font-weight:900;font-size:11px}
+.record-empty-note{text-align:center;color:rgba(190,205,225,.42);font-size:12px;line-height:1.75;padding:22px 12px}
+
+#brainDumpScreen{position:fixed;inset:0;z-index:740;display:none;flex-direction:column;background:radial-gradient(120% 90% at 50% -10%,rgba(67,245,194,.055),transparent 55%),linear-gradient(180deg,#05060d,#070812 56%,#04050c);color:#eaf2ff;overflow:hidden}
+#brainDumpScreen.open{display:flex}
+.brain-head{height:calc(62px + env(safe-area-inset-top));padding:env(safe-area-inset-top) 12px 0;display:grid;grid-template-columns:42px 1fr auto;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,.075);background:rgba(6,8,17,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.brain-back{width:40px;height:40px;border:0;border-radius:12px;background:transparent;color:#d9e8ff;font-size:32px;line-height:1}
+.brain-kicker{font-family:"Orbitron",monospace;font-size:8px;letter-spacing:2.5px;color:rgba(67,245,194,.7);line-height:1.1}
+.brain-title{font-family:"Orbitron",monospace;font-size:12px;letter-spacing:2px;color:#eaf2ff;font-weight:900;margin-top:3px}
+.brain-calm-btn{height:34px;border-radius:999px;border:1px solid rgba(67,245,194,.28);background:rgba(67,245,194,.07);color:#69f8d1;font-weight:800;padding:0 12px;font-size:12px}
+.brain-body{flex:1;min-height:0;overflow:auto;padding:18px 16px calc(24px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
+.brain-orb-mini{width:74px;height:74px;margin:8px auto 16px;border-radius:50%;background:radial-gradient(circle,rgba(240,255,252,.9) 0%,rgba(170,250,230,.54) 25%,rgba(67,245,194,.26) 48%,rgba(91,140,255,.12) 65%,transparent 78%);filter:blur(10px);opacity:.72;animation:brainMiniBreathe 8s ease-in-out infinite}
+@keyframes brainMiniBreathe{0%,100%{opacity:.42;transform:scale(.86)}42%{opacity:.85;transform:scale(1)}}
+.brain-copy{text-align:center;color:rgba(210,225,240,.58);font-size:12px;line-height:1.85;letter-spacing:.05em;margin-bottom:16px}
+.brain-input{width:100%;min-height:45vh;border:1px solid rgba(140,150,200,.18);border-radius:18px;background:rgba(5,7,16,.72);box-shadow:inset 0 0 0 1px rgba(255,255,255,.025),0 16px 50px rgba(0,0,0,.24);color:#eef6ff;font-size:16px;line-height:1.65;padding:16px;resize:none;outline:none;font-family:system-ui,sans-serif;letter-spacing:.02em}
+.brain-input::placeholder{color:rgba(150,165,190,.34)}
+.brain-input:focus{border-color:rgba(67,245,194,.42);box-shadow:0 0 0 1px rgba(67,245,194,.13),0 0 40px rgba(67,245,194,.045)}
+.brain-actions{display:grid;grid-template-columns:1.08fr .86fr;gap:8px;margin-top:14px}
+.brain-actions button{height:44px;border-radius:13px;font-weight:900;border:1px solid rgba(255,255,255,.10);font-size:12px}
+.brain-primary{background:#43f5c2;color:#04100d;border-color:#43f5c2!important}
+.brain-secondary{background:rgba(255,255,255,.035);color:#aebbd0}
+.brain-status{min-height:22px;margin-top:10px;color:rgba(67,245,194,.78);font-size:12px;text-align:center}
+.brain-status.error{color:#ff8f8f}
+.brain-status .brain-inline-btn{margin-left:6px;border:1px solid rgba(67,245,194,.24);background:rgba(67,245,194,.08);color:#83f8d8;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:900}
+#brainDumpScreen.copy-ready .brain-orb-mini,#brainDumpScreen.copy-ready .brain-copy,#brainDumpScreen.copy-ready .brain-input,#brainDumpScreen.copy-ready .brain-actions,#brainDumpScreen.copy-ready .brain-after-actions,#brainDumpScreen.copy-ready .brain-history-panel{display:none!important}
+.brain-copy-ready{display:none;margin:18px 0 0;padding:18px 14px;border:1px solid rgba(67,245,194,.20);border-radius:20px;background:linear-gradient(180deg,rgba(67,245,194,.085),rgba(91,140,255,.035));box-shadow:0 18px 54px rgba(0,0,0,.28);text-align:center}
+#brainDumpScreen.copy-ready .brain-copy-ready{display:block}
+.brain-copy-ready-mark{width:54px;height:54px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:rgba(67,245,194,.14);border:1px solid rgba(67,245,194,.24);color:#80f9d9;font-size:24px;box-shadow:0 0 26px rgba(67,245,194,.10)}
+.brain-copy-ready-title{font-size:15px;font-weight:950;color:#ecfff9;letter-spacing:.08em;margin-bottom:7px}
+.brain-copy-ready-text{font-size:12px;line-height:1.8;color:rgba(205,222,240,.70);margin:0 auto 15px;max-width:30em}
+.brain-copy-ready-main{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.brain-copy-ready-main button{height:46px;border-radius:15px;border:1px solid rgba(255,255,255,.11);font-weight:950;font-size:13px}
+.brain-copy-ready-main .primary{background:#43f5c2;color:#03110d;border-color:#43f5c2}
+.brain-copy-ready-main .secondary{background:rgba(255,255,255,.045);color:#d5e7fb}
+.brain-copy-ready-sub{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.brain-copy-ready-sub button{height:32px;border-radius:999px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.035);color:#9fb2cd;font-size:11px;font-weight:900;padding:0 10px}
+.brain-ai-preview{display:none;margin-top:10px}
+.brain-ai-preview.open{display:block}
+.brain-ai-preview textarea{width:100%;min-height:160px;border:1px solid rgba(140,150,200,.18);border-radius:14px;background:rgba(5,7,16,.76);color:#eaf2ff;padding:12px;font-size:12px;line-height:1.55;resize:vertical;outline:none}
+.brain-ai-preview-actions{display:flex;gap:8px;margin-top:8px}.brain-ai-preview-actions button{flex:1;height:34px;border-radius:999px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#cfe0f5;font-weight:900;font-size:11px}
+.brain-after-actions{display:none;margin-top:12px;padding:12px;border:1px solid rgba(67,245,194,.16);border-radius:16px;background:rgba(67,245,194,.055);box-shadow:0 14px 42px rgba(0,0,0,.20)}
+.brain-after-actions.open{display:block}
+.brain-after-title{font-size:12px;font-weight:900;color:#9dfce0;letter-spacing:.08em;margin-bottom:9px;text-align:center}
+.brain-after-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.brain-after-grid button{height:38px;border-radius:999px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.045);color:#dcecff;font-weight:900;font-size:11px}
+.brain-history-panel{display:none;margin-top:14px;border:1px solid rgba(140,150,200,.16);border-radius:18px;background:rgba(5,7,16,.54);overflow:hidden}
+.brain-history-panel.open{display:block}
+.brain-history-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 12px 8px;border-bottom:1px solid rgba(255,255,255,.06)}
+.brain-history-head b{font-size:12px;color:#eaf2ff;letter-spacing:.08em}.brain-history-head button{border:0;background:transparent;color:#94a8c5;font-weight:900;font-size:18px}
+.brain-history-list{display:grid;gap:8px;padding:10px;max-height:310px;overflow:auto;-webkit-overflow-scrolling:touch}
+.brain-history-empty{padding:22px 14px;text-align:center;color:rgba(190,205,225,.52);font-size:12px;line-height:1.8}
+.brain-history-card{border:1px solid rgba(255,255,255,.075);border-radius:14px;background:rgba(255,255,255,.032);padding:10px}
+.brain-history-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:7px}
+.brain-history-date{font-size:11px;color:#86f6d5;font-weight:900}.brain-history-meta{font-size:10px;color:rgba(190,205,225,.55);margin-top:3px;line-height:1.45}
+.brain-history-text{font-size:12px;color:rgba(235,244,255,.86);line-height:1.55;white-space:pre-wrap;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.brain-history-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}.brain-history-actions button{height:30px;border-radius:999px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.04);color:#cfe0f5;font-weight:900;font-size:10px;padding:0 10px}.brain-history-actions button.danger{color:#ff9d9d;border-color:rgba(255,80,110,.24);background:rgba(255,80,110,.08)}
+.brain-calm-overlay{position:fixed;inset:0;z-index:14000;background:rgba(1,1,6,.86);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);overflow:hidden;cursor:pointer;transition:opacity 1.6s ease;-webkit-tap-highlight-color:transparent;color:rgba(230,236,245,.92)}
+.brain-calm-overlay.leaving{opacity:0!important;pointer-events:none}
+.brain-calm-flash{position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,rgba(230,255,250,.85) 0%,rgba(140,250,228,.45) 30%,rgba(91,140,255,.22) 58%,transparent 85%);pointer-events:none}
+.brain-calm-orb-pos{position:absolute;left:50%;top:50%;width:46vmin;height:46vmin;margin:-23vmin 0 0 -23vmin;will-change:transform;pointer-events:none}
+.brain-calm-orb{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle,rgba(240,255,252,.95) 0%,rgba(170,250,230,.62) 20%,rgba(67,245,194,.36) 40%,rgba(91,140,255,.18) 60%,rgba(161,123,255,.06) 72%,transparent 80%);filter:blur(14px);opacity:.4;transition:filter .20s ease-out,opacity .20s ease-out;will-change:transform,opacity,filter}
+.brain-calm-orb.bright{opacity:1;filter:blur(12px) brightness(1.75) saturate(1.15) drop-shadow(0 0 26px rgba(120,250,215,.55));transition:opacity 2.4s ease-in}
+.brain-calm-orb.landed{filter:blur(14px) saturate(1.05);transition:opacity 1.2s ease-in,filter 1.2s ease-out}
+.brain-calm-orb.settled{animation:brainOrbBreathe 12s ease-in-out infinite,brainOrbDrift 46s ease-in-out infinite}
+@keyframes brainOrbBreathe{0%{opacity:.38;scale:.82}33%{opacity:.88;scale:1}50%{opacity:.84;scale:1}100%{opacity:.38;scale:.82}}
+@keyframes brainOrbDrift{0%{transform:translate(0,0)}25%{transform:translate(2.2vmin,-1.6vmin)}50%{transform:translate(-1.4vmin,1.8vmin)}75%{transform:translate(1.6vmin,1.2vmin)}100%{transform:translate(0,0)}}
+.brain-calm-guide{position:absolute;left:0;right:0;bottom:calc(14dvh + env(safe-area-inset-bottom));text-align:center;pointer-events:none;user-select:none}
+.brain-calm-line{font-size:13px;letter-spacing:.24em;text-indent:.24em;color:rgba(210,230,235,0);line-height:2.4}
+.brain-calm-line-2{font-size:11.5px;color:rgba(180,200,215,0)}
+.brain-calm-overlay.settled .brain-calm-line-1{animation:brainGuideIn 3s ease 2.5s forwards}.brain-calm-overlay.settled .brain-calm-line-2{animation:brainGuideIn2 3s ease 8.5s forwards}
+@keyframes brainGuideIn{to{color:rgba(210,230,235,.55)}}@keyframes brainGuideIn2{to{color:rgba(180,200,215,.38)}}
+@media(prefers-reduced-motion:reduce){.brain-calm-flash{display:none}.brain-calm-orb.settled{animation:none;opacity:.8}.brain-calm-overlay.settled .brain-calm-line-1{animation:none;color:rgba(210,230,235,.55)}.brain-calm-overlay.settled .brain-calm-line-2{animation:none;color:rgba(180,200,215,.38)}}
+
 </style>
 </head>
 <body>
@@ -4026,6 +4140,8 @@ body.keyboard-open #sf8[data-mode="tasks"] #quickAddBar,
     <div class="top-menu" id="topMenu">
       <button type="button" onclick="chooseTopMenu('tasks')">今日</button>
       <button type="button" onclick="chooseTopMenu('manager')">タスク管理</button>
+      <button type="button" onclick="chooseTopMenu('brain')">ブレインダンプ</button>
+      <button type="button" onclick="chooseTopMenu('record')">記録</button>
       <button type="button" onclick="chooseTopMenu('cal')">カレンダー</button>
       <button type="button" onclick="chooseTopMenu('game')">ゲーム</button>
       <button type="button" onclick="chooseTopMenu('habits')">習慣</button>
@@ -4201,6 +4317,17 @@ body.keyboard-open #sf8[data-mode="tasks"] #quickAddBar,
       <section class="ai-org-panel" data-ai-panel="history"><div id="aiHistoryArea"></div></section>
     </div>
   </div>
+
+
+  <div id="recordScreen" aria-hidden="true">
+    <div class="record-head">
+      <button type="button" class="record-back" onclick="closeRecordScreen()" aria-label="戻る">‹</button>
+      <div><div class="record-kicker">RECORD</div><div class="record-title">ACTION LOG</div></div>
+      <button type="button" class="record-refresh" onclick="renderRecordScreen()" aria-label="更新">↻</button>
+    </div>
+    <div class="record-body" id="recordBody"></div>
+  </div>
+
   <div class="manager-filter-overlay" id="taskManagerFilterOverlay" aria-hidden="true" onclick="managerFilterBackdrop(event)">
     <div class="manager-filter-sheet" role="dialog" aria-modal="true" aria-label="上級フィルター">
       <div class="manager-view-handle"></div>
@@ -4272,6 +4399,64 @@ body.keyboard-open #sf8[data-mode="tasks"] #quickAddBar,
 
 
 
+  <div id="brainDumpScreen" aria-hidden="true">
+    <div class="brain-head">
+      <button type="button" class="brain-back" onclick="closeBrainDumpScreen()" aria-label="戻る">‹</button>
+      <div>
+        <div class="brain-kicker">BRAIN DUMP</div>
+        <div class="brain-title">RAW THOUGHT ROOM</div>
+      </div>
+      <button type="button" class="brain-calm-btn" onclick="openBrainDumpCalm({fromScreen:true})">鎮静</button>
+    </div>
+    <div class="brain-body">
+      <div class="brain-orb-mini" aria-hidden="true"></div>
+      <div class="brain-copy">頭の中にあるものを、順番も正しさも気にせず全部置く。<br>吐き出した内容をAIに渡して、今日・スキマ・保留・要分解のタスクへ変換する。</div>
+      <textarea id="brainDumpInput" class="brain-input" placeholder="例：\nエアコンの修理日程\n管理会社に返事\n部屋が散らかってる\nプロテイン買う\nDOPADOのブレインダンプ接続を考える" oninput="saveBrainDumpDraft()"></textarea>
+      <div class="brain-actions">
+        <button type="button" class="brain-primary" onclick="copyBrainDumpAiPrompt()">AIで整理</button>
+        <button type="button" class="brain-secondary" onclick="copyBrainDumpText()">本文コピー</button>
+        <button type="button" class="brain-secondary" onclick="toggleBrainDumpHistoryPanel()">履歴</button>
+        <button type="button" class="brain-secondary" onclick="clearBrainDumpDraft()">クリア</button>
+      </div>
+      <div class="brain-status" id="brainDumpStatus" aria-live="polite"></div>
+      <div class="brain-copy-ready" id="brainCopyReady" aria-live="polite">
+        <div class="brain-copy-ready-mark">✓</div>
+        <div class="brain-copy-ready-title">AIへ渡しました</div>
+        <div class="brain-copy-ready-text">外部AIに貼り付けたら、返ってきたJSONを取込へ貼ってください。</div>
+        <div class="brain-copy-ready-main">
+          <button type="button" class="primary" onclick="openBrainDumpAiImport()">取込へ</button>
+          <button type="button" class="secondary" onclick="backToBrainDumpWriting()">戻る</button>
+        </div>
+        <div class="brain-copy-ready-sub">
+          <button type="button" onclick="toggleBrainDumpAiPromptPreview(true)">全文を確認</button>
+          <button type="button" onclick="copyBrainDumpPromptFromPreview()">もう一度コピー</button>
+        </div>
+      </div>
+      <div class="brain-after-actions" id="brainAfterActions">
+        <div class="brain-after-title" id="brainAfterTitle">タスクを追加しました</div>
+        <div class="brain-after-grid">
+          <button type="button" onclick="brainGoToday()">今日を見る</button>
+          <button type="button" onclick="brainGoTaskManager()">タスク管理へ</button>
+          <button type="button" onclick="clearBrainDumpAfterGenerated()">本文を空にする</button>
+          <button type="button" onclick="toggleBrainDumpHistoryPanel(true)">履歴を見る</button>
+        </div>
+      </div>
+      <div class="brain-ai-preview" id="brainAiPreview">
+        <textarea id="brainAiPromptText" readonly></textarea>
+        <div class="brain-ai-preview-actions">
+          <button type="button" onclick="copyBrainDumpPromptFromPreview()">この欄をコピー</button>
+          <button type="button" onclick="selectBrainDumpPromptPreview()">全文選択</button>
+          <button type="button" onclick="openBrainDumpAiImport()">取込へ</button>
+        </div>
+      </div>
+      <div class="brain-history-panel" id="brainDumpHistoryPanel">
+        <div class="brain-history-head"><b>ブレインダンプ履歴</b><button type="button" onclick="toggleBrainDumpHistoryPanel(false)" aria-label="閉じる">×</button></div>
+        <div class="brain-history-list" id="brainDumpHistoryList"></div>
+      </div>
+    </div>
+  </div>
+
+
   <div id="skimaOverlay" aria-modal="true" role="dialog" aria-labelledby="skimaTitle">
     <div class="skima-sheet">
       <div class="skima-kicker">SKIMA PICK</div>
@@ -4311,6 +4496,102 @@ body.keyboard-open #sf8[data-mode="tasks"] #quickAddBar,
 
 <script>
 // DOPADO v30 inline app script
+
+/* ===== v49.37 RECORD SCREEN ===== */
+function openRecordScreen(){
+  const sc=document.getElementById('recordScreen');if(!sc)return;
+  sc.classList.add('open');sc.setAttribute('aria-hidden','false');renderRecordScreen();
+}
+function closeRecordScreen(){const sc=document.getElementById('recordScreen');if(sc){sc.classList.remove('open');sc.setAttribute('aria-hidden','true')}}
+function recordAppDayFromTs(ts){if(!ts)return '';try{return appDayStr(new Date(ts))}catch(e){return ''}}
+function recordMonthFromDay(day){return String(day||'').slice(0,7)}
+function recordIsDoneOnDay(t,day){return t&&t.state==='done'&&recordAppDayFromTs(t.doneAt)===day}
+function recordIsCreatedOnDay(t,day){return t&&recordAppDayFromTs(t.createdAt)===day}
+function recordWeekDays(){const today=appDayStr();const out=[];for(let i=6;i>=0;i--)out.push(addDaysStr(today,-i));return out}
+function recordDayShort(day){const d=new Date(day+'T00:00:00');return ['日','月','火','水','木','金','土'][d.getDay()]}
+function recordActiveTasks(){return (state.tasks||[]).filter(t=>t.state!=='done')}
+function recordOverdueTasks(){const day=appDayStr();return recordActiveTasks().filter(t=>t.dueDate&&t.dueDate<day)}
+function recordHoldExpiredTasks(){const day=appDayStr();return recordActiveTasks().filter(t=>t.organizeHoldUntil&&t.organizeHoldUntil<=day)}
+function recordBreakdownTasks(){return recordActiveTasks().filter(t=>managerNeedsBreakdown(t))}
+function recordStaleTasks(){const limit=Date.now()-14*24*60*60*1000;return recordActiveTasks().filter(t=>!isTaskToday(t)&&!isTaskSkima(t)&&!t.organizeHoldUntil&&!t.dueDate&&(t.createdAt||0)<limit)}
+function recordManagementScore(){
+  const active=recordActiveTasks();if(!active.length)return 100;
+  const issueIds=new Set();
+  recordOverdueTasks().forEach(t=>issueIds.add(t.id));
+  recordHoldExpiredTasks().forEach(t=>issueIds.add(t.id));
+  recordBreakdownTasks().forEach(t=>issueIds.add(t.id));
+  recordStaleTasks().forEach(t=>issueIds.add(t.id));
+  return Math.max(0,Math.round((active.length-issueIds.size)/active.length*100));
+}
+function recordBrainStats(){
+  const h=(state.brainDump&&Array.isArray(state.brainDump.history))?state.brainDump.history:[];
+  const today=appDayStr();
+  const todayItems=h.filter(x=>recordAppDayFromTs(x.updatedAt||x.createdAt)===today);
+  const generatedToday=todayItems.filter(x=>x.status==='generated').reduce((a,x)=>a+(Number(x.generatedCount)||0),0);
+  return {countToday:todayItems.length,generatedToday,total:h.length};
+}
+function recordAiStats(){
+  const a=ensureAiOrganizerState();const today=appDayStr();
+  const todayHist=(a.history||[]).filter(x=>recordAppDayFromTs(x.createdAt)===today);
+  const ops=todayHist.reduce((sum,h)=>sum+Object.values(h.summary||{}).reduce((x,y)=>x+(Number(y)||0),0),0);
+  return {runsToday:todayHist.length,opsToday:ops,total:(a.history||[]).length};
+}
+function renderRecordScreen(){
+  const body=document.getElementById('recordBody');if(!body)return;
+  const today=appDayStr(),month=recordMonthFromDay(today),tasks=state.tasks||[];
+  const active=recordActiveTasks(),doneToday=tasks.filter(t=>recordIsDoneOnDay(t,today)).length;
+  const createdToday=tasks.filter(t=>recordIsCreatedOnDay(t,today)).length;
+  const todayOpen=tasks.filter(t=>t.state!=='done'&&isTaskToday(t)).length;
+  const todayTotal=doneToday+todayOpen;
+  const todayRate=todayTotal?Math.round(doneToday/todayTotal*100):100;
+  const weekDays=recordWeekDays();
+  const weekCounts=weekDays.map(d=>tasks.filter(t=>recordIsDoneOnDay(t,d)).length);
+  const weekDone=weekCounts.reduce((a,b)=>a+b,0);
+  const maxWeek=Math.max(1,...weekCounts);
+  const monthDone=tasks.filter(t=>t.state==='done'&&recordMonthFromDay(recordAppDayFromTs(t.doneAt))===month).length;
+  const skima=(state.tasks||[]).filter(t=>t.state!=='done'&&isTaskSkima(t)).length;
+  const hold=(state.tasks||[]).filter(t=>t.state!=='done'&&!isTaskSkima(t)&&t.organizeHoldUntil&&today<t.organizeHoldUntil).length;
+  const overdue=recordOverdueTasks().length,breakdown=recordBreakdownTasks().length,stale=recordStaleTasks().length,mgmt=recordManagementScore();
+  const brain=recordBrainStats(),ai=recordAiStats();
+  const issueRows=[
+    ['期限超過',overdue,'通常画面にも出る、最優先の詰まり'],
+    ['要分解',breakdown,'大きすぎて止まりやすいタスク'],
+    ['長期放置',stale,'14日以上、見える場所に戻っていない未完了'],
+    ['保留中',hold,'復帰待ちのタスク'],
+    ['スキマ',skima,'余裕がある時に拾えるタスク']
+  ];
+  body.innerHTML='';
+  const hero=document.createElement('section');hero.className='record-hero';
+  hero.innerHTML='<div class="record-hero-label">MANAGEMENT RATE</div><div class="record-hero-main"><b>'+mgmt+'</b><span>%</span></div><div class="record-hero-sub">未整理・期限超過・要分解・長期放置が少ないほど上がります。タスクを終わらせるだけでなく、抱え方も軽くするための数字です。</div>';
+  body.appendChild(hero);
+  const grid=document.createElement('div');grid.className='record-grid';
+  const cards=[
+    ['今日完了',doneToday,'mint','今日の実行量'],
+    ['今日追加',createdToday,'blue','頭から外に出した数'],
+    ['今週完了',weekDone,'gold','直近7日の合計'],
+    ['今月完了',monthDone,'','今月の積み上げ'],
+    ['今日達成率',todayRate+'%','mint','今日タスク '+doneToday+'/'+todayTotal],
+    ['AI整理',ai.opsToday,'blue','今日 '+ai.runsToday+'回実行'],
+    ['ブレインダンプ',brain.countToday,'gold','今日生成 '+brain.generatedToday+'件'],
+    ['現在の未完了',active.length,'','保留・スキマ含む']
+  ];
+  cards.forEach(([label,val,cls,sub])=>{const c=document.createElement('div');c.className='record-card';c.innerHTML='<div class="record-card-label">'+escapeHtml(label)+'</div><div class="record-card-value '+cls+'">'+escapeHtml(String(val))+'</div><div class="record-card-sub">'+escapeHtml(sub)+'</div>';grid.appendChild(c)});
+  body.appendChild(grid);
+  const week=document.createElement('section');week.className='record-section';
+  week.innerHTML='<div class="record-section-head"><div class="record-section-title">7 DAYS CLEAR</div><div class="record-section-note">完了数</div></div>';
+  const wg=document.createElement('div');wg.className='record-week';
+  weekDays.forEach((d,i)=>{const cell=document.createElement('div');cell.className='record-day';const h=Math.max(4,Math.round(weekCounts[i]/maxWeek*88));cell.innerHTML='<div class="record-bar-wrap"><div class="record-bar" style="height:'+h+'%"></div></div><div class="record-day-num">'+weekCounts[i]+'</div><div class="record-day-label">'+recordDayShort(d)+'</div>';wg.appendChild(cell)});
+  week.appendChild(wg);body.appendChild(week);
+  const issues=document.createElement('section');issues.className='record-section';
+  issues.innerHTML='<div class="record-section-head"><div class="record-section-title">WHERE TASKS ARE STUCK</div><div class="record-section-note">詰まりの位置</div></div>';
+  const list=document.createElement('div');list.className='record-list';
+  issueRows.forEach(([label,n,sub])=>{const row=document.createElement('div');row.className='record-row';row.innerHTML='<div><b>'+escapeHtml(label)+'</b><span>'+escapeHtml(sub)+'</span></div><em>'+n+'</em>';list.appendChild(row)});
+  issues.appendChild(list);body.appendChild(issues);
+  const actions=document.createElement('div');actions.className='record-actions';
+  actions.innerHTML='<button type="button" onclick="closeRecordScreen();setMainMode(\'tasks\')">今日へ</button><button type="button" onclick="closeRecordScreen();openTaskManager()">管理へ</button><button type="button" onclick="closeRecordScreen();openBrainDumpScreen()">ブレイン</button>';
+  body.appendChild(actions);
+}
+
 const APP_VERSION = 47;
 const STORAGE_KEY='dopaon_state_v6';
 const BACKUP_KEY='dopaon_state_v6_backup';
@@ -4541,6 +4822,7 @@ function chooseTopMenu(mode){
   closeTopMenu();
   if(mode==='profile'){openProfile();return;}
   if(mode==='manager'){openTaskManager();return;}
+  if(mode==='record'){openRecordScreen();return;}
   setMainMode(mode);
 }
 document.addEventListener('click',e=>{if(!e.target.closest('#brandMenuBtn')&&!e.target.closest('#topMenu'))closeTopMenu()});
@@ -7092,7 +7374,7 @@ if(window.visualViewport){visualViewport.addEventListener('resize',handleViewpor
 window.addEventListener('resize',()=>{initBaseViewport(false);syncViewport()});
 window.addEventListener('orientationchange',()=>{setTimeout(()=>{initBaseViewport(true);syncViewport()},300);setTimeout(syncViewport,700)});
 window.addEventListener('scroll',lockScroll,{passive:true});
-document.addEventListener('touchmove',e=>{if(e.target.closest('#ta'))return;if(e.target.closest('.popup'))return;if(e.target.closest('#taskSettingsScreen'))return;if(e.target.closest('#taskManagerScreen'))return;if(e.target.closest('#quickPickerPanel'))return;if(e.target.closest('#quickAddBar'))return;e.preventDefault()},{passive:false});
+document.addEventListener('touchmove',e=>{if(e.target.closest('#ta'))return;if(e.target.closest('.popup'))return;if(e.target.closest('#taskSettingsScreen'))return;if(e.target.closest('#taskManagerScreen'))return;if(e.target.closest('#recordScreen'))return;if(e.target.closest('#quickPickerPanel'))return;if(e.target.closest('#quickAddBar'))return;e.preventDefault()},{passive:false});
 
 /* ================================================================
    DOPADO TUTORIAL SYSTEM v2 — グローバルスコープ
@@ -8335,6 +8617,8 @@ function aiCommitExportSession(tasks,prompt){
   a.lastExportIds=session.taskIds.slice();
   a.lastExportSessionId=session.id;
   a.exportSessions=[session].concat((a.exportSessions||[]).filter(x=>x&&x.id!==session.id)).slice(0,12);
+  saveBrainDumpHistoryEntry({text,prompt,sessionId:session.id,status:'copied',generatedCount:0,textHash:session.brainTextHash});
+  renderBrainDumpHistory();
   return session;
 }
 function aiFindImportSession(sessionId){
@@ -8478,7 +8762,11 @@ applyAiPreview=function(ops){
   const sessionId=(ops.find(v=>v.sessionId)||{}).sessionId||a.lastExportSessionId||'';
   const session=aiFindImportSession(sessionId);
   const history={id:newId(),createdAt:Date.now(),summary,before,afterTaskCount:state.tasks.length,sessionId,skillName:session&&session.skillName||aiCurrentSkill().name,scopeLabel:session&&session.scopeLabel||''};
-  a.history.unshift(history);a.history=a.history.slice(0,10);saveNow();render();if(document.getElementById('taskManagerScreen')?.classList.contains('open'))renderTaskManager();aiPreviewOperations=[];document.getElementById('aiPreviewArea').innerHTML='';document.getElementById('aiImportStatus').className='ai-org-status ok';document.getElementById('aiImportStatus').textContent=applied+'件のAI整理を適用しました。';showUndo(applied+'件のAI整理を適用した',()=>restoreAiHistory(history.id,true));
+  a.history.unshift(history);a.history=a.history.slice(0,10);
+  if(session&&session.source==='brainDump')markBrainDumpSessionApplied(session,summary,applied);
+  saveNow();render();if(document.getElementById('taskManagerScreen')?.classList.contains('open'))renderTaskManager();aiPreviewOperations=[];document.getElementById('aiPreviewArea').innerHTML='';const st=document.getElementById('aiImportStatus');if(st){st.className='ai-org-status ok';if(session&&session.source==='brainDump'){st.innerHTML=applied+'件を適用しました。 <button type="button" class="brain-inline-btn" onclick="brainGoToday()">今日を見る</button> <button type="button" class="brain-inline-btn" onclick="brainGoTaskManager()">タスク管理へ</button> <button type="button" class="brain-inline-btn" onclick="clearBrainDumpAfterGenerated()">本文を空にする</button>';}else{st.textContent=applied+'件のAI整理を適用しました。';}}
+  if(session&&session.source==='brainDump')showBrainDumpAfterGenerate(applied,summary);
+  showUndo(applied+'件のAI整理を適用した',()=>restoreAiHistory(history.id,true));
 };
 function restoreAiSnapshotObject(snapshot){
   const a=ensureAiOrganizerState();
@@ -8500,6 +8788,346 @@ function runAiOrganizerSelfTest(){
   const dummy={sessionId:'test',operations:[{action:'create',title:'テスト',destination:'inbox',reason:'追加テスト'},{taskId:'missing',action:'set_today',reason:'存在しないIDテスト'}]};
   try{return aiParseJson(JSON.stringify(dummy)).operations.length===2}catch(e){return false}
 }
+
+
+/* ===== v49.33 BRAIN DUMP CALM ORB INTRO ===== */
+const BRAIN_DUMP_DRAFT_KEY='dopado_brain_dump_draft_v1';
+function ensureBrainDumpState(){
+  if(!state.brainDump||typeof state.brainDump!=='object')state.brainDump={history:[],lastOpenHash:''};
+  if(!Array.isArray(state.brainDump.history))state.brainDump.history=[];
+  return state.brainDump;
+}
+function brainDumpHistory(){return ensureBrainDumpState().history;}
+function brainDumpTextSnippet(text,len=92){text=String(text||'').trim().replace(/\s+/g,' ');return text.length>len?text.slice(0,len)+'…':text;}
+function findBrainDumpHistoryByHash(hash){return brainDumpHistory().find(x=>x&&x.textHash===hash&&x.status==='generated');}
+function saveBrainDumpHistoryEntry(data){
+  const bd=ensureBrainDumpState(),hash=data.textHash||brainDumpSimpleHash(data.text||'');
+  let ex=bd.history.find(x=>x.id===data.id)||bd.history.find(x=>x.textHash===hash&&x.sessionId===data.sessionId);
+  if(!ex){ex={id:data.id||('bd_'+newId()),createdAt:Date.now(),textHash:hash};bd.history.unshift(ex)}
+  Object.assign(ex,data,{textHash:hash,updatedAt:Date.now()});
+  bd.history=bd.history.filter(Boolean).sort((a,b)=>(b.updatedAt||b.createdAt||0)-(a.updatedAt||a.createdAt||0)).slice(0,30);
+  return ex;
+}
+function rememberBrainDumpDraft(text,reason='draft'){
+  text=String(text||'').trim();if(!text)return null;
+  const hash=brainDumpSimpleHash(text),existing=brainDumpHistory().find(x=>x.textHash===hash);
+  if(existing)return existing;
+  return saveBrainDumpHistoryEntry({text,textHash:hash,status:reason,generatedCount:0});
+}
+let brainCalmLeaving=false;
+function chooseTopMenu(mode){
+  closeTopMenu();
+  if(mode==='profile'){openProfile();return;}
+  if(mode==='manager'){openTaskManager();return;}
+  if(mode==='brain'){openBrainDumpCalm();return;}
+  setMainMode(mode);
+}
+function openBrainDumpScreen(opts={}){
+  const sc=document.getElementById('brainDumpScreen');
+  if(!sc)return;
+  sc.classList.add('open');sc.setAttribute('aria-hidden','false');
+  const input=document.getElementById('brainDumpInput');
+  setBrainDumpCopyReady(false);
+  toggleBrainDumpAiPromptPreview(false);
+  if(input){input.value=localStorage.getItem(BRAIN_DUMP_DRAFT_KEY)||'';if(opts.focus)setTimeout(()=>{try{input.focus({preventScroll:true})}catch(e){input.focus()}},140)}
+  updateBrainDumpProcessedNotice();
+}
+function closeBrainDumpScreen(){
+  const sc=document.getElementById('brainDumpScreen');if(!sc)return;
+  sc.classList.remove('open');sc.setAttribute('aria-hidden','true');
+  setBrainDumpCopyReady(false);
+  toggleBrainDumpAiPromptPreview(false);
+  const st=document.getElementById('brainDumpStatus');if(st)st.textContent='';
+  try{document.activeElement&&document.activeElement.blur&&document.activeElement.blur()}catch(e){}
+}
+function saveBrainDumpDraft(){
+  const input=document.getElementById('brainDumpInput');if(!input)return;
+  try{localStorage.setItem(BRAIN_DUMP_DRAFT_KEY,input.value||'')}catch(e){}
+  updateBrainDumpProcessedNotice(true);
+}
+async function copyBrainDumpText(){
+  const input=document.getElementById('brainDumpInput'),st=document.getElementById('brainDumpStatus');if(!input)return;
+  const text=(input.value||'').trim();
+  if(!text){if(st)st.textContent='まだ本文がありません。';return}
+  const ok=await copyTextSafe(text);
+  if(st)st.textContent=ok?'ブレインダンプ本文をコピーしました。':'コピーできませんでした。本文欄を長押ししてコピーしてください。';
+}
+function clearBrainDumpDraft(){
+  openAppConfirm({title:'ブレインダンプを消す？',message:'入力中の本文は履歴に保存してから空にします。タスクは消えません。',okText:'消す',danger:true,onOk:()=>{const input=document.getElementById('brainDumpInput');const text=String(input&&input.value||'').trim();if(text)rememberBrainDumpDraft(text,'cleared');if(input)input.value='';try{localStorage.removeItem(BRAIN_DUMP_DRAFT_KEY)}catch(e){}const st=document.getElementById('brainDumpStatus');if(st)st.textContent='履歴に保存してクリアしました。';renderBrainDumpHistory();updateBrainDumpProcessedNotice();saveNow();}})
+}
+function brainViewportSize(){const vv=window.visualViewport;return{w:vv&&vv.width?vv.width:window.innerWidth,h:vv&&vv.height?vv.height:window.innerHeight}}
+function openBrainDumpCalm(opts={}){
+  if(document.getElementById('brainCalmOverlay'))return;
+  if(!opts.fromScreen)closeBrainDumpScreen();
+  brainCalmLeaving=false;
+  const ov=document.createElement('div');
+  ov.className='brain-calm-overlay';ov.id='brainCalmOverlay';
+  ov.innerHTML='<div class="brain-calm-flash" id="brainCalmFlash" aria-hidden="true"></div><div class="brain-calm-orb-pos" id="brainCalmOrbPos" aria-hidden="true"><div class="brain-calm-orb bright" id="brainCalmOrb"></div></div><div class="brain-calm-guide"><div class="brain-calm-line brain-calm-line-1">光に、呼吸を合わせる。</div><div class="brain-calm-line brain-calm-line-2">落ち着いたら、どこでも触れてください。</div></div>';
+  document.body.appendChild(ov);
+  ov.addEventListener('pointerdown',leaveBrainCalm,{once:true});
+  runBrainCalmChoreography();
+}
+function leaveBrainCalm(){
+  const ov=document.getElementById('brainCalmOverlay');if(!ov||brainCalmLeaving)return;
+  brainCalmLeaving=true;ov.classList.add('leaving');
+  setTimeout(()=>{ov.remove();openBrainDumpScreen({focus:true})},1700);
+}
+function brainSettleOrb(){
+  const ov=document.getElementById('brainCalmOverlay'),pos=document.getElementById('brainCalmOrbPos'),orb=document.getElementById('brainCalmOrb');if(!ov||!pos||!orb)return;
+  if(pos.getAnimations)pos.getAnimations().forEach(a=>a.cancel());
+  pos.style.transform='translate(0, 0)';orb.classList.add('settled');ov.classList.add('settled');
+}
+function brainDarkenToBlackout(){const orb=document.getElementById('brainCalmOrb');if(orb)orb.style.opacity='0'}
+function brainBloomIntoMist(){
+  const ov=document.getElementById('brainCalmOverlay'),pos=document.getElementById('brainCalmOrbPos'),orb=document.getElementById('brainCalmOrb');if(!ov||!pos||!orb)return;
+  orb.style.transition='none';orb.classList.remove('bright');orb.classList.add('landed');orb.style.removeProperty('opacity');
+  if(pos.getAnimations)pos.getAnimations().forEach(a=>a.cancel());pos.style.transform='translate(0, 0)';
+  requestAnimationFrame(()=>{orb.style.removeProperty('transition');const intro=orb.animate([{opacity:0,scale:.82},{opacity:.88,scale:1,offset:.34},{opacity:.84,scale:1,offset:.5},{opacity:.38,scale:.82}],{duration:12000,easing:'ease-in-out',fill:'forwards'});intro.onfinish=()=>{orb.classList.add('settled');ov.classList.add('settled');requestAnimationFrame(()=>intro.cancel())};});
+}
+function brainBuildBounceFrames(topY){
+  const FALL_T=.34,REST=.66,N=10,SCALE=.42;const nodes=[{dt:0,y:topY,squash:false},{dt:FALL_T,y:0,squash:true}];let h=Math.abs(topY);
+  for(let i=0;i<N;i++){h*=REST;const t=FALL_T*Math.sqrt(h/Math.abs(topY));nodes.push({dt:t,y:-h,squash:false});nodes.push({dt:t,y:0,squash:true})}
+  const total=nodes.reduce((a,n)=>a+n.dt,0);let cum=0;const frames=nodes.map((n,i)=>{cum+=n.dt;const frac=Math.min(cum/total,1),decay=1-(i/nodes.length),sq=n.squash?0.16*decay:0,scale=n.squash?`scale(${(SCALE*(1+sq)).toFixed(3)}, ${(SCALE*(1-sq)).toFixed(3)})`:`scale(${SCALE})`,next=nodes[i+1],easing=next?(next.y===0?'cubic-bezier(0.4, 0, 1, 0.6)':'cubic-bezier(0, 0.4, 0.6, 1)'):'linear';return{transform:`translate(0px, ${n.y.toFixed(1)}px) ${scale}`,offset:frac,easing}});return{frames,totalMs:total*1000};
+}
+async function runBrainCalmChoreography(){
+  const ov=document.getElementById('brainCalmOverlay'),flash=document.getElementById('brainCalmFlash'),pos=document.getElementById('brainCalmOrbPos'),orb=document.getElementById('brainCalmOrb');if(!ov||!flash||!pos||!orb)return;
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduced||!pos.animate){flash.remove();orb.classList.remove('bright');orb.style.removeProperty('opacity');brainSettleOrb();return}
+  const vp=brainViewportSize(),W=vp.w,H=vp.h,X=W*.19,topY=-H*.19,botY=H*.16,S='scale(0.42)',at=(x,y)=>`translate(${x}px, ${y}px) ${S}`;
+  try{
+    flash.animate([{opacity:1},{opacity:0}],{duration:1800,easing:'ease-out',fill:'forwards'});
+    await pos.animate([{transform:'translate(0, 0) scale(6)'},{transform:at(0,topY)}],{duration:1800,easing:'cubic-bezier(0.22, 0.8, 0.3, 1)',fill:'forwards'}).finished;if(brainCalmLeaving)return;flash.remove();
+    const lap=[[X,topY],[X,botY],[-X,botY],[-X,topY],[0,topY]],pts=[[0,topY],...lap,...lap];const seg=[];let total=0;for(let i=1;i<pts.length;i++){total+=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);seg.push(total)}const loopFrames=[{transform:at(...pts[0]),offset:0}];for(let i=1;i<pts.length;i++)loopFrames.push({transform:at(...pts[i]),offset:seg[i-1]/total});
+    await pos.animate(loopFrames,{duration:6400,easing:'ease-in-out',fill:'forwards'}).finished;if(brainCalmLeaving)return;
+    await new Promise(r=>setTimeout(r,900));if(brainCalmLeaving)return;
+    const bounce=brainBuildBounceFrames(topY);await pos.animate(bounce.frames,{duration:bounce.totalMs,easing:'linear',fill:'forwards'}).finished;if(brainCalmLeaving)return;
+    await new Promise(r=>setTimeout(r,700));brainDarkenToBlackout();await new Promise(r=>setTimeout(r,2900));if(brainCalmLeaving)return;brainBloomIntoMist();
+  }catch(e){brainSettleOrb()}
+}
+
+
+/* ===== v49.35 BRAIN DUMP HISTORY + DUPLICATE GUARD ===== */
+function updateBrainDumpProcessedNotice(silent=false){
+  const input=document.getElementById('brainDumpInput'),after=document.getElementById('brainAfterActions');
+  if(after)after.classList.remove('open');
+  if(!input)return;
+  const text=String(input.value||'').trim();
+  if(!text){if(!silent)setBrainDumpStatus('', '');return;}
+  const ex=findBrainDumpHistoryByHash(brainDumpSimpleHash(text));
+  if(ex&&!silent){setBrainDumpStatus('この本文は整理済みです。もう一度AIで整理するとタスクが重複する可能性があります。 <button type="button" class="brain-inline-btn" onclick="toggleBrainDumpHistoryPanel(true)">履歴</button>','');}
+}
+function toggleBrainDumpHistoryPanel(force){
+  const p=document.getElementById('brainDumpHistoryPanel');if(!p)return;
+  const open=force===true?true:force===false?false:!p.classList.contains('open');
+  p.classList.toggle('open',open);
+  if(open){renderBrainDumpHistory();setTimeout(()=>p.scrollIntoView({behavior:'smooth',block:'nearest'}),40);}
+}
+function renderBrainDumpHistory(){
+  const list=document.getElementById('brainDumpHistoryList');if(!list)return;
+  const hist=brainDumpHistory();
+  if(!hist.length){list.innerHTML='<div class="brain-history-empty">まだ履歴はありません。<br>AIで整理した本文や、クリア前の本文がここに残ります。</div>';return;}
+  list.innerHTML='';
+  hist.forEach(h=>{
+    const card=document.createElement('div');card.className='brain-history-card';
+    const status=h.status==='generated'?'整理済み':(h.status==='copied'?'AIへ送信済み':'保存済み');
+    const gen=h.generatedCount?(' · '+h.generatedCount+'件生成'):'';
+    card.innerHTML='<div class="brain-history-top"><div><div class="brain-history-date">'+escapeHtml(new Date(h.updatedAt||h.createdAt||Date.now()).toLocaleString('ja-JP'))+'</div><div class="brain-history-meta">'+escapeHtml(status+gen)+(h.sessionId?'<br>session: '+escapeHtml(h.sessionId):'')+'</div></div></div><div class="brain-history-text">'+escapeHtml(h.text||'')+'</div><div class="brain-history-actions"><button type="button" onclick="loadBrainDumpHistory(\''+h.id+'\')">本文を見る</button><button type="button" onclick="rerunBrainDumpHistory(\''+h.id+'\')">再整理</button><button type="button" onclick="copyBrainDumpHistoryText(\''+h.id+'\')">コピー</button><button type="button" class="danger" onclick="deleteBrainDumpHistory(\''+h.id+'\')">削除</button></div>';
+    list.appendChild(card);
+  });
+}
+function brainDumpHistoryEntry(id){return brainDumpHistory().find(x=>x&&x.id===id)}
+function loadBrainDumpHistory(id){const h=brainDumpHistoryEntry(id);if(!h)return;const input=document.getElementById('brainDumpInput');if(input){input.value=h.text||'';saveBrainDumpDraft();}toggleBrainDumpHistoryPanel(false);setBrainDumpStatus('履歴の本文を読み込みました。','');}
+function rerunBrainDumpHistory(id){const h=brainDumpHistoryEntry(id);if(!h)return;const input=document.getElementById('brainDumpInput');if(input){input.value=h.text||'';saveBrainDumpDraft();}toggleBrainDumpHistoryPanel(false);copyBrainDumpAiPrompt({force:true});}
+async function copyBrainDumpHistoryText(id){const h=brainDumpHistoryEntry(id);if(!h)return;const ok=await copyTextSafe(h.text||'');setBrainDumpStatus(ok?'履歴本文をコピーしました。':'コピーできませんでした。本文を見るから手動コピーしてください。',ok?'':'error');}
+function deleteBrainDumpHistory(id){openAppConfirm({title:'履歴を削除する？',message:'ブレインダンプ履歴だけを削除します。作成済みタスクは消えません。',okText:'削除',danger:true,onOk:()=>{const bd=ensureBrainDumpState();bd.history=bd.history.filter(x=>x.id!==id);saveNow();renderBrainDumpHistory();updateBrainDumpProcessedNotice();}})}
+function clearBrainDumpAfterGenerated(){const input=document.getElementById('brainDumpInput');const text=String(input&&input.value||'').trim();if(text)rememberBrainDumpDraft(text,'cleared');if(input)input.value='';try{localStorage.removeItem(BRAIN_DUMP_DRAFT_KEY)}catch(e){}const after=document.getElementById('brainAfterActions');if(after)after.classList.remove('open');setBrainDumpStatus('本文を履歴に残して空にしました。','');renderBrainDumpHistory();saveNow();}
+function brainGoToday(){closeAiOrganizer();closeBrainDumpScreen();setMainMode('tasks');}
+function brainGoTaskManager(){closeAiOrganizer();openTaskManager();}
+function markBrainDumpSessionApplied(session,summary,applied){
+  if(!session||session.source!=='brainDump')return;
+  const text=(session.brainText||'')||(brainDumpHistory().find(x=>x.sessionId===session.id)||{}).text||'';
+  const generated=Number(summary&&summary.create)||0;
+  saveBrainDumpHistoryEntry({text,textHash:session.brainTextHash||brainDumpSimpleHash(text),prompt:session.prompt||'',sessionId:session.id,status:'generated',generatedCount:generated||applied||0,summary:summary||{},appliedAt:Date.now()});
+  const input=document.getElementById('brainDumpInput');
+  if(input&&text&&brainDumpSimpleHash(String(input.value||''))!==brainDumpSimpleHash(text)){/* 画面の本文は触らない */}
+  renderBrainDumpHistory();
+}
+function showBrainDumpAfterGenerate(applied,summary){
+  const after=document.getElementById('brainAfterActions'),ttl=document.getElementById('brainAfterTitle');
+  if(after&&ttl){ttl.textContent=(summary&&summary.create?summary.create:applied)+'件のタスクを追加しました';after.classList.add('open');}
+}
+
+
+/* ===== v49.34 BRAIN DUMP -> AI -> TASK CREATE ===== */
+let brainDumpLastAiPrompt='';
+function brainDumpSimpleHash(text){
+  text=String(text||'');let h=2166136261;
+  for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)}
+  return (h>>>0).toString(16);
+}
+function brainDumpCommitAiSession(text,prompt,sessionId){
+  const a=ensureAiOrganizerState();
+  const session={
+    id:sessionId,
+    signature:JSON.stringify({type:'brainDump',hash:brainDumpSimpleHash(text)}),
+    source:'brainDump',
+    createdAt:Date.now(),
+    copiedAt:Date.now(),
+    promptLength:String(prompt||'').length,
+    scope:'brain_dump',
+    scopeLabel:'ブレインダンプ本文',
+    skillId:'brain_dump_create',
+    skillName:'ブレインダンプを整理',
+    taskIds:[],
+    taskHashes:{},
+    brainText:text,
+    prompt:prompt,
+    brainTextHash:brainDumpSimpleHash(text)
+  };
+  a.lastExportIds=[];
+  a.lastExportSessionId=session.id;
+  a.exportSessions=[session].concat((a.exportSessions||[]).filter(x=>x&&x.id!==session.id)).slice(0,12);
+  saveBrainDumpHistoryEntry({text,prompt,sessionId:session.id,status:'copied',generatedCount:0,textHash:session.brainTextHash});
+  renderBrainDumpHistory();
+  return session;
+}
+function brainDumpAiPrompt(text,sessionId){
+  const today=appDayStr(),tomorrow=addDaysStr(today,1);
+  return `あなたはDOPADOのブレインダンプ整理アシスタントです。目的は、ユーザーの頭の中にある未整理の文章を、実行しやすいタスクへ変換することです。
+
+【重要】
+この依頼のsessionIdは ${sessionId} です。返答JSONには必ず同じsessionIdを含めてください。
+
+【今日】
+${today}
+【明日】
+${tomorrow}
+
+【やること】
+- ブレインダンプ本文から、行動にできるタスクだけを抜き出す。
+- 感情・メモ・背景情報だけの文は、無理にタスク化しない。
+- 1タスクは短く、実行できる言葉にする。
+- 大きすぎるものは needsBreakdown:true を付ける。必要なら「最初の一歩」も別タスクとして作る。
+- 今日やるべきものだけ destination:"today" にする。今日に詰め込みすぎない。
+- 暇ならやる・いつでもよいものは destination:"skima" にする。
+- 明日以降でよいものは destination:"tomorrow" または destination:"hold_until" + value:"YYYY-MM-DD" にする。
+- どこにも強く分類できないものは destination:"inbox" にする。
+- 重複タスクを作らない。
+- 最大30件までに抑える。
+
+【絶対ルール】
+- JSON以外の文章やMarkdownコードフェンスは付けない。
+- 既存タスクの変更命令は出さない。taskIdは使わない。
+- operations は create のみ。
+- sessionIdは必ず ${sessionId} をそのまま返す。
+
+【返却形式】
+{"sessionId":"${sessionId}","operations":[
+ {"action":"create","title":"新規タスク","memo":"任意の補足","destination":"today|inbox|skima|tomorrow|hold_until","value":"YYYY-MM-DD（hold_untilの時だけ）","important":false,"needsBreakdown":false,"reason":"なぜこのタスクにしたか"}
+]}
+
+【ブレインダンプ本文】
+${text}`;
+}
+function setBrainDumpStatus(html,cls){
+  const st=document.getElementById('brainDumpStatus');if(!st)return;
+  st.className='brain-status '+(cls||'');
+  st.innerHTML=html||'';
+}
+function setBrainDumpCopyReady(open){
+  const sc=document.getElementById('brainDumpScreen'),box=document.getElementById('brainCopyReady');
+  if(sc)sc.classList.toggle('copy-ready',!!open);
+  if(box)box.classList.toggle('open',!!open);
+  if(open){
+    const hist=document.getElementById('brainDumpHistoryPanel');if(hist)hist.classList.remove('open');
+    const after=document.getElementById('brainAfterActions');if(after)after.classList.remove('open');
+  }
+}
+function showBrainDumpCopyReady(){
+  setBrainDumpStatus('','');
+  setBrainDumpCopyReady(true);
+  const body=document.querySelector('#brainDumpScreen .brain-body');
+  if(body)body.scrollTo({top:0,behavior:'smooth'});
+}
+function backToBrainDumpWriting(){
+  setBrainDumpCopyReady(false);
+  toggleBrainDumpAiPromptPreview(false);
+  setBrainDumpStatus('本文はそのままです。必要なら追記して、もう一度AIで整理できます。','');
+  const input=document.getElementById('brainDumpInput');
+  if(input)setTimeout(()=>{try{input.focus({preventScroll:true})}catch(e){input.focus()}},80);
+}
+async function copyBrainDumpAiPrompt(opts={}){
+  const input=document.getElementById('brainDumpInput');
+  const text=String(input&&input.value||'').trim();
+  setBrainDumpCopyReady(false);
+  const preview=document.getElementById('brainAiPreview');
+  if(preview)preview.classList.remove('open');
+  const after=document.getElementById('brainAfterActions');if(after)after.classList.remove('open');
+  if(!text){setBrainDumpStatus('まだ本文がありません。まず頭の中を置いてください。','error');return;}
+  const done=findBrainDumpHistoryByHash(brainDumpSimpleHash(text));
+  if(done&&!opts.force){openAppConfirm({title:'整理済みの本文です',message:'このブレインダンプはすでに'+(done.generatedCount||0)+'件のタスクを生成済みです。もう一度整理すると重複する可能性があります。',okText:'もう一度整理する',danger:false,onOk:()=>copyBrainDumpAiPrompt({force:true})});return;}
+  const sessionId='brain_'+newId();
+  const prompt=brainDumpAiPrompt(text,sessionId);
+  brainDumpLastAiPrompt=prompt;
+  const tx=document.getElementById('brainAiPromptText');if(tx)tx.value=prompt;
+  const session=brainDumpCommitAiSession(text,prompt,sessionId);
+  saveNow();
+  const ok=await copyTextSafe(prompt);
+  if(ok){
+    showBrainDumpCopyReady();
+  }else{
+    setBrainDumpStatus('自動コピーできませんでした。全文を開いて手動でコピーしてください。 <button type="button" class="brain-inline-btn" onclick="toggleBrainDumpAiPromptPreview(true)">全文を表示</button>','error');
+    toggleBrainDumpAiPromptPreview(true);
+  }
+}
+function toggleBrainDumpAiPromptPreview(forceOpen){
+  const box=document.getElementById('brainAiPreview'),tx=document.getElementById('brainAiPromptText');if(!box||!tx)return;
+  if(!tx.value&&brainDumpLastAiPrompt)tx.value=brainDumpLastAiPrompt;
+  const open=forceOpen===true?true:forceOpen===false?false:!box.classList.contains('open');
+  box.classList.toggle('open',open);
+  if(open)setTimeout(()=>box.scrollIntoView({behavior:'smooth',block:'nearest'}),40);
+}
+async function copyBrainDumpPromptFromPreview(){
+  const tx=document.getElementById('brainAiPromptText');if(!tx)return;
+  tx.focus();tx.select();tx.setSelectionRange(0,tx.value.length);
+  let ok=false;try{ok=document.execCommand('copy')}catch(e){}
+  if(!ok)ok=await copyTextSafe(tx.value);
+  setBrainDumpStatus(ok?'プロンプトをコピーしました。':'自動コピーできません。全文選択後、iPhoneのコピー操作を使ってください。',ok?'':'error');
+}
+function selectBrainDumpPromptPreview(){
+  const tx=document.getElementById('brainAiPromptText');if(!tx)return;
+  tx.focus();tx.select();tx.setSelectionRange(0,tx.value.length);
+  setBrainDumpStatus('全文を選択しました。iPhoneのコピー操作を使えます。','');
+}
+function openBrainDumpAiImport(){
+  closeBrainDumpScreen();
+  openAiOrganizer('import');
+  const st=document.getElementById('aiImportStatus');if(st){st.className='ai-org-status';st.textContent='外部AIが返したJSONを貼って「差分を確認」を押してください。新規タスク追加としてプレビューされます。'}
+  setTimeout(()=>{const t=document.getElementById('aiImportText');if(t){try{t.focus({preventScroll:true})}catch(e){t.focus()}}},180);
+}
+const _v4934ApplyAiOperation=applyAiOperation;
+applyAiOperation=function(op){
+  if(op&&op.action==='create'){
+    const dest=String(op.destination||'inbox'),cfg={extras:{memo:String(op.memo||''),subtasks:[],conditions:[]}};
+    const holdValue=String(op.value||op.holdUntil||op.holdDate||'');
+    if(dest==='today'){
+      cfg.dueDate=appDayStr();cfg.todayDate=appDayStr();
+    }else if(dest==='skima'){
+      cfg.organizeHoldKind='skima';
+    }else if(dest==='tomorrow'){
+      cfg.organizeHoldUntil=addDaysStr(appDayStr(),1);
+    }else if(dest==='hold_until'&&/^\d{4}-\d{2}-\d{2}$/.test(holdValue)){
+      cfg.organizeHoldUntil=holdValue;
+    }
+    if(op.important===true){cfg.importantFlag=true;cfg.importantDate=appDayStr();}
+    if(op.needsBreakdown===true||op.breakdown===true){cfg.swipeCycle=2;}
+    if(Array.isArray(op.subtasks))cfg.extras.subtasks=op.subtasks.map(x=>({id:newId(),text:String(x&&x.text||x||'').trim(),done:false})).filter(x=>x.text).slice(0,12);
+    state.tasks.push(createTask(String(op.title||'').trim(),cfg));return true;
+  }
+  return _v4934ApplyAiOperation(op);
+};
+
+document.addEventListener('touchmove',e=>{if(e.target&&e.target.closest&&e.target.closest('#brainDumpScreen,.brain-calm-overlay'))e.stopPropagation()},{passive:false});
 
 </script>
 </body>
