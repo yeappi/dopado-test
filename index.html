@@ -4523,24 +4523,60 @@ function recordManagementScore(){
   recordStaleTasks().forEach(t=>issueIds.add(t.id));
   return Math.max(0,Math.round((active.length-issueIds.size)/active.length*100));
 }
+function recordActivityEntries(){
+  return Array.isArray(state.activityLog)?state.activityLog:[];
+}
+function recordActivityDay(x){
+  return String((x&&x.day)||recordAppDayFromTs(x&&x.ts)||'');
+}
+function recordActivityWeight(x){
+  const n=Number(x&&x.count);
+  return Number.isFinite(n)&&n>0?n:1;
+}
+function recordActivityTypeMatches(x,types){
+  const set=Array.isArray(types)?types:[types];
+  return set.includes(x&&x.type);
+}
+function recordActivityEntriesOnDay(day,types){
+  return recordActivityEntries().filter(x=>recordActivityDay(x)===day&&(!types||recordActivityTypeMatches(x,types)));
+}
+function recordActivityCount(types,day){
+  return recordActivityEntriesOnDay(day,types).reduce((a,x)=>a+recordActivityWeight(x),0);
+}
+function recordActivityRunCount(types,day){
+  return recordActivityEntriesOnDay(day,types).length;
+}
+function recordActivityCountInMonth(types,month){
+  return recordActivityEntries().filter(x=>recordActivityDay(x).slice(0,7)===month&&recordActivityTypeMatches(x,types)).reduce((a,x)=>a+recordActivityWeight(x),0);
+}
 function recordBrainStats(){
-  const h=(state.brainDump&&Array.isArray(state.brainDump.history))?state.brainDump.history:[];
   const today=appDayStr();
-  const todayItems=h.filter(x=>recordAppDayFromTs(x.updatedAt||x.createdAt)===today);
-  const generatedToday=todayItems.filter(x=>x.status==='generated').reduce((a,x)=>a+(Number(x.generatedCount)||0),0);
-  return {countToday:todayItems.length,generatedToday,total:h.length};
+  const copiedToday=recordActivityRunCount('brain_dump_copied',today);
+  const generatedToday=recordActivityCount('brain_dump_generated',today);
+  const generatedRunsToday=recordActivityRunCount('brain_dump_generated',today);
+  const total=recordActivityRunCount('brain_dump_copied',today)+recordActivityRunCount('brain_dump_generated',today);
+  return {countToday:copiedToday,generatedToday,generatedRunsToday,total};
 }
 function recordAiStats(){
-  const a=ensureAiOrganizerState();const today=appDayStr();
-  const todayHist=(a.history||[]).filter(x=>recordAppDayFromTs(x.createdAt)===today);
-  const ops=todayHist.reduce((sum,h)=>sum+Object.values(h.summary||{}).reduce((x,y)=>x+(Number(y)||0),0),0);
-  return {runsToday:todayHist.length,opsToday:ops,total:(a.history||[]).length};
+  const today=appDayStr();
+  return {runsToday:recordActivityRunCount('ai_applied',today),opsToday:recordActivityCount('ai_applied',today),total:recordActivityEntries().filter(x=>x.type==='ai_applied').length};
 }
 function recordActivityStats(){
-  const today=appDayStr(),log=Array.isArray(state.activityLog)?state.activityLog:[];
-  const todayLog=log.filter(x=>(x.day||recordAppDayFromTs(x.ts))===today);
-  const countType=(type)=>todayLog.filter(x=>x.type===type).reduce((a,x)=>a+(Number(x.count)||1),0);
-  return {today:todayLog.length,completed:countType('task_completed'),created:countType('task_created'),moved:todayLog.filter(x=>/^task_moved/.test(x.type)||x.type==='skima_accepted').length,deleted:countType('task_deleted'),ai:countType('ai_applied'),brain:countType('brain_dump_generated')};
+  const today=appDayStr();
+  const todayLog=recordActivityEntriesOnDay(today);
+  return {
+    today:todayLog.length,
+    completed:recordActivityCount('task_completed',today),
+    created:recordActivityCount('task_created',today),
+    moved:recordActivityCount(['task_moved_today','task_moved_hold','task_moved_skima','skima_accepted'],today),
+    skimaAccepted:recordActivityCount('skima_accepted',today),
+    deleted:recordActivityCount('task_deleted',today),
+    restored:recordActivityCount('task_restored',today),
+    ai:recordActivityCount('ai_applied',today),
+    aiRuns:recordActivityRunCount('ai_applied',today),
+    brain:recordActivityCount('brain_dump_generated',today),
+    brainRuns:recordActivityRunCount('brain_dump_copied',today)
+  };
 }
 function recordActivityLabel(x){
   const name=x.name?('「'+x.name+'」'):'';
@@ -4559,16 +4595,16 @@ function renderRecordScreen(){
   const body=document.getElementById('recordBody');if(!body)return;
   const today=appDayStr(),month=recordMonthFromDay(today),tasks=state.tasks||[];
   const activity=recordActivityStats();
-  const active=recordActiveTasks(),doneToday=Math.max(tasks.filter(t=>recordIsDoneOnDay(t,today)).length,activity.completed||0);
-  const createdToday=Math.max(tasks.filter(t=>recordIsCreatedOnDay(t,today)).length,activity.created||0);
+  const active=recordActiveTasks(),doneToday=activity.completed||0;
+  const createdToday=activity.created||0;
   const todayOpen=tasks.filter(t=>t.state!=='done'&&isTaskToday(t)).length;
   const todayTotal=doneToday+todayOpen;
   const todayRate=todayTotal?Math.round(doneToday/todayTotal*100):100;
   const weekDays=recordWeekDays();
-  const weekCounts=weekDays.map(d=>tasks.filter(t=>recordIsDoneOnDay(t,d)).length);
+  const weekCounts=weekDays.map(d=>recordActivityCount('task_completed',d));
   const weekDone=weekCounts.reduce((a,b)=>a+b,0);
   const maxWeek=Math.max(1,...weekCounts);
-  const monthDone=tasks.filter(t=>t.state==='done'&&recordMonthFromDay(recordAppDayFromTs(t.doneAt))===month).length;
+  const monthDone=recordActivityCountInMonth('task_completed',month);
   const skima=(state.tasks||[]).filter(t=>t.state!=='done'&&isTaskSkima(t)).length;
   const hold=(state.tasks||[]).filter(t=>t.state!=='done'&&!isTaskSkima(t)&&t.organizeHoldUntil&&today<t.organizeHoldUntil).length;
   const overdue=recordOverdueTasks().length,breakdown=recordBreakdownTasks().length,stale=recordStaleTasks().length,mgmt=recordManagementScore();
