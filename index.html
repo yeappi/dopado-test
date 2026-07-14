@@ -3547,6 +3547,67 @@ body.keyboard-open #sf8[data-mode="tasks"] #quickPickerPanel.open,
 .quick-picker-date input{height:34px;min-width:0;border-radius:8px;border:1px solid rgba(140,150,200,.18);background:#070914;color:#dce6f7;padding:0 9px;font-size:14px}
 .quick-picker-clear{height:34px;padding:0 10px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:transparent;color:#8e9ab0}
 #quickTagPanel{display:none!important}
+
+/* ===== v49.13 VIEWER-SAFE INLINE CALENDAR ===== */
+#quickPickerPanel.calendar-picker{
+  max-height:min(430px,calc(var(--app-h,100vh) - 120px));
+  overflow:auto;
+}
+.quick-calendar{
+  margin-top:2px;
+  padding:8px;
+  border:1px solid rgba(140,150,200,.16);
+  border-radius:10px;
+  background:rgba(4,5,12,.55);
+}
+.quick-calendar-head{
+  display:grid;
+  grid-template-columns:38px 1fr 38px;
+  align-items:center;
+  gap:6px;
+  margin-bottom:8px;
+}
+.quick-calendar-head button{
+  height:32px;
+  border-radius:8px;
+  border:1px solid rgba(140,150,200,.18);
+  background:rgba(255,255,255,.025);
+  color:#b9c5d8;
+  font-size:18px;
+}
+.quick-calendar-month{
+  text-align:center;
+  color:#dce6f7;
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:.04em;
+}
+.quick-calendar-weekdays,.quick-calendar-grid{
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:4px;
+}
+.quick-calendar-weekdays span{
+  text-align:center;
+  color:#66758e;
+  font-size:10px;
+  padding:2px 0 4px;
+}
+.quick-calendar-day{
+  aspect-ratio:1/1;
+  min-height:34px;
+  border-radius:8px;
+  border:1px solid transparent;
+  background:rgba(255,255,255,.025);
+  color:#c8d2e3;
+  font-size:12px;
+  font-weight:750;
+}
+.quick-calendar-day.empty{visibility:hidden;pointer-events:none}
+.quick-calendar-day.today{border-color:rgba(91,140,255,.48);color:#8fb2ff}
+.quick-calendar-day.on{border-color:rgba(67,245,194,.58);background:rgba(67,245,194,.10);color:#43f5c2}
+.quick-calendar-open-btn{min-width:42px;font-size:17px!important}
+
 #taskSettingsScreen.settings-keyboard-open .task-settings-body{padding-bottom:calc(110px + var(--settings-kb,0px) + env(safe-area-inset-bottom))}
 #taskSettingsScreen.settings-keyboard-open .task-settings-toolbar{transform:translate3d(0,calc(var(--settings-kb,0px) * -1),0)}
 #taskSettingsScreen .task-settings-toolbar{transition:transform .16s ease-out;will-change:transform}
@@ -3560,7 +3621,398 @@ body.keyboard-open #sf8[data-mode="tasks"] #quickPickerPanel.open,
 .condition-delete{flex:0 0 40px !important;width:40px !important;height:38px !important;font-size:20px !important}
 .settings-mini-delete{flex:0 0 38px !important;width:38px !important;height:36px !important;font-size:20px !important}
 /* visualViewportが縮まない環境でも条件入力欄をキーボード上に出せるよう下部余白を確保 */
+
 #taskSettingsScreen.settings-keyboard-open .task-settings-body{padding-bottom:calc(110px + max(var(--settings-kb,0px), 42vh) + env(safe-area-inset-bottom))}
+
+/* ===== v49.7 HOLD + SETTINGS ===== */
+#sf8[data-mode="tasks"] #quickHoldBtn{min-width:56px}
+#quickPickerPanel.hold-picker{max-height:220px;padding:13px}
+#quickPickerPanel.hold-picker .quick-picker-row{display:grid;grid-template-columns:1fr 1fr 60px;gap:8px}
+#quickPickerPanel.hold-picker .quick-picker-choice{height:46px;border-radius:10px}
+#quickPickerPanel.hold-picker .calendar-choice{font-size:22px;padding:0}
+.quick-hold-date{display:none;margin-top:9px}.quick-hold-date.open{display:block}
+.quick-hold-date input{width:100%;box-sizing:border-box;height:40px;border-radius:8px;border:1px solid rgba(140,150,200,.18);background:#070914;color:#dce6f7;padding:0 9px;font-size:14px}
+.quick-hold-clear{height:34px;margin-top:9px;padding:0 10px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:transparent;color:#8e9ab0}
+#settingsHoldBtn.on{color:#43f5c2;border-color:rgba(67,245,194,.45);background:rgba(67,245,194,.07)}
+#settingsHoldPanel{display:none;position:absolute;top:calc(62px + env(safe-area-inset-top));right:10px;z-index:6;width:min(310px,calc(100vw - 20px));padding:12px;border:1px solid rgba(140,150,200,.20);border-radius:12px;background:#0b0c17;box-shadow:0 12px 32px rgba(0,0,0,.55)}
+#settingsHoldPanel.open{display:block}
+.settings-hold-title{font-size:10px;letter-spacing:.08em;color:#73819a;margin:0 0 9px}
+.settings-hold-row{display:grid;grid-template-columns:1fr 1fr 58px;gap:8px}
+.settings-hold-row button{height:42px;border-radius:9px;border:1px solid rgba(140,150,200,.18);background:rgba(255,255,255,.025);color:#b6c1d3;font-size:12px;font-weight:800}
+.settings-hold-row button.on{color:#43f5c2;border-color:rgba(67,245,194,.45);background:rgba(67,245,194,.075)}
+.settings-hold-row .calendar{font-size:21px}
+.settings-hold-date{display:none;margin-top:9px}.settings-hold-date.open{display:block}
+.settings-hold-date input{width:100%;box-sizing:border-box;height:40px;border-radius:8px;border:1px solid rgba(140,150,200,.18);background:#070914;color:#dce6f7;padding:0 9px;font-size:14px}
+.settings-hold-clear{width:100%;height:36px;margin-top:9px;border-radius:9px;border:1px solid rgba(255,255,255,.10);background:transparent;color:#8e9ab0}
+
+
+/* ===== v49.15 SAFE CALENDAR FIT + NO-SCROLL QUICK TABS ===== */
+/*
+  v49.13のHTML/JS構造は変更しない。
+  キーボード表示中だけ、カレンダーの高さを実表示領域へ収める。
+*/
+body.keyboard-open #sf8[data-mode="tasks"] #quickPickerPanel.calendar-picker.open,
+#sf8[data-mode="tasks"].keyboard-open #quickPickerPanel.calendar-picker.open{
+  max-height:max(180px,calc(var(--app-h, 100vh) - var(--kb, 0px) - 116px));
+  overflow-y:auto;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+}
+
+/* カレンダー上部は、パネル内をスクロールしても年月が確認できる */
+body.keyboard-open #quickPickerPanel.calendar-picker .quick-picker-title,
+#sf8.keyboard-open #quickPickerPanel.calendar-picker .quick-picker-title{
+  position:sticky;
+  top:-10px;
+  z-index:4;
+  margin:0 -2px 6px;
+  padding:10px 2px 6px;
+  background:#0b0c17;
+}
+body.keyboard-open #quickPickerPanel.calendar-picker .quick-calendar-head,
+#sf8.keyboard-open #quickPickerPanel.calendar-picker .quick-calendar-head{
+  position:sticky;
+  top:24px;
+  z-index:3;
+  padding:4px 0;
+  background:#080a14;
+}
+
+/* 7項目を1画面に固定表示。横スクロールやDOM変更は使わない */
+#sf8[data-mode="tasks"] #quickAddBar{
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  column-gap:4px;
+  padding-left:6px;
+  padding-right:6px;
+  overflow-x:hidden;
+  touch-action:manipulation;
+}
+#sf8[data-mode="tasks"].keyboard-open #quickAddBar,
+body.keyboard-open #sf8[data-mode="tasks"] #quickAddBar,
+#sf8[data-mode="tasks"] #quickAddBar.quick-hold{
+  display:grid;
+}
+#sf8[data-mode="tasks"] .quick-add-btn{
+  width:100%;
+  min-width:0;
+  max-width:none;
+  padding:0 2px;
+  font-size:11px;
+  letter-spacing:-.03em;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:clip;
+}
+#sf8[data-mode="tasks"] #quickHoldBtn{min-width:0}
+
+/* ===== v49.16 CALENDAR ROW GAP FIX ===== */
+/*
+  キーボード表示中の縦スクロール領域で、CSS Grid の auto 行が
+  余った高さへ引き伸ばされるのを防ぐ。月間カレンダーの各週を
+  一定間隔で上から詰めて表示する。
+*/
+#quickPickerPanel.calendar-picker .quick-calendar{
+  height:auto;
+  min-height:0;
+}
+#quickPickerPanel.calendar-picker .quick-calendar-grid{
+  align-content:start;
+  grid-auto-rows:max-content;
+  row-gap:4px;
+  height:auto;
+  min-height:0;
+}
+#quickPickerPanel.calendar-picker .quick-calendar-day{
+  align-self:start;
+}
+
+
+/* v49.18 menu visibility fix */
+#sf8[data-mode="tasks"] .task-menu-toggle,
+#sf8[data-mode="tasks"] .task-menu-toggle:not(.has-extra){
+  min-width:38px !important;
+  height:32px !important;
+  padding:0 3px !important;
+  gap:3px !important;
+  border:0 !important;
+  background:transparent !important;
+  color:rgba(226,235,249,.92) !important;
+  opacity:1 !important;
+}
+#sf8[data-mode="tasks"] .task-menu-toggle.has-extra{
+  color:#f3f7ff !important;
+  opacity:1 !important;
+}
+#sf8[data-mode="tasks"] .task-menu-toggle .menu-glyph{
+  width:25px !important;
+  height:23px !important;
+  flex:0 0 25px !important;
+  display:inline-flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:3px !important;
+  border:1px solid rgba(206,218,238,.72) !important;
+  border-radius:7px !important;
+  background:rgba(135,153,184,.16) !important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.035),0 2px 8px rgba(0,0,0,.22) !important;
+  box-sizing:border-box !important;
+}
+#sf8[data-mode="tasks"] .task-menu-toggle .menu-glyph i{
+  display:block !important;
+  width:12px !important;
+  height:1.5px !important;
+  border-radius:2px !important;
+  background:currentColor !important;
+  opacity:1 !important;
+}
+#sf8[data-mode="tasks"] .task-menu-toggle.open .menu-glyph{
+  border-color:rgba(67,245,194,.95) !important;
+  background:rgba(67,245,194,.18) !important;
+  color:#43f5c2 !important;
+  box-shadow:0 0 10px rgba(67,245,194,.18),inset 0 0 0 1px rgba(67,245,194,.08) !important;
+}
+#sf8[data-mode="tasks"] .task-card{-webkit-touch-callout:none;}
+
+/* ===== v49.19 SKIMA HOLD ===== */
+.settings-hold-row{grid-template-columns:1fr 1fr 1fr 58px}
+.quick-picker-row.skima-row{grid-template-columns:1fr 1fr 1fr 60px !important}
+#skimaOverlay{position:fixed;inset:0;z-index:12000;display:none;align-items:flex-end;justify-content:center;background:rgba(1,3,10,.76);backdrop-filter:blur(8px);padding:18px 14px calc(18px + env(safe-area-inset-bottom))}
+#skimaOverlay.show{display:flex}
+.skima-sheet{width:min(100%,520px);max-height:min(76vh,660px);overflow:hidden;border:1px solid rgba(67,245,194,.32);border-radius:22px;background:linear-gradient(180deg,#101526 0%,#070a13 100%);box-shadow:0 -16px 70px rgba(0,0,0,.58),0 0 30px rgba(67,245,194,.08);padding:20px 16px 16px}
+.skima-kicker{font-family:"Orbitron",monospace;font-size:10px;font-weight:800;letter-spacing:.18em;color:#43f5c2;margin-bottom:7px}
+.skima-title{font-size:20px;font-weight:900;color:#f3f7ff;letter-spacing:.02em}
+.skima-sub{font-size:12px;line-height:1.65;color:#8e9bb2;margin:7px 0 14px}
+.skima-list{display:flex;flex-direction:column;gap:8px;max-height:42vh;overflow:auto;padding:1px 2px 5px}
+.skima-item{display:flex;align-items:center;gap:11px;width:100%;min-height:50px;text-align:left;border:1px solid rgba(142,155,178,.18);border-radius:13px;background:rgba(255,255,255,.025);color:#cbd5e6;padding:10px 12px}
+.skima-item.selected{border-color:rgba(67,245,194,.52);background:rgba(67,245,194,.09);color:#fff}
+.skima-check{display:grid;place-items:center;flex:0 0 23px;height:23px;border-radius:7px;border:1px solid rgba(142,155,178,.38);font-size:14px;font-weight:900;color:transparent}
+.skima-item.selected .skima-check{border-color:#43f5c2;background:#43f5c2;color:#06100d}
+.skima-name{font-size:14px;font-weight:800;line-height:1.35}
+.skima-actions{display:grid;grid-template-columns:1fr 1.3fr;gap:9px;margin-top:14px}
+.skima-actions button{height:48px;border-radius:13px;font-size:13px;font-weight:900}
+.skima-close{border:1px solid rgba(142,155,178,.22);background:rgba(255,255,255,.025);color:#8e9bb2}
+.skima-accept{border:1px solid rgba(67,245,194,.48);background:#43f5c2;color:#04100d;box-shadow:0 0 20px rgba(67,245,194,.13)}
+.skima-accept:disabled{opacity:.36;box-shadow:none}
+
+
+
+/* ===== v49.21: TASK MANAGER v1 ===== */
+#taskManagerScreen{position:fixed;inset:0;z-index:480;display:none;flex-direction:column;background:#05060d;color:#e7efff;overflow:hidden}
+#taskManagerScreen.open{display:flex}
+.task-manager-head{flex:0 0 auto;padding:calc(env(safe-area-inset-top) + 10px) 14px 10px;border-bottom:1px solid rgba(140,150,200,.14);background:rgba(7,8,18,.98)}
+.task-manager-headline{display:grid;grid-template-columns:42px 1fr 42px;align-items:center;min-height:42px}
+.task-manager-back,.task-manager-refresh{width:38px;height:38px;border:1px solid rgba(140,150,200,.17);border-radius:10px;background:rgba(255,255,255,.025);color:rgba(220,230,246,.82);font-size:22px}
+.task-manager-refresh{font-size:16px}
+.task-manager-title{text-align:center;font-family:"Orbitron",monospace;font-size:12px;letter-spacing:.14em;color:rgba(232,238,248,.94)}
+.task-manager-sub{text-align:center;margin-top:2px;font-size:10px;color:rgba(170,185,210,.42);letter-spacing:.05em}
+.task-manager-tabs{display:flex;gap:7px;overflow-x:auto;padding:10px 0 1px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.task-manager-tabs::-webkit-scrollbar{display:none}
+.task-manager-search{display:grid;grid-template-columns:34px minmax(0,1fr) 34px;align-items:center;gap:5px;margin-top:9px;height:40px;padding:0 5px;border:1px solid rgba(140,150,200,.16);border-radius:11px;background:rgba(255,255,255,.025)}
+.task-manager-search:focus-within{border-color:rgba(67,245,194,.40);background:rgba(67,245,194,.025);box-shadow:0 0 0 1px rgba(67,245,194,.04)}
+.task-manager-search-icon{display:grid;place-items:center;color:rgba(170,185,210,.45);font-size:15px;pointer-events:none}
+.task-manager-search input{min-width:0;width:100%;height:38px;padding:0;border:0;outline:0;background:transparent;color:rgba(232,238,248,.94);font-size:13px}
+.task-manager-search input::placeholder{color:rgba(170,185,210,.32)}
+.task-manager-search-clear{width:30px;height:30px;border:0;border-radius:8px;background:transparent;color:rgba(190,200,220,.48);font-size:18px;visibility:hidden}
+.task-manager-search.has-query .task-manager-search-clear{visibility:visible}
+.task-manager-search-clear:active{background:rgba(255,255,255,.05);color:rgba(232,238,248,.88)}
+.task-manager-search-result{margin:-3px 2px 10px;font-size:10px;color:rgba(170,185,210,.42)}
+.task-manager-tab{flex:0 0 auto;height:34px;padding:0 11px;border:1px solid rgba(140,150,200,.15);border-radius:9px;background:rgba(255,255,255,.02);color:rgba(190,200,220,.52);font-size:11px;font-weight:800;white-space:nowrap}
+.task-manager-tab.on{border-color:rgba(67,245,194,.46);background:rgba(67,245,194,.07);color:#43f5c2}
+.task-manager-body{flex:1;min-height:0;overflow-y:auto;padding:14px 14px calc(30px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
+.task-manager-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px}
+.task-manager-stat{min-height:55px;padding:10px 8px;border:1px solid rgba(140,150,200,.13);border-radius:11px;background:rgba(12,14,26,.55);text-align:center}
+.task-manager-stat b{display:block;font-family:"Orbitron",monospace;font-size:17px;color:rgba(232,238,248,.92)}
+.task-manager-stat span{display:block;margin-top:4px;font-size:9px;color:rgba(170,185,210,.48)}
+.task-manager-section-label{margin:3px 2px 10px;font-size:11px;font-weight:900;letter-spacing:.08em;color:rgba(190,200,220,.48)}
+.task-manager-group{margin:0 0 16px}
+.task-manager-group-head{display:flex;align-items:center;justify-content:space-between;margin:0 2px 7px;color:rgba(190,200,220,.62);font-size:11px;font-weight:900}
+.task-manager-group-head b{font-family:"Orbitron",monospace;color:rgba(102,204,255,.72);font-size:10px}
+.manager-card{position:relative;margin-bottom:8px;padding:12px;border:1px solid rgba(140,150,200,.15);border-radius:13px;background:rgba(12,14,26,.66)}
+.manager-card:active{border-color:rgba(140,150,200,.30);background:rgba(16,19,34,.80)}
+.manager-card-main{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:start}
+.manager-card-title{font-size:15px;line-height:1.42;font-weight:700;color:rgba(232,238,248,.91);overflow-wrap:anywhere}
+.manager-card-meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.manager-chip{height:22px;display:inline-flex;align-items:center;padding:0 7px;border:1px solid rgba(140,150,200,.15);border-radius:7px;color:rgba(190,200,220,.56);font-size:9px;font-weight:800}
+.manager-chip.today{color:#43f5c2;border-color:rgba(67,245,194,.32);background:rgba(67,245,194,.04)}
+.manager-chip.important{color:#f0506e;border-color:rgba(240,80,110,.36);background:rgba(240,80,110,.04)}
+.manager-chip.skima{color:#b98bff;border-color:rgba(185,139,255,.36);background:rgba(185,139,255,.04)}
+.manager-chip.overdue{color:#ff7a8f;border-color:rgba(240,80,110,.44)}
+.manager-chip.done{color:rgba(140,150,200,.46)}
+.manager-card-open{width:32px;height:32px;border:1px solid rgba(140,150,200,.17);border-radius:9px;background:rgba(255,255,255,.02);color:rgba(190,200,220,.62);font-size:18px}
+.manager-card-actions{display:flex;gap:6px;overflow-x:auto;margin-top:10px;padding-top:9px;border-top:1px solid rgba(140,150,200,.09);scrollbar-width:none}
+.manager-card-actions::-webkit-scrollbar{display:none}
+.manager-action{flex:0 0 auto;height:31px;padding:0 10px;border:1px solid rgba(140,150,200,.16);border-radius:8px;background:rgba(255,255,255,.025);color:rgba(190,200,220,.64);font-size:10px;font-weight:900}
+.manager-action.primary{color:#43f5c2;border-color:rgba(67,245,194,.35);background:rgba(67,245,194,.05)}
+.manager-action.skima{color:#b98bff;border-color:rgba(185,139,255,.35)}
+.manager-action.danger{color:#f0506e;border-color:rgba(240,80,110,.28)}
+.manager-empty{padding:52px 20px;text-align:center}
+.manager-empty-icon{font-size:28px;opacity:.44}
+.manager-empty-title{margin-top:12px;font-size:15px;font-weight:800;color:rgba(220,230,246,.74)}
+.manager-empty-sub{margin-top:7px;font-size:12px;line-height:1.6;color:rgba(170,185,210,.40)}
+.manager-card.is-done{opacity:.58}
+.manager-card.is-done .manager-card-title{text-decoration:line-through}
+.task-manager-view-btn{width:42px;height:38px;padding:0;border:1px solid rgba(67,245,194,.38);border-radius:10px;background:rgba(67,245,194,.06);color:#43f5c2;font-size:10px;font-weight:900;letter-spacing:.04em}
+.task-manager-view-btn.on{background:rgba(67,245,194,.13);box-shadow:0 0 18px rgba(67,245,194,.10)}
+#taskManagerScreen.view-compact .manager-card{padding:9px 10px;margin-bottom:6px;border-radius:10px}
+#taskManagerScreen.view-compact .manager-card-title{font-size:13px;line-height:1.35}
+#taskManagerScreen.view-compact .manager-card-meta{margin-top:5px;gap:4px;max-height:22px;overflow:hidden}
+#taskManagerScreen.view-compact .manager-chip{height:19px;padding:0 6px;font-size:8px}
+#taskManagerScreen.view-compact .manager-card-open{width:29px;height:29px}
+#taskManagerScreen.view-compact .manager-card-actions{display:none}
+#taskManagerScreen.view-simple .task-manager-summary{display:none}
+#taskManagerScreen.view-simple .task-manager-section-label{margin-top:0}
+#taskManagerScreen.view-simple .manager-card{padding:10px 9px;margin-bottom:2px;border:0;border-bottom:1px solid rgba(140,150,200,.10);border-radius:0;background:transparent}
+#taskManagerScreen.view-simple .manager-card:active{background:rgba(255,255,255,.025)}
+#taskManagerScreen.view-simple .manager-card-main{display:block}
+#taskManagerScreen.view-simple .manager-card-title{font-size:13px;line-height:1.3;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#taskManagerScreen.view-simple .manager-card-meta,#taskManagerScreen.view-simple .manager-card-open,#taskManagerScreen.view-simple .manager-card-actions{display:none}
+.manager-view-overlay{position:fixed;inset:0;z-index:10040;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.64);backdrop-filter:blur(5px)}
+.manager-view-overlay.open{display:flex}
+.manager-view-sheet{width:min(100%,520px);max-height:82dvh;overflow-y:auto;padding:10px 14px calc(18px + env(safe-area-inset-bottom));border:1px solid rgba(140,150,200,.18);border-bottom:0;border-radius:20px 20px 0 0;background:#0a0c18;box-shadow:0 -18px 55px rgba(0,0,0,.48)}
+.manager-view-handle{width:44px;height:4px;margin:0 auto 14px;border-radius:99px;background:rgba(190,200,220,.20)}
+.manager-view-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.manager-view-title{font-family:"Orbitron",monospace;font-size:12px;letter-spacing:.12em;color:rgba(232,238,248,.94)}
+.manager-view-close{width:34px;height:34px;border:1px solid rgba(140,150,200,.17);border-radius:9px;background:rgba(255,255,255,.025);color:rgba(220,230,246,.76);font-size:20px}
+.manager-view-section{margin:0 0 17px}
+.manager-view-label{margin:0 2px 8px;font-size:10px;font-weight:900;letter-spacing:.08em;color:rgba(170,185,210,.48)}
+.manager-view-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.manager-view-options.sort{grid-template-columns:repeat(2,minmax(0,1fr))}
+.manager-view-option{min-height:42px;padding:8px;border:1px solid rgba(140,150,200,.15);border-radius:10px;background:rgba(255,255,255,.02);color:rgba(190,200,220,.62);font-size:11px;font-weight:900}
+.manager-view-option.on{border-color:rgba(67,245,194,.45);background:rgba(67,245,194,.07);color:#43f5c2}
+.manager-view-checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.manager-view-check{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:42px;padding:0 11px;border:1px solid rgba(140,150,200,.14);border-radius:10px;background:rgba(255,255,255,.018);color:rgba(190,200,220,.62);font-size:11px;font-weight:850}
+.manager-view-check i{width:22px;height:22px;display:grid;place-items:center;border:1px solid rgba(140,150,200,.22);border-radius:7px;font-style:normal;color:transparent}
+.manager-view-check.on{color:rgba(232,238,248,.88)}
+.manager-view-check.on i{border-color:rgba(67,245,194,.45);background:rgba(67,245,194,.09);color:#43f5c2}
+.manager-view-note{margin-top:7px;font-size:10px;line-height:1.5;color:rgba(170,185,210,.36)}
+
+
+/* ===== v49.24: TASK MANAGER MULTI SELECT ===== */
+#taskManagerScreen.selection-mode .manager-card{padding-left:50px;cursor:pointer}
+#taskManagerScreen.selection-mode .manager-card-open,#taskManagerScreen.selection-mode .manager-card-actions{display:none!important}
+.manager-select-box{position:absolute;left:13px;top:13px;width:25px;height:25px;display:none;place-items:center;border:1px solid rgba(140,150,200,.30);border-radius:8px;background:rgba(5,6,13,.82);color:transparent;font-size:14px;font-weight:900}
+#taskManagerScreen.selection-mode .manager-select-box{display:grid}
+.manager-card.selected{border-color:rgba(67,245,194,.52);background:rgba(67,245,194,.065);box-shadow:0 0 0 1px rgba(67,245,194,.04) inset}
+.manager-card.selected .manager-select-box{border-color:rgba(67,245,194,.62);background:rgba(67,245,194,.15);color:#43f5c2}
+#taskManagerScreen.view-simple.selection-mode .manager-card{padding-left:47px}
+#taskManagerScreen.view-simple.selection-mode .manager-select-box{top:7px;left:11px}
+.manager-batch-bar{position:fixed;z-index:490;left:0;right:0;bottom:0;display:none;align-items:center;gap:7px;padding:9px 10px calc(9px + env(safe-area-inset-bottom));border-top:1px solid rgba(67,245,194,.24);background:rgba(7,8,18,.98);box-shadow:0 -12px 38px rgba(0,0,0,.52);overflow-x:auto;scrollbar-width:none}
+.manager-batch-bar::-webkit-scrollbar{display:none}
+.manager-batch-bar.open{display:flex}
+.manager-batch-count{flex:0 0 auto;min-width:54px;padding:0 4px;color:#43f5c2;font-family:"Orbitron",monospace;font-size:11px;font-weight:900;text-align:center}
+.manager-batch-btn{flex:0 0 auto;height:37px;padding:0 11px;border:1px solid rgba(140,150,200,.18);border-radius:9px;background:rgba(255,255,255,.025);color:rgba(220,230,246,.74);font-size:10px;font-weight:900;white-space:nowrap}
+.manager-batch-btn.primary{border-color:rgba(67,245,194,.40);background:rgba(67,245,194,.06);color:#43f5c2}
+.manager-batch-btn.skima{border-color:rgba(185,139,255,.38);color:#b98bff}
+.manager-batch-btn.danger{border-color:rgba(240,80,110,.34);color:#f0506e}
+.manager-batch-btn.close{font-size:17px;padding:0 12px}
+#taskManagerScreen.selection-mode .task-manager-body{padding-bottom:calc(90px + env(safe-area-inset-bottom))}
+
+
+/* ===== v49.25: advanced filters / saved views ===== */
+.task-manager-headline{grid-template-columns:42px 1fr auto}
+.task-manager-head-actions{display:flex;gap:6px;align-items:center}
+.task-manager-filter-btn{height:38px;min-width:48px;padding:0 9px;border:1px solid rgba(185,139,255,.34);border-radius:10px;background:rgba(185,139,255,.055);color:#c7a7ff;font-size:10px;font-weight:900;letter-spacing:.03em}
+.task-manager-filter-btn.on{background:rgba(185,139,255,.14);box-shadow:0 0 18px rgba(185,139,255,.10)}
+.manager-saved-views{display:flex;gap:7px;overflow-x:auto;padding:8px 0 0;scrollbar-width:none}.manager-saved-views::-webkit-scrollbar{display:none}
+.manager-saved-view{flex:0 0 auto;height:30px;padding:0 10px;border:1px solid rgba(140,150,200,.14);border-radius:9px;background:rgba(255,255,255,.018);color:rgba(190,200,220,.55);font-size:10px;font-weight:850;white-space:nowrap}
+.manager-saved-view.favorite::before{content:'★ ';color:#ffd24a}.manager-saved-view.on{border-color:rgba(185,139,255,.44);background:rgba(185,139,255,.08);color:#c7a7ff}
+.manager-filter-summary{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-2px 0 10px;padding:9px 10px;border:1px solid rgba(185,139,255,.22);border-radius:10px;background:rgba(185,139,255,.04);font-size:10px;color:rgba(210,195,238,.70)}
+.manager-filter-summary button{flex:0 0 auto;height:27px;padding:0 9px;border:1px solid rgba(185,139,255,.28);border-radius:8px;background:transparent;color:#c7a7ff;font-size:9px;font-weight:900}
+.manager-filter-overlay{position:fixed;inset:0;z-index:10050;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.68);backdrop-filter:blur(6px)}.manager-filter-overlay.open{display:flex}
+.manager-filter-sheet{width:min(100%,560px);max-height:91dvh;overflow-y:auto;padding:10px 13px calc(18px + env(safe-area-inset-bottom));border:1px solid rgba(185,139,255,.23);border-bottom:0;border-radius:21px 21px 0 0;background:#090b17;box-shadow:0 -20px 65px rgba(0,0,0,.58)}
+.manager-filter-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.manager-filter-title{font-family:'Orbitron',monospace;font-size:12px;letter-spacing:.11em;color:rgba(238,232,248,.95)}
+.manager-filter-close{width:34px;height:34px;border:1px solid rgba(140,150,200,.17);border-radius:9px;background:rgba(255,255,255,.025);color:rgba(220,230,246,.76);font-size:20px}
+.manager-filter-group{margin-bottom:11px;padding:10px;border:1px solid rgba(140,150,200,.14);border-radius:12px;background:rgba(255,255,255,.018)}
+.manager-filter-group-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}.manager-filter-group-title{font-size:10px;font-weight:900;color:rgba(190,200,220,.62)}
+.manager-filter-group-op{height:30px;padding:0 8px;border:1px solid rgba(185,139,255,.28);border-radius:8px;background:#0e1120;color:#c7a7ff;font-size:10px;font-weight:900}
+.manager-filter-connector{display:flex;align-items:center;justify-content:center;gap:8px;margin:-2px 0 9px;color:rgba(190,200,220,.48);font-size:9px;font-weight:900}.manager-filter-connector div,.manager-filter-logic{display:flex;gap:5px}.manager-filter-connector button,.manager-filter-logic button{height:29px;padding:0 10px;border:1px solid rgba(140,150,200,.16);border-radius:8px;background:rgba(255,255,255,.018);color:rgba(205,215,232,.55);font-size:9px;font-weight:900}.manager-filter-connector button.on,.manager-filter-logic button.on{border-color:rgba(185,139,255,.44);background:rgba(185,139,255,.09);color:#c7a7ff}.manager-filter-logic{align-items:center;margin:-2px 0 9px}.manager-filter-logic>span{margin-right:auto;color:rgba(190,200,220,.45);font-size:9px;font-weight:850}.manager-filter-group-not{height:30px;padding:0 9px;border:1px solid rgba(240,80,110,.20);border-radius:8px;background:transparent;color:rgba(220,230,246,.52);font-size:9px;font-weight:900}.manager-filter-group-not.on{color:#ff7a8f;border-color:rgba(240,80,110,.45);background:rgba(240,80,110,.06)}.manager-filter-group.group-not{border-color:rgba(240,80,110,.24)}
+.manager-filter-condition{display:grid;grid-template-columns:72px minmax(0,1fr);gap:7px;margin-bottom:7px;padding:8px;border:1px solid rgba(140,150,200,.10);border-radius:10px;background:rgba(0,0,0,.12)}
+.manager-filter-condition .negate{min-height:42px;border:1px solid rgba(240,80,110,.20);border-radius:8px;background:transparent;color:rgba(220,230,246,.55);font-size:9px;font-weight:900;line-height:1.15}.manager-filter-condition .negate small{display:block;margin-top:3px;font-size:8px;letter-spacing:.08em}.manager-filter-condition .negate.on{color:#ff7a8f;border-color:rgba(240,80,110,.42);background:rgba(240,80,110,.05)}
+.manager-filter-fields{display:grid;grid-template-columns:1fr 1fr;gap:6px}.manager-filter-fields select,.manager-filter-fields input{min-width:0;width:100%;height:34px;padding:0 8px;border:1px solid rgba(140,150,200,.14);border-radius:8px;background:#0d101d;color:rgba(232,238,248,.88);font-size:10px;outline:none}
+.manager-filter-fields .wide{grid-column:1/-1}.manager-filter-remove{grid-column:1/-1;justify-self:end;height:26px;padding:0 8px;border:0;background:transparent;color:rgba(240,80,110,.58);font-size:9px;font-weight:850}
+.manager-filter-add{width:100%;height:35px;border:1px dashed rgba(185,139,255,.30);border-radius:9px;background:rgba(185,139,255,.025);color:#bfa0f2;font-size:10px;font-weight:900}
+.manager-filter-group-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:10px 0}.manager-filter-group-actions button{height:36px;border:1px solid rgba(140,150,200,.15);border-radius:9px;background:rgba(255,255,255,.022);color:rgba(210,220,238,.67);font-size:10px;font-weight:900}
+.manager-filter-expression{margin:10px 0;padding:10px;border:1px solid rgba(67,245,194,.16);border-radius:10px;background:rgba(67,245,194,.025);font:10px/1.55 monospace;color:rgba(130,235,205,.66);overflow-wrap:anywhere}
+.manager-filter-footer{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.manager-filter-footer button{height:40px;border:1px solid rgba(140,150,200,.16);border-radius:10px;background:rgba(255,255,255,.025);color:rgba(220,230,246,.72);font-size:10px;font-weight:900}.manager-filter-footer .primary{border-color:rgba(185,139,255,.40);background:rgba(185,139,255,.08);color:#c7a7ff}
+.manager-filter-saved{margin-top:15px}.manager-filter-saved h4{margin:0 2px 8px;font-size:10px;color:rgba(170,185,210,.45)}.manager-filter-saved-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;gap:5px;margin-bottom:6px}.manager-filter-saved-row button{height:34px;border:1px solid rgba(140,150,200,.13);border-radius:8px;background:rgba(255,255,255,.018);color:rgba(205,215,232,.64);font-size:9px;font-weight:850}.manager-filter-saved-row .name{text-align:left;padding:0 9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.manager-filter-saved-row .fav.on{color:#ffd24a}.manager-filter-saved-row .del{color:#ff7a8f}
+
+
+/* ===== v49.26 AI ORGANIZER ===== */
+.task-manager-ai-btn{height:38px;min-width:42px;padding:0 9px;border:1px solid rgba(102,204,255,.38);border-radius:10px;background:rgba(102,204,255,.065);color:#82d8ff;font-size:11px;font-weight:900}
+.task-manager-ai-btn.on{background:rgba(102,204,255,.14);box-shadow:0 0 18px rgba(102,204,255,.10)}
+.ai-org-overlay{position:fixed;inset:0;z-index:760;display:none;align-items:flex-end;background:rgba(0,0,0,.72);backdrop-filter:blur(7px)}
+.ai-org-overlay.open{display:flex}.ai-org-sheet{width:100%;max-height:92dvh;overflow:auto;padding:14px 14px calc(18px + env(safe-area-inset-bottom));border-radius:20px 20px 0 0;border:1px solid rgba(140,180,220,.18);background:#0a0c17;color:#eaf1ff;box-shadow:0 -24px 70px rgba(0,0,0,.55)}
+.ai-org-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.ai-org-head b{font-family:"Orbitron",monospace;font-size:12px;letter-spacing:.11em}.ai-org-close{width:36px;height:36px;border:1px solid rgba(160,180,210,.18);border-radius:10px;background:rgba(255,255,255,.03);color:#dfe8f8;font-size:20px}
+.ai-org-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}.ai-org-tab{height:35px;border:1px solid rgba(140,160,200,.14);border-radius:9px;background:rgba(255,255,255,.025);color:rgba(210,220,240,.55);font-size:10px;font-weight:900}.ai-org-tab.on{border-color:rgba(102,204,255,.45);background:rgba(102,204,255,.09);color:#82d8ff}
+.ai-org-panel{display:none}.ai-org-panel.on{display:block}.ai-org-note{font-size:11px;line-height:1.65;color:rgba(190,205,228,.58);margin-bottom:10px}.ai-org-options{display:grid;gap:7px;margin:10px 0}.ai-org-option{display:flex;align-items:center;gap:9px;min-height:40px;padding:8px 10px;border:1px solid rgba(140,160,200,.13);border-radius:10px;background:rgba(255,255,255,.02);font-size:12px}.ai-org-option input{accent-color:#43f5c2}
+.ai-org-btn{width:100%;min-height:44px;border:1px solid rgba(67,245,194,.42);border-radius:11px;background:rgba(67,245,194,.09);color:#43f5c2;font-size:12px;font-weight:900}.ai-org-btn.secondary{border-color:rgba(102,204,255,.32);background:rgba(102,204,255,.055);color:#82d8ff}.ai-org-btn.danger{border-color:rgba(255,82,110,.36);background:rgba(255,82,110,.065);color:#ff7890}.ai-org-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.ai-org-textarea{width:100%;min-height:190px;resize:vertical;padding:12px;border:1px solid rgba(140,160,200,.16);border-radius:11px;background:#060711;color:#eaf1ff;font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;outline:0}.ai-org-textarea:focus{border-color:rgba(102,204,255,.44)}
+.ai-org-status{min-height:20px;margin:8px 2px;font-size:10px;color:rgba(190,205,228,.56)}.ai-org-status.error{color:#ff7890}.ai-org-status.ok{color:#43f5c2}
+.ai-preview-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0 12px}.ai-preview-stat{padding:8px 5px;border:1px solid rgba(140,160,200,.12);border-radius:9px;background:rgba(255,255,255,.02);text-align:center}.ai-preview-stat b{display:block;font-family:"Orbitron",monospace;font-size:14px}.ai-preview-stat span{font-size:8px;color:rgba(190,205,228,.52)}
+.ai-preview-list{display:grid;gap:7px;max-height:44dvh;overflow:auto}.ai-preview-item{display:grid;grid-template-columns:24px 1fr;gap:8px;padding:10px;border:1px solid rgba(140,160,200,.13);border-radius:10px;background:rgba(255,255,255,.02)}.ai-preview-item.invalid{border-color:rgba(255,82,110,.3);opacity:.68}.ai-preview-item input{margin-top:2px;accent-color:#43f5c2}.ai-preview-title{font-size:12px;font-weight:800}.ai-preview-diff{margin-top:4px;font-size:10px;line-height:1.5;color:rgba(190,205,228,.56)}.ai-preview-reason{margin-top:4px;font-size:9px;color:rgba(255,190,105,.68)}
+.ai-history-list,.ai-trash-list{display:grid;gap:8px}.ai-history-card,.ai-trash-card{padding:11px;border:1px solid rgba(140,160,200,.13);border-radius:10px;background:rgba(255,255,255,.02)}.ai-history-top,.ai-trash-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.ai-history-title,.ai-trash-title{font-size:12px;font-weight:850}.ai-history-meta,.ai-trash-meta{margin-top:4px;font-size:9px;color:rgba(190,205,228,.48)}.ai-mini-btn{height:30px;padding:0 9px;border:1px solid rgba(102,204,255,.28);border-radius:8px;background:rgba(102,204,255,.05);color:#82d8ff;font-size:9px;font-weight:850}.ai-mini-btn.danger{border-color:rgba(255,82,110,.28);color:#ff7890;background:rgba(255,82,110,.04)}
+.ai-empty{padding:28px 10px;text-align:center;color:rgba(190,205,228,.48);font-size:11px;line-height:1.7}
+
+/* ===== v49.29 AI SKILL ===== */
+.ai-org-tabs{grid-template-columns:repeat(3,1fr)}
+.ai-skill-intro{margin-bottom:12px;padding:10px 11px;border:1px solid rgba(102,204,255,.18);border-radius:11px;background:rgba(102,204,255,.035);font-size:11px;line-height:1.55;color:rgba(210,225,244,.72)}
+.ai-skill-intro b{color:#82d8ff}.ai-skill-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.ai-skill-field{display:block}.ai-skill-field>span{display:block;margin:0 2px 6px;font-size:9px;font-weight:900;letter-spacing:.08em;color:rgba(180,200,225,.52)}
+.ai-skill-field select,.ai-skill-field textarea{width:100%;border:1px solid rgba(140,170,210,.18);border-radius:10px;background:#070914;color:#eaf1ff;outline:0}.ai-skill-field select{height:43px;padding:0 10px;font-size:11px;font-weight:800}.ai-skill-field textarea{min-height:72px;padding:10px;resize:vertical;font:11px/1.55 inherit}.ai-skill-field select:focus,.ai-skill-field textarea:focus{border-color:rgba(102,204,255,.48)}
+.ai-skill-description{min-height:42px;margin:9px 0 11px;padding:9px 10px;border-left:2px solid rgba(67,245,194,.52);background:rgba(67,245,194,.025);font-size:10px;line-height:1.55;color:rgba(195,215,230,.62)}.ai-skill-extra{margin:10px 0}.ai-skill-maker-toggle{width:100%;height:39px;margin-top:13px;border:1px dashed rgba(185,139,255,.34);border-radius:10px;background:rgba(185,139,255,.025);color:#c7a7ff;font-size:10px;font-weight:900}.ai-skill-maker{display:none;margin-top:9px;padding:11px;border:1px solid rgba(185,139,255,.20);border-radius:12px;background:rgba(185,139,255,.025)}.ai-skill-maker.open{display:block}.ai-skill-maker-title{margin-bottom:8px;font-family:"Orbitron",monospace;font-size:10px;letter-spacing:.12em;color:#c7a7ff}.ai-org-textarea.compact{min-height:100px;margin-bottom:8px}.ai-custom-skill-list{display:grid;gap:6px;margin-top:10px}.ai-custom-skill-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;align-items:center;padding:8px 9px;border:1px solid rgba(140,160,200,.12);border-radius:9px;background:rgba(255,255,255,.018)}.ai-custom-skill-row b{display:block;font-size:10px}.ai-custom-skill-row small{display:block;margin-top:3px;font-size:8px;line-height:1.35;color:rgba(190,205,228,.48)}.ai-custom-skill-row button{height:28px;padding:0 8px;border:1px solid rgba(255,82,110,.25);border-radius:7px;background:transparent;color:#ff7890;font-size:8px;font-weight:900}
+@media(max-width:380px){.ai-skill-grid{grid-template-columns:1fr}}
+
+/* ===== v49.30 AI ORGANIZER LAYOUT / CLARITY ===== */
+.ai-org-overlay{align-items:center;padding:calc(10px + env(safe-area-inset-top)) 8px calc(10px + env(safe-area-inset-bottom));box-sizing:border-box}
+.ai-org-sheet{display:flex;flex-direction:column;width:min(100%,560px);height:min(88dvh,760px);max-height:calc(100dvh - 20px - env(safe-area-inset-top) - env(safe-area-inset-bottom));overflow:hidden;padding:0;border-radius:20px}
+.ai-org-head{flex:0 0 auto;margin:0;padding:14px 14px 10px;background:#0a0c17;z-index:3}
+.ai-org-tabs{flex:0 0 auto;margin:0;padding:0 14px 12px;background:#0a0c17;z-index:3}
+.ai-org-panel{min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 14px calc(18px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
+.ai-org-panel.on{display:block;flex:1 1 auto}
+.ai-skill-intro{margin-top:2px}
+.ai-request-summary{margin:10px 0;padding:11px 12px;border-left:3px solid #43f5c2;border-radius:0 10px 10px 0;background:rgba(67,245,194,.035);font-size:11px;line-height:1.6;color:rgba(218,230,245,.78)}
+.ai-request-summary b{color:#43f5c2}
+.ai-org-primary-row{margin-top:12px}
+.ai-org-primary-row .ai-org-btn{min-height:50px;font-size:13px}
+.ai-copy-result{display:none;margin:10px 0 0;padding:10px 12px;border:1px solid rgba(67,245,194,.22);border-radius:10px;background:rgba(67,245,194,.035)}
+.ai-copy-result.open{display:block}.ai-copy-result.error{border-color:rgba(255,82,110,.25);background:rgba(255,82,110,.035)}
+.ai-copy-result-text{font-size:11px;line-height:1.55;color:#43f5c2}.ai-copy-result.error .ai-copy-result-text{color:#ff7890}
+.ai-copy-result-actions{display:flex;gap:7px;margin-top:8px}.ai-copy-result-actions button{flex:1;height:36px;border:1px solid rgba(102,204,255,.28);border-radius:9px;background:rgba(102,204,255,.04);color:#82d8ff;font-size:10px;font-weight:900}
+.ai-export-preview{margin-top:10px}.ai-export-preview:not(.open){display:none}.ai-export-preview .ai-export-text{min-height:180px;max-height:36dvh}
+.ai-export-preview .ai-org-actions{grid-template-columns:1fr 1fr}.ai-export-preview .ai-org-actions button:last-child{grid-column:1/-1}
+.ai-skill-maker-toggle{margin-top:14px}
+@media(max-height:620px){.ai-org-sheet{height:94dvh}.ai-org-head{padding-top:10px}.ai-org-tabs{padding-bottom:8px}.ai-org-tab{height:32px}}
+
+
+/* ===== v49.31 AI ORGANIZER TRUE VIEWPORT FIX ===== */
+.ai-org-overlay{
+  inset:auto!important;
+  left:0!important;
+  top:var(--ai-vtop,0px)!important;
+  width:100vw!important;
+  height:var(--ai-vh,100dvh)!important;
+  min-height:0!important;
+  padding:8px 8px!important;
+  padding-top:max(8px,env(safe-area-inset-top))!important;
+  padding-bottom:max(8px,env(safe-area-inset-bottom))!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+}
+.ai-org-sheet{
+  width:min(100%,560px)!important;
+  height:100%!important;
+  max-height:100%!important;
+  min-height:0!important;
+  margin:0 auto!important;
+  border-radius:18px!important;
+}
+.ai-org-panel{padding-bottom:18px!important;scroll-padding-bottom:18px!important}
+@media(max-height:560px){
+  .ai-org-overlay{padding:4px!important}
+  .ai-org-head{padding:9px 11px 7px!important}
+  .ai-org-tabs{padding:0 11px 7px!important}
+  .ai-org-panel{padding-left:11px!important;padding-right:11px!important}
+}
 </style>
 </head>
 <body>
@@ -3573,10 +4025,12 @@ body.keyboard-open #sf8[data-mode="tasks"] #quickPickerPanel.open,
     </button>
     <div class="top-menu" id="topMenu">
       <button type="button" onclick="chooseTopMenu('tasks')">今日</button>
+      <button type="button" onclick="chooseTopMenu('manager')">タスク管理</button>
       <button type="button" onclick="chooseTopMenu('cal')">カレンダー</button>
       <button type="button" onclick="chooseTopMenu('game')">ゲーム</button>
       <button type="button" onclick="chooseTopMenu('habits')">習慣</button>
       <button type="button" onclick="chooseTopMenu('profile')">プロフィール</button>
+      <button type="button" onclick="openDiagnosticsPage();closeTopMenu()">診断</button>
     </div>
     <div class="meter charge-frame-shell charge-off top-charge" id="chargeMeter" aria-label="チャージ抽選窓">
       <iframe id="chargeFrame" src="./charge.html?v=47" title="DOPADO CHARGE"></iframe><div id="chargeHolds" aria-label="リール保留"></div>
@@ -3596,7 +4050,6 @@ body.keyboard-open #sf8[data-mode="tasks"] #quickPickerPanel.open,
   </div>
   <div id="bottomDock">
     <div id="quickAddBar" aria-label="クイック設定">
-      <button type="button" class="quick-add-btn" id="quickDueBtn">期日</button>
       <button type="button" class="quick-add-btn" id="quickTagBtn">タグ</button>
       <button type="button" class="quick-add-btn" id="quickMemoBtn">メモ</button>
       <button type="button" class="quick-add-btn" id="quickCondBtn">条件</button>
@@ -3666,6 +4119,110 @@ body.keyboard-open #sf8[data-mode="tasks"] #quickPickerPanel.open,
     </div>
   </div>
 
+
+
+  <div id="taskManagerScreen" aria-hidden="true">
+    <div class="task-manager-head">
+      <div class="task-manager-headline">
+        <button type="button" class="task-manager-back" onclick="closeTaskManager()" aria-label="戻る">‹</button>
+        <div><div class="task-manager-title">TASK MANAGER</div><div class="task-manager-sub">探す・整理する場所</div></div>
+        <div class="task-manager-head-actions"><button type="button" class="task-manager-ai-btn" id="taskManagerAiBtn" onclick="openAiOrganizer()" aria-label="AI整理">AI</button><button type="button" class="task-manager-filter-btn" id="taskManagerFilterBtn" onclick="openTaskManagerFilterMenu()" aria-label="上級フィルター">絞込</button><button type="button" class="task-manager-view-btn" id="taskManagerViewBtn" onclick="openTaskManagerViewMenu()" aria-label="表示設定">表示</button></div>
+      </div>
+      <div class="task-manager-search" id="taskManagerSearchBox">
+        <span class="task-manager-search-icon" aria-hidden="true">⌕</span>
+        <input id="taskManagerSearchInput" type="search" placeholder="タスク名・メモを検索" autocomplete="off" enterkeyhint="search" oninput="onTaskManagerSearch(event)" />
+        <button type="button" class="task-manager-search-clear" id="taskManagerSearchClear" onclick="clearTaskManagerSearch()" aria-label="検索をクリア">×</button>
+      </div>
+      <div class="task-manager-tabs" id="taskManagerTabs"></div><div class="manager-saved-views" id="taskManagerSavedViews"></div>
+    </div>
+    <div class="task-manager-body" id="taskManagerBody"></div>
+  </div>
+
+
+  <div class="manager-batch-bar" id="taskManagerBatchBar" aria-hidden="true">
+    <div class="manager-batch-count" id="taskManagerBatchCount">0件</div>
+    <button type="button" class="manager-batch-btn" id="taskManagerSelectAllBtn" onclick="managerToggleSelectAll()">全選択</button>
+    <button type="button" class="manager-batch-btn primary" onclick="managerBatchMoveToday()">今日へ</button>
+    <button type="button" class="manager-batch-btn" onclick="managerBatchMoveTomorrow()">明日</button>
+    <button type="button" class="manager-batch-btn skima" onclick="managerBatchMoveSkima()">スキマ</button>
+    <button type="button" class="manager-batch-btn" id="taskManagerBatchImportantBtn" onclick="managerBatchToggleImportant()">重要ON</button>
+    <button type="button" class="manager-batch-btn" onclick="managerBatchComplete()">完了</button>
+    <button type="button" class="manager-batch-btn danger" onclick="managerBatchDelete()">削除</button>
+    <button type="button" class="manager-batch-btn close" onclick="exitTaskManagerSelection()" aria-label="選択を終了">×</button>
+  </div>
+
+
+  <div class="ai-org-overlay" id="aiOrganizerOverlay" aria-hidden="true" onclick="aiOrganizerBackdrop(event)">
+    <div class="ai-org-sheet" role="dialog" aria-modal="true" aria-label="AI整理">
+      <div class="ai-org-head"><b>AI ORGANIZER</b><button type="button" class="ai-org-close" onclick="closeAiOrganizer()">×</button></div>
+      <div class="ai-org-tabs">
+        <button type="button" class="ai-org-tab on" data-ai-tab="export" onclick="setAiOrganizerTab('export')">実行</button>
+        <button type="button" class="ai-org-tab" data-ai-tab="import" onclick="setAiOrganizerTab('import')">取込</button>
+        <button type="button" class="ai-org-tab" data-ai-tab="history" onclick="setAiOrganizerTab('history')">履歴</button>
+      </div>
+      <section class="ai-org-panel on" data-ai-panel="export">
+        <div class="ai-skill-intro">AIに頼む内容を、<b>「範囲」＋「操作」</b>で決めます。</div>
+        <div class="ai-skill-grid">
+          <label class="ai-skill-field"><span>範囲</span><select id="aiSkillScope" onchange="prepareAiExportPrompt()">
+            <option value="visible">現在表示しているタスク</option>
+            <option value="selected">複数選択中のタスク</option>
+            <option value="today">今日のタスク</option>
+            <option value="unfinished">未完了タスクすべて</option>
+            <option value="all">完了を含む全タスク</option>
+          </select></label>
+          <label class="ai-skill-field"><span>操作</span><select id="aiSkillSelect" onchange="onAiSkillChanged()"></select></label>
+        </div>
+        <div class="ai-skill-description" id="aiSkillDescription"></div>
+        <div class="ai-request-summary" id="aiRequestSummary"></div>
+        <label class="ai-skill-field ai-skill-extra"><span>追加指示（任意）</span><textarea id="aiSkillExtra" placeholder="例：今日は疲れているので、負担を軽めにして" oninput="prepareAiExportPrompt()"></textarea></label>
+        <div class="ai-org-primary-row"><button type="button" class="ai-org-btn" onclick="copyAiOrganizerPrompt()">AIに渡す</button></div>
+        <div class="ai-copy-result" id="aiCopyResult"><div class="ai-copy-result-text" id="aiCopyResultText"></div><div class="ai-copy-result-actions"><button type="button" onclick="shareAiOrganizerPrompt()">共有</button><button type="button" onclick="toggleAiExportPreview(true)">全文を確認</button></div></div>
+        <div class="ai-org-status" id="aiExportStatus" aria-live="polite"></div>
+        <div class="ai-export-preview" id="aiExportPreview"><textarea class="ai-export-text" id="aiExportText" readonly></textarea><div class="ai-org-actions" style="margin-top:8px"><button type="button" class="ai-org-btn secondary" onclick="copyAiExportTextFromPreview()">この欄をコピー</button><button type="button" class="ai-org-btn secondary" onclick="selectAiExportText()">全文を選択</button><button type="button" class="ai-org-btn secondary" onclick="shareAiOrganizerPrompt()">共有</button></div></div>
+        <button type="button" class="ai-skill-maker-toggle" onclick="toggleAiSkillMaker()">＋ カスタム操作を作る</button>
+        <div class="ai-skill-maker" id="aiSkillMaker">
+          <div class="ai-skill-maker-title">PROMPT MAKER</div>
+          <div class="ai-org-note">作りたい操作を説明すると、外部AIがDOPADO用の操作データを作ります。</div>
+          <textarea class="ai-org-textarea compact" id="aiSkillIdea" placeholder="例：仕事タグのタスクだけを、今週中に終わる順番へ整理したい"></textarea>
+          <button type="button" class="ai-org-btn secondary" onclick="copyAiSkillMakerPrompt()">操作を作るプロンプトをコピー</button>
+          <div class="ai-org-status" id="aiSkillMakerStatus"></div>
+          <textarea class="ai-org-textarea compact" id="aiSkillJson" placeholder='AIが返した {"name":"...","description":"...","promptTemplate":"...","outputMode":"operations"} を貼り付け'></textarea>
+          <div class="ai-org-actions"><button type="button" class="ai-org-btn" onclick="saveAiCustomSkill()">カスタム操作を保存</button><button type="button" class="ai-org-btn secondary" onclick="clearAiSkillMaker()">クリア</button></div>
+          <div class="ai-custom-skill-list" id="aiCustomSkillList"></div>
+        </div>
+      </section>
+      <section class="ai-org-panel" data-ai-panel="import">
+        <div class="ai-org-note">AIが返したJSONを貼り付けます。貼っただけでは変更されません。必ず差分確認後に適用します。</div>
+        <textarea class="ai-org-textarea" id="aiImportText" placeholder='{"operations":[...]}' spellcheck="false"></textarea>
+        <div class="ai-org-actions"><button type="button" class="ai-org-btn secondary" onclick="loadAiImportPreview()">差分を確認</button><button type="button" class="ai-org-btn secondary" onclick="clearAiImport()">クリア</button></div>
+        <div class="ai-org-status" id="aiImportStatus"></div>
+        <div id="aiPreviewArea"></div>
+      </section>
+      <section class="ai-org-panel" data-ai-panel="history"><div id="aiHistoryArea"></div></section>
+    </div>
+  </div>
+  <div class="manager-filter-overlay" id="taskManagerFilterOverlay" aria-hidden="true" onclick="managerFilterBackdrop(event)">
+    <div class="manager-filter-sheet" role="dialog" aria-modal="true" aria-label="上級フィルター">
+      <div class="manager-view-handle"></div>
+      <div class="manager-filter-head"><div class="manager-filter-title">FILTER BUILDER</div><button type="button" class="manager-filter-close" onclick="closeTaskManagerFilterMenu()">×</button></div>
+      <div id="managerFilterGroups"></div>
+      <div class="manager-filter-group-actions"><button type="button" onclick="managerFilterAddGroup()">＋ 条件グループ</button><button type="button" onclick="managerFilterResetDraft()">条件をクリア</button></div>
+      <div class="manager-filter-expression" id="managerFilterExpression">条件なし</div>
+      <div class="manager-filter-footer"><button type="button" onclick="managerFilterSaveView()">名前を付けて保存</button><button type="button" class="primary" onclick="managerFilterApply()">この条件を適用</button></div>
+      <div class="manager-filter-saved"><h4>保存ビュー</h4><div id="managerFilterSavedList"></div></div>
+    </div>
+  </div>
+
+  <div class="manager-view-overlay" id="taskManagerViewOverlay" aria-hidden="true" onclick="managerViewBackdrop(event)">
+    <div class="manager-view-sheet" role="dialog" aria-modal="true" aria-label="表示設定">
+      <div class="manager-view-handle"></div>
+      <div class="manager-view-head"><div class="manager-view-title">VIEW SETTINGS</div><button type="button" class="manager-view-close" onclick="closeTaskManagerViewMenu()">×</button></div>
+      <section class="manager-view-section"><div class="manager-view-label">表示密度</div><div class="manager-view-options" id="managerDensityOptions"></div></section>
+      <section class="manager-view-section"><div class="manager-view-label">並び替え</div><div class="manager-view-options sort" id="managerSortOptions"></div></section>
+      <section class="manager-view-section"><div class="manager-view-label">「すべて」に表示するタスク</div><div class="manager-view-checks" id="managerVisibilityOptions"></div><div class="manager-view-note">個別カテゴリを開いた時は、ここで非表示にしていても確認できます。</div></section>
+    </div>
+  </div>
+
   <div id="taskSettingsScreen" aria-hidden="true">
     <div class="task-settings-head">
       <button type="button" class="settings-back" onclick="closeTaskSettings()">‹</button>
@@ -3673,9 +4230,11 @@ body.keyboard-open #sf8[data-mode="tasks"] #quickPickerPanel.open,
       <div class="settings-head-actions">
         <button type="button" id="settingsTodayBtn" onclick="settingsToggleToday()">今日</button>
         <button type="button" id="settingsImportantBtn" onclick="settingsToggleImportant()">重要</button>
+        <button type="button" id="settingsHoldBtn" onclick="settingsToggleHoldPanel()">保留</button>
         <button type="button" class="settings-menu-btn" onclick="settingsDeleteTask()">⋯</button>
       </div>
     </div>
+    <div id="settingsHoldPanel" aria-hidden="true"></div>
     <div class="task-settings-body" id="taskSettingsBody"></div>
     <div class="task-settings-toolbar">
       <button type="button" onclick="settingsShowPanel('conditions')">⚑<span>条件</span></button>
@@ -3712,6 +4271,20 @@ body.keyboard-open #sf8[data-mode="tasks"] #quickPickerPanel.open,
   </div>
 
 
+
+  <div id="skimaOverlay" aria-modal="true" role="dialog" aria-labelledby="skimaTitle">
+    <div class="skima-sheet">
+      <div class="skima-kicker">SKIMA PICK</div>
+      <div class="skima-title" id="skimaTitle">スキマ、何か拾う？</div>
+      <div class="skima-sub">今日やるものだけ選んでください。選ばなかったタスクは、そのままスキマに残ります。</div>
+      <div class="skima-list" id="skimaList"></div>
+      <div class="skima-actions">
+        <button type="button" class="skima-close" onclick="closeSkimaPicker()">今日は閉じる</button>
+        <button type="button" class="skima-accept" id="skimaAcceptBtn" onclick="acceptSkimaTasks()" disabled>今日やる</button>
+      </div>
+    </div>
+  </div>
+
   <div id="appConfirmOverlay" aria-modal="true" role="dialog" aria-labelledby="appConfirmTitle">
     <div class="app-confirm-card">
       <div class="app-confirm-kicker" id="appConfirmKicker">DOPADO CONFIRM</div>
@@ -3738,7 +4311,7 @@ body.keyboard-open #sf8[data-mode="tasks"] #quickPickerPanel.open,
 
 <script>
 // DOPADO v30 inline app script
-const APP_VERSION = 46;
+const APP_VERSION = 47;
 const STORAGE_KEY='dopaon_state_v6';
 const BACKUP_KEY='dopaon_state_v6_backup';
 const LEGACY_KEYS=['dopaon_state_v5','dopaon_state_v4','dopaon_state_v3','dopaon_state_v2','dopaon_state_v1'];
@@ -3894,6 +4467,8 @@ function yesterdayStr(){return addDaysStr(todayStr(),-1)}
 function appDayStr(d=new Date()){const x=new Date(d);x.setHours(x.getHours()-5);return dateStr(x)}
 function prevAppDayStr(){return addDaysStr(appDayStr(),-1)}
 function isTaskToday(t){return !!(t&&t.dueDate===appDayStr())}
+function isTaskSkima(t){return !!(t&&t.organizeHoldKind==='skima')}
+function isTaskOnHold(t,day=appDayStr()){return !!(t&&(isTaskSkima(t)||(t.organizeHoldUntil&&day<t.organizeHoldUntil)))}
 function isTaskBonusGuaranteed(t){return !!(t&&t.importantDate===appDayStr()&&isTaskToday(t))}
 function isTaskImportant(t){return !!(t&&(t.importantFlag||isTaskBonusGuaranteed(t)))}
 function syncTaskDateFlags(t){
@@ -3965,12 +4540,13 @@ function closeTopMenu(){const m=document.getElementById('topMenu');if(m)m.classL
 function chooseTopMenu(mode){
   closeTopMenu();
   if(mode==='profile'){openProfile();return;}
+  if(mode==='manager'){openTaskManager();return;}
   setMainMode(mode);
 }
 document.addEventListener('click',e=>{if(!e.target.closest('#brandMenuBtn')&&!e.target.closest('#topMenu'))closeTopMenu()});
 function currentMode(){const m=state.ui&&state.ui.mode;return m==='habits'||m==='game'||m==='cal'?m:'tasks'}
 
-function defaultTaskConfig(){return{name:'',dueDate:'',dueTime:'',tags:[],taskType:'normal',habitKind:'do',repeatFreq:'none',repeatMonthDay:1}}
+function defaultTaskConfig(){return{name:'',dueDate:'',dueTime:'',tags:[],organizeHoldUntil:'',organizeHoldKind:'',taskType:'normal',habitKind:'do',repeatFreq:'none',repeatMonthDay:1}}
 function defaultHabitName(){return '無題習慣'}
 function defaultHabit(){return normalizeHabit({id:newId(),name:defaultHabitName(),habitKind:'avoid',createdAt:Date.now(),active:true})}
 function normalizeTask(t){
@@ -3984,6 +4560,8 @@ function normalizeTask(t){
     createdAt:(t&&t.createdAt)||Date.now(),
     doneAt:(t&&t.doneAt)||null,
     dueDate:(t&&t.dueDate)||'',
+    organizeHoldUntil:/^\d{4}-\d{2}-\d{2}$/.test((t&&t.organizeHoldUntil)||'')?t.organizeHoldUntil:'',
+    organizeHoldKind:(t&&t.organizeHoldKind)==='skima'?'skima':'',
     todayDate:(t&&t.todayDate)||'',
     importantDate:(t&&t.importantDate)||'',
     importantFlag:!!(t&&(t.importantFlag||t.important||t.importantDate)),
@@ -4283,6 +4861,8 @@ function onIn(e){
   syncViewport();
   const raw=rawValue();
   updateInputButtons(raw.trim());renderInputPrompt();
+  const qd=quickDraftTaskId&&state.tasks.find(x=>x&&x.id===quickDraftTaskId&&x.state!=='done');
+  if(qd&&raw.trim()){qd.name=raw.trim();qd.isAutoUntitled=false;qd.updatedAt=Date.now();saveState()}
   if(isComposing||(e&&e.isComposing)){lastCountedLen=charLen(raw);return}
   const type=e&&e.inputType?e.inputType:'';
   if(type.indexOf('delete')===0){lastCountedLen=charLen(raw);if(!raw)resetPraiseInput();return}
@@ -4577,7 +5157,7 @@ function maybeAwardSchedulePoint(task,oldDue,newDue){
   state.xp+=1;
   renderHeader();
 }
-function setTaskToday(id){const t=state.tasks.find(x=>x.id===id);if(!t||t.state==='done')return;clearTaskChargePreview(null,false);const old=t.dueDate;const day=appDayStr();t.todayDate=day;t.dueDate=day;if(!t.swipeCycle)t.swipeCycle=1;maybeAwardSchedulePoint(t,old,t.dueDate);saveState();render()}
+function setTaskToday(id){const t=state.tasks.find(x=>x.id===id);if(!t||t.state==='done')return;clearTaskChargePreview(null,false);t.organizeHoldKind='';t.organizeHoldUntil='';const old=t.dueDate;const day=appDayStr();t.todayDate=day;t.dueDate=day;if(!t.swipeCycle)t.swipeCycle=1;maybeAwardSchedulePoint(t,old,t.dueDate);saveState();render()}
 function unsetTaskToday(id){const t=state.tasks.find(x=>x.id===id);if(!t||t.state==='done')return;clearTaskChargePreview(null,false);t.todayDate='';t.importantDate='';t.importantFlag=false;t.swipeCycle=0;if(t.dueDate===appDayStr())t.dueDate='';saveState();render()}
 function setTaskImportant(id){const t=state.tasks.find(x=>x.id===id);if(!t||t.state==='done')return;clearTaskChargePreview(null,false);if(isTaskImportant(t))return;const old=t.dueDate;if(!isTaskToday(t)){t.dueDate=appDayStr();t.todayDate=appDayStr();maybeAwardSchedulePoint(t,old,t.dueDate)}claimImportant(t);t.swipeCycle=2;showUndo(importantUsageText(t),null);saveState();render()}
 function unsetTaskImportant(id){const t=state.tasks.find(x=>x.id===id);if(!t)return;clearTaskChargePreview(null,false);t.importantDate='';t.importantFlag=false;t.swipeCycle=3;saveState();render()}
@@ -4603,86 +5183,205 @@ function flushTaskStateAndRender(){
   render();
 }
 
-let quickAddDraft={dueDate:'',tags:[],today:false,important:false};
+let quickAddDraft={dueDate:'',tags:[],organizeHoldUntil:'',organizeHoldKind:'',today:false,important:false};
 let quickPickerMode='';
+let quickDraftTaskId='';
+let quickDateInteractionUntil=0;
+function markQuickDateInteraction(ms=3000){
+  const safeMs=typeof ms==='number'&&Number.isFinite(ms)?ms:3000;
+  quickDateInteractionUntil=Math.max(quickDateInteractionUntil,Date.now()+safeMs);
+  quickDiag?.('DATE GUARD until +'+safeMs+'ms')
+}
+
+let quickCalendarView={mode:'',year:0,month:0};
+let quickHoldCalendarOpen=false;
+function quickLocalYmd(d){
+  const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
+  return y+'-'+m+'-'+day;
+}
+function quickCalendarInit(mode,selected=''){
+  if(quickCalendarView.mode===mode&&quickCalendarView.year&&Number.isInteger(quickCalendarView.month))return;
+  let d=selected?new Date(selected+'T12:00:00'):new Date();
+  if(Number.isNaN(d.getTime()))d=new Date();
+  quickCalendarView={mode,year:d.getFullYear(),month:d.getMonth()};
+}
+function quickCalendarShift(mode,delta){
+  quickCalendarInit(mode,mode==='due'?quickAddDraft.dueDate:quickAddDraft.organizeHoldUntil);
+  const d=new Date(quickCalendarView.year,quickCalendarView.month+delta,1,12);
+  quickCalendarView={mode,year:d.getFullYear(),month:d.getMonth()};
+  renderQuickPicker();
+}
+function renderQuickCalendar(host,mode,selected,onSelect){
+  quickCalendarInit(mode,selected);
+  const y=quickCalendarView.year,m=quickCalendarView.month;
+  const box=document.createElement('div');box.className='quick-calendar';
+  const head=document.createElement('div');head.className='quick-calendar-head';
+  const prev=document.createElement('button');prev.type='button';prev.textContent='‹';bindQuickTap(prev,()=>quickCalendarShift(mode,-1),{ignoreMove:true});
+  const label=document.createElement('div');label.className='quick-calendar-month';label.textContent=y+'年 '+(m+1)+'月';
+  const next=document.createElement('button');next.type='button';next.textContent='›';bindQuickTap(next,()=>quickCalendarShift(mode,1),{ignoreMove:true});
+  head.append(prev,label,next);box.appendChild(head);
+  const weekdays=document.createElement('div');weekdays.className='quick-calendar-weekdays';
+  ['日','月','火','水','木','金','土'].forEach(x=>{const e=document.createElement('span');e.textContent=x;weekdays.appendChild(e)});box.appendChild(weekdays);
+  const grid=document.createElement('div');grid.className='quick-calendar-grid';
+  const first=new Date(y,m,1,12).getDay(),days=new Date(y,m+1,0,12).getDate(),today=quickLocalYmd(new Date());
+  for(let i=0;i<first;i++){const e=document.createElement('button');e.type='button';e.className='quick-calendar-day empty';e.tabIndex=-1;grid.appendChild(e)}
+  for(let day=1;day<=days;day++){
+    const d=new Date(y,m,day,12),value=quickLocalYmd(d),b=document.createElement('button');
+    b.type='button';b.className='quick-calendar-day'+(value===today?' today':'')+(value===selected?' on':'');b.textContent=String(day);b.dataset.date=value;
+    bindQuickTap(b,()=>onSelect(value),{ignoreMove:true});grid.appendChild(b);
+  }
+  box.appendChild(grid);host.appendChild(box);
+}
+
+function finishQuickDateSelection(kind='date'){
+  quickDiag?.('DATE SELECT finish '+kind);
+  quickDateInteractionUntil=0;
+  quickClosePicker('date selected',true);
+  const mi=document.getElementById('mi');
+  try{document.activeElement?.blur?.()}catch(e){}
+  try{if(mi&&document.activeElement===mi)mi.blur()}catch(e){}
+  document.body.classList.remove('keyboard-open');
+  document.getElementById('sf8')?.classList.remove('keyboard-open');
+  document.getElementById('quickAddBar')?.classList.remove('quick-hold');
+  initBaseViewport(false);
+  syncViewport();
+}
+function activeQuickDraft(){
+  let t=quickDraftTaskId&&state.tasks.find(x=>x&&x.id===quickDraftTaskId&&x.state!=='done');
+  if(!t){
+    t=(state.tasks||[]).filter(x=>x&&x.state!=='done'&&(x.isQuickDraft||x.isAutoUntitled)).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))[0]||null;
+    quickDraftTaskId=t?t.id:'';
+  }
+  return t||null;
+}
+function clearQuickDraftRef(id=''){if(!id||quickDraftTaskId===id)quickDraftTaskId=''}
 function quickAddTaskConfig(){
-  const cfg={dueDate:quickAddDraft.dueDate||'',tags:[...(quickAddDraft.tags||[])]};
+  const cfg={dueDate:quickAddDraft.dueDate||'',tags:[...(quickAddDraft.tags||[])],organizeHoldUntil:quickAddDraft.organizeHoldUntil||'',organizeHoldKind:quickAddDraft.organizeHoldKind||''};
   if(quickAddDraft.today||quickAddDraft.important)cfg.dueDate=appDayStr();
   if(quickAddDraft.important){cfg.importantFlag=true;cfg.importantDate=appDayStr();cfg.todayDate=appDayStr()}
   else if(quickAddDraft.today)cfg.todayDate=appDayStr();
   return cfg;
 }
-function resetQuickAddDraft(){quickAddDraft={dueDate:'',tags:[],today:false,important:false};quickClosePicker();renderQuickAddUI()}
+function resetQuickAddDraft(){quickAddDraft={dueDate:'',tags:[],organizeHoldUntil:'',organizeHoldKind:'',today:false,important:false};quickClosePicker('reset',true);renderQuickAddUI()}
 function renderQuickAddUI(){
-  const due=document.getElementById('quickDueBtn'),today=document.getElementById('quickTodayBtn'),imp=document.getElementById('quickImportantBtn'),tag=document.getElementById('quickTagBtn');
+  const due=document.getElementById('quickDueBtn'),hold=document.getElementById('quickHoldBtn'),today=document.getElementById('quickTodayBtn'),imp=document.getElementById('quickImportantBtn'),tag=document.getElementById('quickTagBtn');
   if(due){due.classList.toggle('on',!!quickAddDraft.dueDate);due.textContent=quickAddDraft.dueDate?(quickAddDraft.dueDate===appDayStr()?'今日':formatDateLabel(quickAddDraft.dueDate)):'期日'}
+  if(hold){const active=isTaskOnHold(quickAddDraft);hold.classList.toggle('on',active);hold.textContent=active?(isTaskSkima(quickAddDraft)?'スキマ':('保留 '+formatDateLabel(quickAddDraft.organizeHoldUntil))):'保留'}
   today?.classList.toggle('on',!!quickAddDraft.today||quickAddDraft.dueDate===appDayStr());
   imp?.classList.toggle('on',!!quickAddDraft.important);
   tag?.classList.toggle('on',!!(quickAddDraft.tags||[]).length);
   renderQuickPicker();
 }
 function quickTogglePicker(mode){
-  quickPickerMode=quickPickerMode===mode?'':mode;
+  const next=quickPickerMode===mode?'':mode;
+  if(next!==quickPickerMode){quickCalendarView.mode='';if(next!=='hold')quickHoldCalendarOpen=false}
+  quickPickerMode=next;
   renderQuickPicker();
   document.getElementById('mi')?.focus({preventScroll:true});
 }
-function quickClosePicker(){quickPickerMode='';const p=document.getElementById('quickPickerPanel');if(p){p.classList.remove('open');p.setAttribute('aria-hidden','true');p.innerHTML=''}document.getElementById('quickAddBar')?.classList.remove('quick-hold')}
+function quickClosePicker(reason='unspecified',force=false){
+  const passiveReason=reason==='outside click'||reason==='blur'||reason==='unspecified';
+  if(!force&&(quickPickerMode==='due'||quickPickerMode==='hold')&&passiveReason){
+    quickDiag?.('CLOSE blocked: '+reason+' passive picker');
+    return false
+  }
+  if(!force&&(quickPickerMode==='due'||quickPickerMode==='hold')&&Date.now()<quickDateInteractionUntil){
+    quickDiag?.('CLOSE blocked: '+reason+' date interaction');
+    return false
+  }
+  quickDiag?.('CLOSE allowed: '+reason);
+  quickPickerMode='';const p=document.getElementById('quickPickerPanel');if(p){p.classList.remove('open');p.setAttribute('aria-hidden','true');p.innerHTML=''}document.getElementById('quickAddBar')?.classList.remove('quick-hold');return true
+}
 function quickPickerBtn(text,on,fn,value=''){const b=document.createElement('button');b.type='button';b.className='quick-picker-choice'+(on?' on':'');b.textContent=text;if(value)b.dataset.quickValue=value;bindQuickTap(b,fn);return b}
 function renderQuickPicker(){
-  const p=document.getElementById('quickPickerPanel');if(!p)return;
-  p.innerHTML='';p.classList.toggle('open',!!quickPickerMode);p.setAttribute('aria-hidden',quickPickerMode?'false':'true');
-  document.getElementById('quickAddBar')?.classList.toggle('quick-hold',!!quickPickerMode);
-  if(!quickPickerMode)return;
-  const title=document.createElement('div');title.className='quick-picker-title';title.textContent=quickPickerMode==='due'?'期日を選択':'タグを選択';p.appendChild(title);
-  if(quickPickerMode==='due'){
-    const row=document.createElement('div');row.className='quick-picker-row';
-    const today=appDayStr();const d1=new Date(today+'T00:00:00');d1.setDate(d1.getDate()+1);const tomorrow=localDateStr(d1);
-    const d7=new Date(today+'T00:00:00');d7.setDate(d7.getDate()+7);const week=localDateStr(d7);
-    row.append(
-      quickPickerBtn('今日',quickAddDraft.dueDate===today,()=>quickSetDue(today),today),
-      quickPickerBtn('明日',quickAddDraft.dueDate===tomorrow,()=>quickSetDue(tomorrow),tomorrow),
-      quickPickerBtn('1週間後',quickAddDraft.dueDate===week,()=>quickSetDue(week),week)
-    );p.appendChild(row);
-    const custom=document.createElement('div');custom.className='quick-picker-date';
-    const input=document.createElement('input');input.type='date';input.value=quickAddDraft.dueDate||'';input.setAttribute('aria-label','日付選択');input.title='日付選択';
-    input.onpointerdown=e=>e.stopPropagation();
-    input.addEventListener('touchstart',e=>{markQuickUiPress();e.stopPropagation()},{passive:true});
-    input.addEventListener('focus',markQuickUiPress);
-    if(input.type==='date'){
-      input.onchange=e=>{if(e.target.value)quickSetDue(e.target.value)};
+  quickDiag?.('RP00 enter localMode='+String(quickPickerMode));
+  try{
+    const p=document.getElementById('quickPickerPanel');
+    quickDiag?.('RP01 panel='+(p?'found':'missing'));
+    if(!p)return;
+    p.innerHTML='';p.classList.remove('hold-picker','calendar-picker');
+    quickDiag?.('RP02 cleared');
+    p.classList.toggle('open',!!quickPickerMode);
+    quickDiag?.('RP03 class open='+p.classList.contains('open'));
+    p.setAttribute('aria-hidden',quickPickerMode?'false':'true');
+    quickDiag?.('RP04 aria set');
+    const bar=document.getElementById('quickAddBar');
+    quickDiag?.('RP05 bar='+(bar?'found':'missing'));
+    bar?.classList.toggle('quick-hold',!!quickPickerMode);
+    quickDiag?.('RP06 hold toggled');
+    if(!quickPickerMode){quickDiag?.('RP07 no mode return');return}
+    const title=document.createElement('div');
+    quickDiag?.('RP08 title created');
+    title.className='quick-picker-title';
+    title.textContent=quickPickerMode==='due'?'期日を選択':quickPickerMode==='hold'?'保留する期間':'タグを選択';
+    p.appendChild(title);
+    quickDiag?.('RP09 title appended mode='+quickPickerMode);
+    if(quickPickerMode==='due'){
+      p.classList.add('calendar-picker');
+      renderQuickCalendar(p,'due',quickAddDraft.dueDate||'',value=>{
+        quickSetDue(value);
+        finishQuickDateSelection('due');
+      });
+      if(quickAddDraft.dueDate){
+        const clear=document.createElement('button');clear.type='button';clear.className='quick-picker-clear';clear.textContent='期日を解除';
+        bindQuickTap(clear,()=>{quickSetDue('');renderQuickPicker()},{ignoreMove:true});p.appendChild(clear);
+      }
+      quickDiag?.('RP_DUE custom calendar DONE');
+    }else if(quickPickerMode==='hold'){
+      p.classList.add('hold-picker');
+      const selected=quickAddDraft.organizeHoldUntil||'',tomorrow=addDaysStr(appDayStr(),1),week=addDaysStr(appDayStr(),7);
+      const customSelected=!!selected&&selected!==tomorrow&&selected!==week;
+      const row=document.createElement('div');row.className='quick-picker-row'+(quickPickerMode==='hold'?' skima-row':'');
+      row.appendChild(quickPickerBtn('明日',selected===tomorrow,()=>{quickSetHold(tomorrow);finishQuickDateSelection('hold')},tomorrow));
+      row.appendChild(quickPickerBtn('1週間後',selected===week,()=>{quickSetHold(week);finishQuickDateSelection('hold')},week));
+      row.appendChild(quickPickerBtn('スキマ',quickAddDraft.organizeHoldKind==='skima',()=>{quickSetSkima();finishQuickDateSelection('hold')},'skima'));
+      const cal=quickPickerBtn('▦',customSelected||quickHoldCalendarOpen,()=>{quickHoldCalendarOpen=!quickHoldCalendarOpen;quickCalendarView.mode='';renderQuickPicker()});
+      cal.classList.add('calendar-choice','quick-calendar-open-btn');cal.setAttribute('aria-label','日付を選択');row.appendChild(cal);p.appendChild(row);
+      if(quickHoldCalendarOpen){
+        p.classList.add('calendar-picker');
+        renderQuickCalendar(p,'hold',selected,value=>{quickSetHold(value);finishQuickDateSelection('hold')});
+      }
+      if(selected||quickAddDraft.organizeHoldKind==='skima'){const clear=document.createElement('button');clear.type='button';clear.className='quick-hold-clear';clear.textContent='保留を解除';bindQuickTap(clear,()=>{quickSetHold('');quickHoldCalendarOpen=false;renderQuickPicker()},{ignoreMove:true});p.appendChild(clear)}
     }else{
-      /* type=date非対応環境: テキスト手入力にフォールバック */
-      input.type='text';input.autocomplete='off';input.placeholder='例: 2026-07-20 / 7/20';
-      const commit=e=>{const raw=String(e.target.value||'').trim();if(!raw)return;const v=parseLooseDateInput(raw);if(v)quickSetDue(v);else showToast('日付は 2026-07-20 か 7/20 の形式で')};
-      input.onchange=commit;input.onblur=commit;
-      input.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();commit(e)}};
+      quickDiag?.('RP30 tags branch');
+      const row=document.createElement('div');row.className='quick-picker-row';
+      (state.tags||[]).forEach(tg=>{const b=document.createElement('button');b.type='button';b.className='quick-tag-chip'+(quickAddDraft.tags.includes(tg.id)?' on':'');b.textContent=tg.name;b.dataset.tagId=tg.id;bindQuickTap(b,()=>quickToggleTag(tg.id));row.appendChild(b)});
+      quickDiag?.('RP31 tags built count='+String((state.tags||[]).length));
+      if(!(state.tags||[]).length){const e=document.createElement('span');e.style.cssText='color:#65738d;font-size:12px;padding:5px';e.textContent='タグはまだありません';row.appendChild(e)}
+      p.appendChild(row);
+      quickDiag?.('RP32 tags row appended DONE');
     }
-    const clear=document.createElement('button');clear.type='button';clear.className='quick-picker-clear';clear.textContent='解除';bindQuickTap(clear,()=>quickSetDue(''));
-    custom.append(input,clear);p.appendChild(custom);
-  }else{
-    const row=document.createElement('div');row.className='quick-picker-row';
-    (state.tags||[]).forEach(tg=>{const b=document.createElement('button');b.type='button';b.className='quick-tag-chip'+(quickAddDraft.tags.includes(tg.id)?' on':'');b.textContent=tg.name;b.dataset.tagId=tg.id;bindQuickTap(b,()=>quickToggleTag(tg.id));row.appendChild(b)});
-    if(!(state.tags||[]).length){const e=document.createElement('span');e.style.cssText='color:#65738d;font-size:12px;padding:5px';e.textContent='タグはまだありません';row.appendChild(e)}
-    p.appendChild(row);
+  }catch(err){
+    quickDiag?.('RP_ERROR '+String(err&&err.name||'Error')+': '+String(err&&err.message||err));
+    if(err&&err.stack)quickDiag?.('RP_STACK '+String(err.stack).slice(0,240));
+    throw err;
   }
 }
 function syncQuickPickerSelection(){
   const p=document.getElementById('quickPickerPanel');if(!p||!quickPickerMode)return;
   if(quickPickerMode==='due'){
-    p.querySelectorAll('[data-quick-value]').forEach(b=>b.classList.toggle('on',b.dataset.quickValue===(quickAddDraft.dueDate||'')));
-    const input=p.querySelector('input[type=date]');if(input&&input.value!==(quickAddDraft.dueDate||''))input.value=quickAddDraft.dueDate||'';
+    const selected=quickAddDraft.dueDate||'';
+    p.querySelectorAll('.quick-calendar-day[data-date]').forEach(b=>b.classList.toggle('on',b.dataset.date===selected));
+  }else if(quickPickerMode==='hold'){
+    const selected=quickAddDraft.organizeHoldUntil||'',tomorrow=addDaysStr(appDayStr(),1),week=addDaysStr(appDayStr(),7);
+    p.querySelectorAll('[data-quick-value]').forEach(b=>b.classList.toggle('on',b.dataset.quickValue===selected));
+    p.querySelectorAll('.quick-calendar-day[data-date]').forEach(b=>b.classList.toggle('on',b.dataset.date===selected));
+    const cal=p.querySelector('.calendar-choice');if(cal)cal.classList.toggle('on',quickHoldCalendarOpen||!!selected&&selected!==tomorrow&&selected!==week);
   }else if(quickPickerMode==='tags'){
     const selected=new Set(quickAddDraft.tags||[]);p.querySelectorAll('[data-tag-id]').forEach(b=>b.classList.toggle('on',selected.has(b.dataset.tagId)));
   }
 }
 function syncQuickAddButtons(){
-  const due=document.getElementById('quickDueBtn'),today=document.getElementById('quickTodayBtn'),imp=document.getElementById('quickImportantBtn'),tag=document.getElementById('quickTagBtn');
+  const due=document.getElementById('quickDueBtn'),hold=document.getElementById('quickHoldBtn'),today=document.getElementById('quickTodayBtn'),imp=document.getElementById('quickImportantBtn'),tag=document.getElementById('quickTagBtn');
   if(due){due.classList.toggle('on',!!quickAddDraft.dueDate);due.textContent=quickAddDraft.dueDate?(quickAddDraft.dueDate===appDayStr()?'今日':formatDateLabel(quickAddDraft.dueDate)):'期日'}
+  if(hold){const active=isTaskOnHold(quickAddDraft);hold.classList.toggle('on',active);hold.textContent=active?(isTaskSkima(quickAddDraft)?'スキマ':('保留 '+formatDateLabel(quickAddDraft.organizeHoldUntil))):'保留'}
   today?.classList.toggle('on',!!quickAddDraft.today||quickAddDraft.dueDate===appDayStr());imp?.classList.toggle('on',!!quickAddDraft.important);tag?.classList.toggle('on',!!(quickAddDraft.tags||[]).length);
 }
-function quickSetDue(v){quickAddDraft.dueDate=v||'';quickAddDraft.today=v===appDayStr();if(v!==appDayStr())quickAddDraft.important=false;syncQuickAddButtons();syncQuickPickerSelection();document.getElementById('mi')?.focus({preventScroll:true})}
-function quickToggleToday(){quickAddDraft.today=!quickAddDraft.today;if(quickAddDraft.today)quickAddDraft.dueDate=appDayStr();else{if(quickAddDraft.dueDate===appDayStr())quickAddDraft.dueDate='';quickAddDraft.important=false}renderQuickAddUI()}
-function quickToggleImportant(){quickAddDraft.important=!quickAddDraft.important;if(quickAddDraft.important){quickAddDraft.today=true;quickAddDraft.dueDate=appDayStr()}renderQuickAddUI()}
+function quickSetDue(v){quickAddDraft.dueDate=v||'';quickAddDraft.today=v===appDayStr();if(v){quickAddDraft.organizeHoldUntil=''}if(v!==appDayStr())quickAddDraft.important=false;syncQuickAddButtons();syncQuickPickerSelection()}
+function quickSetHold(v){quickAddDraft.organizeHoldKind='';quickAddDraft.organizeHoldUntil=v||'';if(v){quickAddDraft.dueDate='';quickAddDraft.today=false;quickAddDraft.important=false}syncQuickAddButtons();syncQuickPickerSelection()}
+function quickSetSkima(){quickAddDraft.organizeHoldUntil='';quickAddDraft.organizeHoldKind='skima';quickAddDraft.dueDate='';quickAddDraft.today=false;quickAddDraft.important=false;syncQuickAddButtons();syncQuickPickerSelection()}
+function quickToggleToday(){quickAddDraft.today=!quickAddDraft.today;if(quickAddDraft.today){quickAddDraft.dueDate=appDayStr();quickAddDraft.organizeHoldUntil=''}else{if(quickAddDraft.dueDate===appDayStr())quickAddDraft.dueDate='';quickAddDraft.important=false}renderQuickAddUI()}
+function quickToggleImportant(){quickAddDraft.important=!quickAddDraft.important;if(quickAddDraft.important){quickAddDraft.today=true;quickAddDraft.dueDate=appDayStr();quickAddDraft.organizeHoldUntil=''}renderQuickAddUI()}
 function quickToggleTag(id){const set=new Set(quickAddDraft.tags||[]);set.has(id)?set.delete(id):set.add(id);quickAddDraft.tags=[...set];syncQuickAddButtons();syncQuickPickerSelection();document.getElementById('mi')?.focus({preventScroll:true})}
 
 /* ===== v49.1 FIX: クイックUIのタップ経路をtouch/click両対応にする =====
@@ -4691,11 +5390,12 @@ function quickToggleTag(id){const set=new Set(quickAddDraft.tags||[]);set.has(id
    ・スクロール中の誤発火は移動量ガードで除外 */
 let quickUiPressAt=0,lastQuickTapAt=0;
 function markQuickUiPress(){quickUiPressAt=Date.now()}
-function bindQuickTap(el,fn){
+function bindQuickTap(el,fn,options={}){
+  const ignoreMove=options.ignoreMove===true;
   let tx=0,ty=0,moved=false;
   el.addEventListener('touchstart',e=>{const t=e.touches&&e.touches[0];if(!t)return;tx=t.clientX;ty=t.clientY;moved=false;markQuickUiPress()},{passive:true});
-  el.addEventListener('touchmove',e=>{const t=e.touches&&e.touches[0];if(!t)return;if(Math.abs(t.clientX-tx)>10||Math.abs(t.clientY-ty)>10)moved=true},{passive:true});
-  el.addEventListener('touchend',e=>{if(moved)return;e.preventDefault();e.stopPropagation();lastQuickTapAt=Date.now();markQuickUiPress();fn()},{passive:false});
+  el.addEventListener('touchmove',e=>{if(ignoreMove)return;const t=e.touches&&e.touches[0];if(!t)return;if(Math.abs(t.clientX-tx)>10||Math.abs(t.clientY-ty)>10)moved=true},{passive:true});
+  el.addEventListener('touchend',e=>{if(!ignoreMove&&moved)return;e.preventDefault();e.stopPropagation();lastQuickTapAt=Date.now();markQuickUiPress();fn()},{passive:false});
   el.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(Date.now()-lastQuickTapAt<700)return;lastQuickTapAt=Date.now();fn()});
 }
 function initQuickAddBarEvents(){
@@ -4704,8 +5404,9 @@ function initQuickAddBarEvents(){
    ['quickMemoBtn',()=>quickOpenSettings('memo')],
    ['quickCondBtn',()=>quickOpenSettings('conditions')],
    ['quickTodayBtn',()=>quickToggleToday()],
-   ['quickImportantBtn',()=>quickToggleImportant()]
-  ].forEach(([id,fn])=>{const el=document.getElementById(id);if(el)bindQuickTap(el,fn)});
+   ['quickImportantBtn',()=>quickToggleImportant()],
+   ['quickHoldBtn',()=>quickTogglePicker('hold')]
+  ].forEach(([id,fn])=>{const el=document.getElementById(id);if(el)bindQuickTap(el,fn,{ignoreMove:true})});
   ['quickAddBar','quickPickerPanel'].forEach(id=>{const el=document.getElementById(id);if(!el)return;el.addEventListener('touchstart',markQuickUiPress,{passive:true});el.addEventListener('pointerdown',markQuickUiPress,{passive:true})});
 }
 /* input[type=date]非対応環境向けの手入力パース: 2026-07-20 / 2026/7/20 / 7/20 を受ける */
@@ -4717,15 +5418,29 @@ function parseLooseDateInput(raw){
   else{m=s.match(/^(\d{1,2})[\/\-](\d{1,2})$/);if(!m)return '';const now=new Date();y=now.getFullYear();mo=+m[1];d=+m[2];const cand=new Date(y,mo-1,d),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());if(cand<today)y+=1}
   const dt=new Date(y,mo-1,d);
   if(dt.getFullYear()!==y||dt.getMonth()!==mo-1||dt.getDate()!==d)return '';
-  return localDateStr(dt);
+  return dateStr(dt);
 }
 
-function quickOpenSettings(panel){const name=vl();if(!name){showToast('先にタスク名を入れてね');document.getElementById('mi')?.focus();return}const result=doQuickAdd({silent:true});if(!result||result.kind!=='task')return;quickClosePicker();document.body.classList.remove('keyboard-open');document.getElementById('sf8')?.classList.remove('keyboard-open');try{document.getElementById('mi')?.blur()}catch(e){}openTaskSettings(result.item.id,panel);showToast(panel==='memo'?'メモを追加':'条件を追加')}
+function quickOpenSettings(panel){
+  const entered=vl();
+  let item=activeQuickDraft();
+  if(item){
+    if(entered){item.name=entered;item.isAutoUntitled=false;item.isQuickDraft=true;item.updatedAt=Date.now()}
+    Object.assign(item,quickAddTaskConfig());syncTaskDateFlags(item);saveState();render();
+  }else{
+    const result=doQuickAdd({silent:true,fallbackName:'無題',autoUntitled:true,quickDraft:true});
+    if(!result||result.kind!=='task')return;
+    item=result.item;quickDraftTaskId=item.id;
+  }
+  const input=document.getElementById('mi');if(input)input.value='';updateInputButtons('');
+  quickClosePicker('settings',true);document.body.classList.remove('keyboard-open');document.getElementById('sf8')?.classList.remove('keyboard-open');try{input?.blur()}catch(e){}openTaskSettings(item.id,panel);showToast(panel==='memo'?'メモを追加':'条件を追加')
+}
 
 function doQuickAdd(opts={}){
   closeTaskExtras(false);
   const input=document.getElementById('mi');
-  const v=vl();
+  const enteredName=vl();
+  const v=enteredName||String(opts.fallbackName||'').trim();
   if(!v)return null;
   if(tut&&tut.active){
     const st=tutCurrentStep();
@@ -4744,6 +5459,7 @@ function doQuickAdd(opts={}){
     if(!opts.silent)showToast('習慣を追加した');
   }else{
     created=createTask(v,Object.assign({createdAt:Date.now()},quickAddTaskConfig()));
+    if(opts.autoUntitled&&!enteredName)created.isAutoUntitled=true;if(opts.quickDraft){created.isQuickDraft=true;quickDraftTaskId=created.id}
     syncTaskDateFlags(created);
     recentAddedTaskId=created.id;
     state.tasks=[created,...(Array.isArray(state.tasks)?state.tasks:[])];
@@ -4763,8 +5479,22 @@ function doQuickAdd(opts={}){
   if(kind==='habit')tutHook('habit_added',created);else tutHook('task_added',created);
   return{kind,item:created,name:v};
 }
-function doDopa(){const v=vl();if(!v)return;doQuickAdd({silent:false})}
-function deleteTask(id,fromMenu=false){if(openExtraTaskId===id)closeTaskExtras(false);const idx=state.tasks.findIndex(x=>x.id===id);if(idx<0)return;const removed=state.tasks[idx];const removedRepeat=removed.repeatId?state.repeats.find(r=>r.id===removed.repeatId):null;if(removedRepeat)state.repeats=state.repeats.filter(r=>r.id!==removed.repeatId);state.tasks.splice(idx,1);if(currentDopaonTaskId===id||taskChargingId===id)clearTaskChargePreview(null,false);saveState();render();if(fromMenu)closeTaskMenu();showUndo('タスクを削除した',()=>{state.tasks.splice(Math.min(idx,state.tasks.length),0,removed);if(removedRepeat&&!state.repeats.some(r=>r.id===removedRepeat.id))state.repeats.push(removedRepeat);saveState();render()})}
+function doDopa(){const v=vl();if(!v)return;const draft=activeQuickDraft();if(draft){draft.name=v;draft.isAutoUntitled=false;draft.isQuickDraft=false;Object.assign(draft,quickAddTaskConfig());syncTaskDateFlags(draft);clearQuickDraftRef(draft.id);const input=document.getElementById('mi');if(input)input.value='';resetQuickAddDraft();resetPraiseInput();updateInputButtons('');bumpInputPrompt();flushTaskStateAndRender();showToast('タスクを追加した');spawnPraise('add');return}doQuickAdd({silent:false})}
+function moveTaskToTrash(id,source='manual'){
+  const idx=state.tasks.findIndex(x=>x.id===id);if(idx<0)return null;
+  const t=state.tasks[idx],repeat=t.repeatId?(state.repeats||[]).find(r=>r.id===t.repeatId):null;
+  const entry={id:newId(),deletedAt:Date.now(),source,task:JSON.parse(JSON.stringify(t)),repeat:repeat?JSON.parse(JSON.stringify(repeat)):null,originalIndex:idx};
+  ensureAiOrganizerState().trash.unshift(entry);state.tasks.splice(idx,1);
+  if(repeat)state.repeats=(state.repeats||[]).filter(r=>r.id!==repeat.id);
+  return entry;
+}
+function restoreTrashEntry(id){
+  const a=ensureAiOrganizerState(),idx=a.trash.findIndex(x=>x.id===id);if(idx<0)return false;const x=a.trash[idx];
+  if(!state.tasks.some(t=>t.id===x.task.id))state.tasks.splice(Math.min(Number(x.originalIndex)||0,state.tasks.length),0,normalizeTask(JSON.parse(JSON.stringify(x.task))));
+  if(x.repeat&&!state.repeats.some(r=>r.id===x.repeat.id))state.repeats.push(JSON.parse(JSON.stringify(x.repeat)));
+  a.trash.splice(idx,1);return true;
+}
+function deleteTask(id,fromMenu=false){clearQuickDraftRef(id);if(openExtraTaskId===id)closeTaskExtras(false);const entry=moveTaskToTrash(id,'manual');if(!entry)return;if(currentDopaonTaskId===id||taskChargingId===id)clearTaskChargePreview(null,false);saveState();render();if(fromMenu)closeTaskMenu();showUndo('タスクをゴミ箱へ移動した',()=>{restoreTrashEntry(entry.id);saveState();render();if(document.getElementById('taskManagerScreen')?.classList.contains('open'))renderTaskManager()})}
 function deleteHabit(id,fromMenu=false){const idx=state.habits.findIndex(x=>x.id===id);if(idx<0)return;const removed=state.habits[idx];const logs=state.habitLogs[id];state.habits.splice(idx,1);delete state.habitLogs[id];saveState();render();if(fromMenu)closeTaskMenu();showUndo('習慣を削除した',()=>{state.habits.push(removed);if(logs)state.habitLogs[id]=logs;saveState();render()})}
 function undoTask(id){closeTaskExtras(false);const t=state.tasks.find(x=>x.id===id);if(!t)return;t.state='idle';t.doneAt=null;taskChargingId=null;saveState();render();spawnPraise('add',{t:'戻した！',c:'#00ffcc'});showToast('完了を取り消した。再完了しても再抽選なし')}
 function tap(id){if(appLockedForCompletion())return;closeTaskExtras(false);const t=state.tasks.find(x=>x.id===id);if(!t)return;if(t.state==='idle'){clearTaskChargePreview(id,false);t.state='charging';taskChargingId=id;currentDopaonTaskId=id;currentDopaonMsg=makeDopaonMessage(t.name);saveState();render();tutHook('task_charging',id)}else if(t.state==='charging'){clearInlineDopaon(false);t.state='done';t.doneAt=Date.now();const shouldReward=!t.rewardDone;const forceBonus=isTaskBonusGuaranteed(t);t.rewardDone=true;taskChargingId=null;if(shouldReward)addGameStamina(5,'TASK CLEAR');if(shouldReward){if(tutShouldForceWhiteTicket()){issueChargeTicket({id:'tut_white',name:'TUTORIAL'},{force:'white',type:'task',tutorial:true})}else{issueChargeTicket(t,{force:forceBonus?'bonus':null,type:forceBonus?'important':'task'})}}saveState();render();tutHook('task_done',id);setTimeout(()=>spawnPraise('done'),60);if(shouldReward){setTimeout(()=>startNextChargeTicket(true),160)}}}
@@ -4777,6 +5507,27 @@ function prepareStateForRender(){
   ensureGameState();
   ensureRepeatTasks();
 }
+let skimaSelectedIds=new Set();
+let previousActiveVisibleCount=null;
+let skimaOpenQueued=false;
+function skimaTasks(){return state.tasks.filter(t=>isTaskSkima(t)&&t.state!=='done')}
+function activeVisibleTaskCount(){return state.tasks.filter(t=>t.state!=='done'&&!isTaskOnHold(t)).length}
+function openSkimaPicker(reason='manual'){
+  if(tut&&tut.active)return;
+  const tasks=skimaTasks();if(!tasks.length)return;
+  const ov=document.getElementById('skimaOverlay'),list=document.getElementById('skimaList');if(!ov||!list)return;
+  skimaSelectedIds=new Set();list.innerHTML='';
+  tasks.forEach(t=>{const b=document.createElement('button');b.type='button';b.className='skima-item';b.innerHTML='<span class="skima-check">✓</span><span class="skima-name">'+escapeHtml(t.name)+'</span>';b.onclick=()=>{if(skimaSelectedIds.has(t.id))skimaSelectedIds.delete(t.id);else skimaSelectedIds.add(t.id);b.classList.toggle('selected',skimaSelectedIds.has(t.id));syncSkimaAccept()};list.appendChild(b)});
+  const title=document.getElementById('skimaTitle');if(title)title.textContent=reason==='morning'?'朝のスキマ、何か拾う？':'スキマ、何か拾う？';
+  syncSkimaAccept();ov.classList.add('show');
+}
+function syncSkimaAccept(){const b=document.getElementById('skimaAcceptBtn');if(b)b.disabled=skimaSelectedIds.size===0}
+function closeSkimaPicker(){document.getElementById('skimaOverlay')?.classList.remove('show');skimaSelectedIds.clear();syncSkimaAccept()}
+function acceptSkimaTasks(){if(!skimaSelectedIds.size)return;const day=appDayStr();state.tasks.forEach(t=>{if(!skimaSelectedIds.has(t.id))return;t.organizeHoldKind='';t.organizeHoldUntil='';t.dueDate=day;t.todayDate=day;t.swipeCycle=Math.max(1,Number(t.swipeCycle)||0)});closeSkimaPicker();saveState();render()}
+function scheduleSkimaPicker(reason){if(skimaOpenQueued||document.getElementById('skimaOverlay')?.classList.contains('show'))return;skimaOpenQueued=true;setTimeout(()=>{skimaOpenQueued=false;openSkimaPicker(reason)},180)}
+function checkMorningSkima(){const day=appDayStr();if(!state.ui)state.ui={};if(state.ui.skimaMorningDay===day)return;state.ui.skimaMorningDay=day;saveState();if(skimaTasks().length)scheduleSkimaPicker('morning')}
+function checkTaskEmptyTransition(){const count=activeVisibleTaskCount();if(previousActiveVisibleCount!==null&&previousActiveVisibleCount>0&&count===0&&skimaTasks().length)scheduleSkimaPicker('empty');previousActiveVisibleCount=count}
+document.addEventListener('click',e=>{const ov=document.getElementById('skimaOverlay');if(ov&&e.target===ov)closeSkimaPicker()});
 function render(){
   prepareStateForRender();
   if(currentMode()!=='tasks'){openExtraTaskId=null;openSubtaskSwipeId=null;openEditTagTaskId=null}
@@ -4790,6 +5541,7 @@ function render(){
   else if(currentMode()==='cal')renderCalendar(a);
   else renderTasks(a);
   renderBottomBar();
+  checkTaskEmptyTransition();
 }
 function renderTasks(a){
   taskSearchQuery='';
@@ -4812,7 +5564,7 @@ function renderTaskList(a){
   a.innerHTML='';
   normalizeTaskCollection();
   const q=String(taskSearchQuery||'').trim();
-  const visible=state.tasks.filter(t=>taskMatchesQuery(t,q));
+  const visible=state.tasks.filter(t=>!isTaskOnHold(t)&&taskMatchesQuery(t,q));
   const act=sortTasks(visible.filter(t=>t.state!=='done'));
   const done=visible.filter(t=>t.state==='done').sort((a,b)=>(b.doneAt||0)-(a.doneAt||0));
   if(q&&!act.length&&!done.length){a.innerHTML='<div class="empty" style="padding-top:30px"><div class="empty-text">「'+escapeHtml(q)+'」に一致なし</div></div>';return}
@@ -4892,7 +5644,7 @@ function mkC(task){
   if(hasMemo)bits.push('<span class="extra-ico memo">✎</span>');
   if(subTotal)bits.push('<span class="count">'+subDone+'/'+subTotal+'</span>');
   mb.className='task-menu-toggle'+(taskHasExtras(task)?' has-extra':'')+(openExtraTaskId===task.id?' open':'');
-  mb.innerHTML=bits.join('')+'<span class="chev">'+(openExtraTaskId===task.id?'⌄':'^')+'</span>';
+  mb.innerHTML=bits.join('')+'<span class="menu-glyph" aria-hidden="true"><i></i><i></i><i></i></span>';
   mb.setAttribute('aria-label','条件・メモ・設定');mb.onclick=e=>{e.stopPropagation();toggleTaskExtras(task.id)};top.appendChild(mb);
   main.appendChild(top);
   const meta=document.createElement('div');meta.className='task-meta';
@@ -4915,6 +5667,7 @@ function mkC(task){
     card.appendChild(direct);
   }
   el.appendChild(card);
+  attachTaskSettingsLongPress(card,task);
   attachTaskSwipe(el,task);return el;
 }
 
@@ -4959,20 +5712,25 @@ function toggleEditUserTag(id,tagId){const t=state.tasks.find(x=>x.id===id);if(!
 function createEditTag(id,value){const t=state.tasks.find(x=>x.id===id);if(!t)return;const name=String(value||'').trim().slice(0,12);if(!name){openEditTagTaskId=id;render();return}let tg=(state.tags||[]).find(x=>x.name===name);if(!tg){tg={id:newId(),name,color:TAG_COLORS[(state.tags||[]).length%TAG_COLORS.length]};if(!Array.isArray(state.tags))state.tags=[];state.tags.push(tg)}if(!Array.isArray(t.tags))t.tags=[];if(!t.tags.includes(tg.id))t.tags.push(tg.id);const rp=t.repeatId?repeatById(t.repeatId):null;if(rp)rp.tags=(t.tags||[]).slice();openEditTagTaskId=id;saveState();render()}
 
 function openTaskSettings(id,panel=''){const t=state.tasks.find(x=>x.id===id);if(!t)return;openTaskSettingsId=id;settingsPanel=panel==='memo'?'':panel;const sc=document.getElementById('taskSettingsScreen');if(sc){sc.classList.add('open');sc.setAttribute('aria-hidden','false')}renderTaskSettings();setTimeout(()=>{const target=panel==='memo'?document.querySelector('#taskSettingsScreen .settings-memo'):document.querySelector('#taskSettingsScreen .settings-new-input');if(target){try{target.focus({preventScroll:true})}catch(e){target.focus()}keepSettingsFieldVisible(target)}},90)}
-function closeTaskSettings(){openTaskSettingsId=null;settingsPanel='';const sc=document.getElementById('taskSettingsScreen');if(sc){sc.classList.remove('open');sc.setAttribute('aria-hidden','true')}render()}
+function closeTaskSettings(){openTaskSettingsId=null;settingsPanel='';const hp=document.getElementById('settingsHoldPanel');if(hp){hp.classList.remove('open');hp.setAttribute('aria-hidden','true')}const sc=document.getElementById('taskSettingsScreen');if(sc){sc.classList.remove('open');sc.setAttribute('aria-hidden','true')}render();if(document.getElementById('taskManagerScreen')?.classList.contains('open'))renderTaskManager()}
 function settingsTask(){return state.tasks.find(x=>x.id===openTaskSettingsId)||null}
-function settingsToggleToday(){const t=settingsTask();if(t)toggleEditSystemTag(t.id,'today');renderTaskSettings()}
-function settingsToggleImportant(){const t=settingsTask();if(t)toggleEditSystemTag(t.id,'important');renderTaskSettings()}
+function settingsToggleToday(){const t=settingsTask();if(!t)return;const activating=!isTaskToday(t);if(activating){t.organizeHoldUntil='';t.organizeHoldKind=''}toggleEditSystemTag(t.id,'today');saveState();renderTaskSettings()}
+function settingsToggleImportant(){const t=settingsTask();if(!t)return;const activating=!isTaskImportant(t);if(activating){t.organizeHoldUntil='';t.organizeHoldKind=''}toggleEditSystemTag(t.id,'important');saveState();renderTaskSettings()}
+function settingsToggleHoldPanel(){const p=document.getElementById('settingsHoldPanel');if(!p)return;const open=!p.classList.contains('open');p.classList.toggle('open',open);p.setAttribute('aria-hidden',open?'false':'true');if(open)renderSettingsHoldPanel()}
+function settingsSetHold(v){const t=settingsTask();if(!t)return;t.organizeHoldKind='';t.organizeHoldUntil=v||'';if(v){t.dueDate='';t.todayDate='';t.importantDate='';t.importantFlag=false;syncTaskDateFlags(t)}saveState();renderTaskSettings();renderSettingsHoldPanel();render()}
+function settingsSetSkima(){const t=settingsTask();if(!t)return;t.organizeHoldUntil='';t.organizeHoldKind='skima';t.dueDate='';t.todayDate='';t.importantDate='';t.importantFlag=false;syncTaskDateFlags(t);saveState();renderTaskSettings();renderSettingsHoldPanel();render()}
+function renderSettingsHoldPanel(){const t=settingsTask(),p=document.getElementById('settingsHoldPanel');if(!t||!p)return;const selected=t.organizeHoldUntil||'',isSkima=isTaskSkima(t),tomorrow=addDaysStr(appDayStr(),1),week=addDaysStr(appDayStr(),7),customSelected=!isSkima&&!!selected&&selected!==tomorrow&&selected!==week;p.innerHTML='<div class="settings-hold-title">通常画面から外す期間</div>';const row=document.createElement('div');row.className='settings-hold-row';const mk=(txt,on,fn,cls='')=>{const b=document.createElement('button');b.type='button';b.className=(on?'on ':'')+cls;b.textContent=txt;bindQuickTap(b,fn,{ignoreMove:true});return b};row.appendChild(mk('明日',!isSkima&&selected===tomorrow,()=>settingsSetHold(tomorrow)));row.appendChild(mk('1週間後',!isSkima&&selected===week,()=>settingsSetHold(week)));row.appendChild(mk('スキマ',isSkima,()=>settingsSetSkima()));const dateWrap=document.createElement('div');dateWrap.className='settings-hold-date'+(customSelected?' open':'');const input=document.createElement('input');input.type='date';input.value=selected;input.onchange=e=>{if(e.target.value)settingsSetHold(e.target.value)};dateWrap.appendChild(input);row.appendChild(mk('▦',customSelected,()=>{dateWrap.classList.toggle('open');if(dateWrap.classList.contains('open'))setTimeout(()=>{try{input.focus()}catch(e){}},0)},'calendar'));p.appendChild(row);p.appendChild(dateWrap);if(selected||isSkima){const clear=document.createElement('button');clear.type='button';clear.className='settings-hold-clear';clear.textContent='保留を解除';bindQuickTap(clear,()=>settingsSetHold(''),{ignoreMove:true});p.appendChild(clear)}}
+
 function settingsDeleteTask(){const t=settingsTask();if(!t)return;openAppConfirm({title:'タスクを削除',message:'このタスクを削除しますか？',okText:'削除',danger:true,onOk:()=>{deleteTask(t.id);closeTaskSettings()}})}
 function settingsSetName(v){const t=settingsTask();if(!t)return;t.name=String(v||'').trim()||t.name;saveState()}
-function settingsSetDate(v){const t=settingsTask();if(!t)return;const old=t.dueDate;t.dueDate=v||'';syncTaskDateFlags(t);maybeAwardSchedulePoint(t,old,t.dueDate);saveState();renderTaskSettings()}
+function settingsSetDate(v){const t=settingsTask();if(!t)return;const old=t.dueDate;t.dueDate=v||'';if(v){t.organizeHoldUntil='';t.organizeHoldKind=''}syncTaskDateFlags(t);maybeAwardSchedulePoint(t,old,t.dueDate);saveState();renderTaskSettings();render()}
 function settingsSetMemo(v){const t=settingsTask();if(!t)return;taskExtras(t).memo=v;saveState()}
 function settingsShowPanel(name){settingsPanel=settingsPanel===name?'':name;renderTaskSettings();setTimeout(()=>{const el=document.querySelector('#taskSettingsScreen .settings-new-input');if(el){try{el.focus({preventScroll:true})}catch(e){el.focus()}keepSettingsFieldVisible(el)}},30)}
 function settingsAddCondition(v){const t=settingsTask(),text=String(v||'').trim();if(!t||!text)return;taskExtras(t).conditions.push({id:newId(),text,done:false});saveState();renderTaskSettings()}
 function settingsDeleteCondition(cid){const t=settingsTask();if(!t)return;const ex=taskExtras(t);ex.conditions=ex.conditions.filter(x=>x.id!==cid);saveState();renderTaskSettings();render()}
 function settingsAddSubtask(v){const t=settingsTask(),text=String(v||'').trim();if(!t||!text)return;taskExtras(t).subtasks.push({id:newId(),text,done:false});saveState();renderTaskSettings()}
 function settingsAddTag(v){const t=settingsTask(),name=String(v||'').trim().slice(0,12);if(!t||!name)return;let tg=(state.tags||[]).find(x=>x.name===name);if(!tg){tg={id:newId(),name,color:TAG_COLORS[(state.tags||[]).length%TAG_COLORS.length]};state.tags.push(tg)}if(!Array.isArray(t.tags))t.tags=[];if(!t.tags.includes(tg.id))t.tags.push(tg.id);saveState();renderTaskSettings()}
-function renderTaskSettings(){const t=settingsTask(),body=document.getElementById('taskSettingsBody');if(!t||!body)return;document.getElementById('settingsPlace').textContent='INBOX';const tb=document.getElementById('settingsTodayBtn'),ib=document.getElementById('settingsImportantBtn');tb.classList.toggle('on',isTaskToday(t));ib.classList.toggle('on',isTaskImportant(t));const ex=taskExtras(t);body.innerHTML='';
+function renderTaskSettings(){const t=settingsTask(),body=document.getElementById('taskSettingsBody');if(!t||!body)return;document.getElementById('settingsPlace').textContent='INBOX';const tb=document.getElementById('settingsTodayBtn'),ib=document.getElementById('settingsImportantBtn'),hb=document.getElementById('settingsHoldBtn');tb.classList.toggle('on',isTaskToday(t));ib.classList.toggle('on',isTaskImportant(t));if(hb){const active=isTaskOnHold(t)||isTaskSkima(t);hb.classList.toggle('on',active);hb.textContent=isTaskSkima(t)?'保留 スキマ':(active?('保留 '+formatDateLabel(t.organizeHoldUntil)):'保留')}const ex=taskExtras(t);body.innerHTML='';
   const base=document.createElement('div');base.className='settings-base';base.innerHTML='<label class="settings-date"><span>日時</span><input type="date" value="'+escapeHtml(t.dueDate||'')+'"></label><input class="settings-title" value="'+escapeHtml(t.name||'')+'" placeholder="タスク名"><textarea class="settings-memo" placeholder="メモ">'+escapeHtml(ex.memo||'')+'</textarea>';body.appendChild(base);
   const date=base.querySelector('input[type=date]'),title=base.querySelector('.settings-title'),memo=base.querySelector('.settings-memo');date.onchange=e=>settingsSetDate(e.target.value);title.onchange=e=>settingsSetName(e.target.value);memo.oninput=e=>settingsSetMemo(e.target.value);
 
@@ -4980,6 +5738,7 @@ function renderTaskSettings(){const t=settingsTask(),body=document.getElementByI
   if(ex.conditions.length||settingsPanel==='conditions')body.appendChild(settingsSection('条件',ex.conditions,'condition',settingsAddCondition,settingsPanel==='conditions'));
   if((t.tags||[]).length||settingsPanel==='tags')body.appendChild(settingsTagsSection(t,settingsPanel==='tags'));
   if(ex.subtasks.length||settingsPanel==='subtasks')body.appendChild(settingsSection('サブタスク',ex.subtasks,'subtask',settingsAddSubtask,settingsPanel==='subtasks'));
+  if(document.getElementById('settingsHoldPanel')?.classList.contains('open'))renderSettingsHoldPanel();
 }
 function settingsInput(ph,fn){const wrap=document.createElement('div');wrap.className='settings-input-row';const input=document.createElement('input');input.className='settings-new-input';input.placeholder=ph;input.enterKeyHint='done';const b=document.createElement('button');b.type='button';b.textContent='追加';const go=()=>{fn(input.value);input.value=''};b.onclick=go;input.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();go()}};wrap.append(input,b);return wrap}
 function settingsSection(title,items,type,addFn,editing=false){const sec=document.createElement('section');sec.className='settings-section'+(editing?' editing':'');const h=document.createElement('h3');h.textContent=title;sec.appendChild(h);const list=document.createElement('div');list.className='settings-mini-list';items.forEach(x=>{const row=document.createElement('div');row.className='settings-mini-row'+(x.done?' done':'');const text=document.createElement('span');text.textContent=x.text;row.appendChild(text);if(type==='condition'){const del=document.createElement('button');del.type='button';del.className='settings-mini-delete';del.setAttribute('aria-label','条件を削除');del.textContent='×';bindQuickTap(del,()=>settingsDeleteCondition(x.id));row.appendChild(del)}list.appendChild(row)});if(items.length)sec.appendChild(list);if(editing)sec.appendChild(settingsInput(type==='condition'?'完了したと言える条件':'サブタスク名',addFn));return sec}
@@ -5051,6 +5810,28 @@ function renderSubtaskRow(taskId,st){
   wrap.appendChild(row);return wrap;
 }
 
+function attachTaskSettingsLongPress(card,task){
+  if(!card||!task)return;
+  let timer=0,sx=0,sy=0,tracking=false,fired=false;
+  const cancel=()=>{if(timer){clearTimeout(timer);timer=0}tracking=false};
+  card.addEventListener('touchstart',e=>{
+    if(e.touches.length!==1||e.target.closest('button,input,textarea,select,.task-extra,.subtask-direct-list'))return;
+    const t=e.touches[0];sx=t.clientX;sy=t.clientY;tracking=true;fired=false;
+    timer=setTimeout(()=>{
+      if(!tracking)return;
+      fired=true;tracking=false;timer=0;
+      try{navigator.vibrate&&navigator.vibrate(18)}catch(_e){}
+      closeTaskExtras(false);clearInlineDopaon(false);openTaskSettings(task.id);
+    },1000);
+  },{passive:true});
+  card.addEventListener('touchmove',e=>{
+    if(!tracking||!e.touches[0])return;
+    const t=e.touches[0];
+    if(Math.abs(t.clientX-sx)>10||Math.abs(t.clientY-sy)>10)cancel();
+  },{passive:true});
+  card.addEventListener('touchend',e=>{if(fired){e.preventDefault();fired=false}cancel()},{passive:false});
+  card.addEventListener('touchcancel',cancel,{passive:true});
+}
 function attachTaskSwipe(el,task){
   const card=el.querySelector('.task-card'),bg=el.querySelector('.task-swipe-bg');
   const isHabit=!!(task&&task._isHabit);
@@ -5608,6 +6389,447 @@ function toggleMainMode(){setMainMode(currentMode()==='tasks'?'habits':'tasks')}
 
 
 
+/* ===== v49.21: TASK MANAGER v1 ===== */
+let taskManagerFilter='attention';
+let taskManagerSearchQuery='';
+let taskManagerSelectionMode=false;
+let taskManagerSelectedIds=new Set();
+let taskManagerVisibleIds=[];
+const TASK_MANAGER_VIEW_KEY='dopado_task_manager_view_v1';
+let taskManagerView={density:'standard',sort:'auto',show:{active:true,hold:true,skima:true,breakdown:true,done:true}};
+function loadTaskManagerView(){try{const x=JSON.parse(localStorage.getItem(TASK_MANAGER_VIEW_KEY)||'null');if(x&&typeof x==='object'){taskManagerView.density=['standard','compact','simple'].includes(x.density)?x.density:'standard';taskManagerView.sort=['auto','due','newest','oldest','updated','name'].includes(x.sort)?x.sort:'auto';taskManagerView.show=Object.assign({},taskManagerView.show,x.show||{})}}catch(e){}}
+function saveTaskManagerView(){try{localStorage.setItem(TASK_MANAGER_VIEW_KEY,JSON.stringify(taskManagerView))}catch(e){}}
+loadTaskManagerView();
+
+const TASK_MANAGER_FILTER_KEY='dopado_task_manager_advanced_filter_v1';
+const TASK_MANAGER_SAVED_FILTERS_KEY='dopado_task_manager_saved_filters_v1';
+let taskManagerAdvancedFilter=null;
+let taskManagerFilterDraft=null;
+let taskManagerActiveSavedViewId='';
+let taskManagerSavedFilters=[];
+function managerNewCondition(){return{field:'status',op:'is',value:'active',negate:false}}
+function managerNewFilter(){return{groups:[{join:'and',link:'and',negate:false,conditions:[managerNewCondition()]}]}}
+function loadTaskManagerAdvancedFilters(){
+  try{const a=JSON.parse(localStorage.getItem(TASK_MANAGER_FILTER_KEY)||'null');if(a&&Array.isArray(a.groups))taskManagerAdvancedFilter=a}catch(e){}
+  try{const x=JSON.parse(localStorage.getItem(TASK_MANAGER_SAVED_FILTERS_KEY)||'[]');if(Array.isArray(x))taskManagerSavedFilters=x.filter(v=>v&&v.id&&v.name&&v.filter)}catch(e){}
+}
+function saveTaskManagerAdvancedFilters(){try{localStorage.setItem(TASK_MANAGER_FILTER_KEY,JSON.stringify(taskManagerAdvancedFilter));localStorage.setItem(TASK_MANAGER_SAVED_FILTERS_KEY,JSON.stringify(taskManagerSavedFilters))}catch(e){}}
+loadTaskManagerAdvancedFilters();
+function managerCloneFilter(f){return JSON.parse(JSON.stringify(f||managerNewFilter()))}
+function managerHasAdvancedFilter(){return !!(taskManagerAdvancedFilter&&taskManagerAdvancedFilter.groups&&taskManagerAdvancedFilter.groups.some(g=>g.conditions&&g.conditions.length))}
+function managerTaskAgeDays(ts){if(!ts)return 99999;return Math.max(0,Math.floor((Date.now()-Number(ts))/86400000))}
+function managerTaskHasMemo(t){const ex=t&&t.extras||{};return !!String(ex.memo||t.memo||t.note||t.description||'').trim()}
+function managerTaskMatchesCondition(t,c){
+  let result=true,v=c.value,day=appDayStr();
+  if(c.field==='status'){
+    if(v==='today')result=isTaskToday(t);else if(v==='active')result=t.state!=='done'&&!isTaskOnHold(t)&&!isTaskToday(t);else if(v==='hold')result=t.state!=='done'&&isTaskOnHold(t)&&!isTaskSkima(t);else if(v==='skima')result=t.state!=='done'&&isTaskSkima(t);else if(v==='done')result=t.state==='done';else if(v==='breakdown')result=t.state!=='done'&&managerNeedsBreakdown(t);else if(v==='overdue')result=managerIsOverdue(t);else result=true;
+  }else if(c.field==='tag'){result=(t.tags||[]).includes(v)}
+  else if(c.field==='important'){result=isTaskImportant(t)===(v==='yes')}
+  else if(c.field==='due'){if(v==='yes')result=!!t.dueDate;else if(v==='no')result=!t.dueDate;else if(v==='overdue')result=managerIsOverdue(t);else if(v==='future')result=!!t.dueDate&&t.dueDate>day}
+  else if(c.field==='breakdown'){result=managerNeedsBreakdown(t)===(v==='yes')}
+  else if(c.field==='memo'){result=managerTaskHasMemo(t)===(v==='yes')}
+  else if(c.field==='text'){const hay=taskManagerSearchText(t),q=normalizeManagerSearchText(v).trim();result=!q||hay.includes(q)}
+  else if(c.field==='createdAge'){const n=Math.max(0,Number(v)||0),a=managerTaskAgeDays(t.createdAt);result=c.op==='lte'?a<=n:a>=n}
+  else if(c.field==='updatedAge'){const n=Math.max(0,Number(v)||0),a=managerTaskAgeDays(t.updatedAt||t.createdAt);result=c.op==='lte'?a<=n:a>=n}
+  return c.negate?!result:result;
+}
+function applyTaskManagerAdvancedFilter(list){if(!managerHasAdvancedFilter())return list;return list.filter(t=>{const groups=taskManagerAdvancedFilter.groups||[];let acc=true;groups.forEach((g,i)=>{const cs=g.conditions||[];let hit=!cs.length?true:(g.join==='or'?cs.some(c=>managerTaskMatchesCondition(t,c)):cs.every(c=>managerTaskMatchesCondition(t,c)));if(g.negate)hit=!hit;if(i===0)acc=hit;else acc=(g.link==='or')?(acc||hit):(acc&&hit)});return acc})}
+function openTaskManagerFilterMenu(){taskManagerFilterDraft=managerCloneFilter(taskManagerAdvancedFilter||managerNewFilter());const o=document.getElementById('taskManagerFilterOverlay');if(!o)return;o.classList.add('open');o.setAttribute('aria-hidden','false');renderTaskManagerFilterMenu()}
+function closeTaskManagerFilterMenu(){const o=document.getElementById('taskManagerFilterOverlay');if(o){o.classList.remove('open');o.setAttribute('aria-hidden','true')}}
+function managerFilterBackdrop(e){if(e&&e.target&&e.target.id==='taskManagerFilterOverlay')closeTaskManagerFilterMenu()}
+function managerFilterAddGroup(){taskManagerFilterDraft.groups.push({join:'and',link:'and',negate:false,conditions:[managerNewCondition()]});renderTaskManagerFilterMenu()}
+function managerFilterAddCondition(gi){taskManagerFilterDraft.groups[gi].conditions.push(managerNewCondition());renderTaskManagerFilterMenu()}
+function managerFilterRemoveCondition(gi,ci){const g=taskManagerFilterDraft.groups[gi];g.conditions.splice(ci,1);if(!g.conditions.length&&taskManagerFilterDraft.groups.length>1)taskManagerFilterDraft.groups.splice(gi,1);renderTaskManagerFilterMenu()}
+function managerFilterSetGroupJoin(gi,v){taskManagerFilterDraft.groups[gi].join=v;renderTaskManagerFilterMenu()}
+function managerFilterSetGroupLink(gi,v){taskManagerFilterDraft.groups[gi].link=v;renderTaskManagerFilterMenu()}
+function managerFilterToggleGroupNot(gi){const g=taskManagerFilterDraft.groups[gi];g.negate=!g.negate;renderTaskManagerFilterMenu()}
+function managerFilterUpdate(gi,ci,k,v){const c=taskManagerFilterDraft.groups[gi].conditions[ci];c[k]=v;if(k==='field'){c.op='is';c.value=managerFilterDefaultValue(v)}renderTaskManagerFilterMenu()}
+function managerFilterDefaultValue(f){return f==='status'?'active':f==='tag'?((state.tags&&state.tags[0]&&state.tags[0].id)||''):['important','breakdown','memo'].includes(f)?'yes':f==='due'?'yes':f==='text'?'':'14'}
+function managerFilterResetDraft(){taskManagerFilterDraft=managerNewFilter();renderTaskManagerFilterMenu()}
+function managerFilterFieldLabel(f){return({status:'状態',tag:'タグ',important:'重要',due:'期限',breakdown:'要分解',memo:'メモ',text:'文字',createdAge:'作成から',updatedAge:'更新から'})[f]||f}
+function managerFilterValueLabel(c){
+  if(c.field==='tag'){const tg=tagById(c.value);return tg?tg.name:'未選択'}
+  const map={active:'未保留',today:'今日',hold:'保留',skima:'スキマ',done:'完了',breakdown:'要分解',overdue:'期限切れ',yes:'あり',no:'なし',future:'未来',gte:'以上',lte:'以内'};
+  if(c.field==='text')return '「'+(c.value||'')+'」を含む';if(['createdAge','updatedAge'].includes(c.field))return (c.value||0)+'日'+(c.op==='lte'?'以内':'以上');return map[c.value]||c.value;
+}
+function managerFilterExpressionText(f){if(!f||!f.groups||!f.groups.length)return'条件なし';return f.groups.map((g,i)=>{const body='('+g.conditions.map(c=>(c.negate?'NOT ':'')+managerFilterFieldLabel(c.field)+':'+managerFilterValueLabel(c)).join(g.join==='or'?' OR ':' AND ')+')';return(i?((g.link==='or'?' OR ':' AND ')):'')+(g.negate?'NOT ':'')+body}).join('')}
+function managerFilterValueControl(c,gi,ci){
+  let h='';
+  const select=(opts)=>'<select onchange="managerFilterUpdate('+gi+','+ci+',\'value\',this.value)">'+opts.map(([v,l])=>'<option value="'+escapeHtml(v)+'"'+(String(c.value)===String(v)?' selected':'')+'>'+escapeHtml(l)+'</option>').join('')+'</select>';
+  if(c.field==='status')h=select([['active','未保留'],['today','今日'],['hold','保留'],['skima','スキマ'],['done','完了'],['breakdown','要分解'],['overdue','期限切れ']]);
+  else if(c.field==='tag')h=select((state.tags||[]).map(t=>[t.id,t.name]).concat((state.tags||[]).length?[]:[['','タグなし']]));
+  else if(['important','breakdown','memo'].includes(c.field))h=select([['yes','あり'],['no','なし']]);
+  else if(c.field==='due')h=select([['yes','期限あり'],['no','期限なし'],['overdue','期限切れ'],['future','未来の期限']]);
+  else if(c.field==='text')h='<input class="wide" value="'+escapeHtml(c.value||'')+'" placeholder="タイトル・メモに含む文字" oninput="managerFilterUpdateSilent('+gi+','+ci+',\'value\',this.value)">';
+  else h='<select onchange="managerFilterUpdateSilent('+gi+','+ci+',\'op\',this.value)"><option value="gte"'+(c.op!=='lte'?' selected':'')+'>以上</option><option value="lte"'+(c.op==='lte'?' selected':'')+'>以内</option></select><input type="number" min="0" value="'+escapeHtml(c.value||'14')+'" onchange="managerFilterUpdateSilent('+gi+','+ci+',\'value\',this.value)">';
+  return h;
+}
+function managerFilterUpdateSilent(gi,ci,k,v){taskManagerFilterDraft.groups[gi].conditions[ci][k]=v;const e=document.getElementById('managerFilterExpression');if(e)e.textContent=managerFilterExpressionText(taskManagerFilterDraft)}
+function renderTaskManagerFilterMenu(){
+  const root=document.getElementById('managerFilterGroups'),expr=document.getElementById('managerFilterExpression'),saved=document.getElementById('managerFilterSavedList');if(!root)return;if(!taskManagerFilterDraft)taskManagerFilterDraft=managerNewFilter();root.innerHTML='';
+  taskManagerFilterDraft.groups.forEach((g,gi)=>{
+    if(!g.join)g.join='and';if(!g.link)g.link='and';if(typeof g.negate!=='boolean')g.negate=false;
+    if(gi){const connector=document.createElement('div');connector.className='manager-filter-connector';connector.innerHTML='<span>前のグループと</span><div><button type="button" class="'+(g.link!=='or'?'on':'')+'" onclick="managerFilterSetGroupLink('+gi+',\'and\')">AND</button><button type="button" class="'+(g.link==='or'?'on':'')+'" onclick="managerFilterSetGroupLink('+gi+',\'or\')">OR</button></div>';root.appendChild(connector)}
+    const box=document.createElement('section');box.className='manager-filter-group'+(g.negate?' group-not':'');
+    box.innerHTML='<div class="manager-filter-group-head"><span class="manager-filter-group-title">グループ '+(gi+1)+'</span><button type="button" class="manager-filter-group-not'+(g.negate?' on':'')+'" onclick="managerFilterToggleGroupNot('+gi+')">'+(g.negate?'グループ除外中 NOT':'グループを除外 NOT')+'</button></div><div class="manager-filter-logic"><span>この中の条件を</span><button type="button" class="'+(g.join!=='or'?'on':'')+'" onclick="managerFilterSetGroupJoin('+gi+',\'and\')">すべて満たす AND</button><button type="button" class="'+(g.join==='or'?'on':'')+'" onclick="managerFilterSetGroupJoin('+gi+',\'or\')">どれか満たす OR</button></div>';
+    g.conditions.forEach((c,ci)=>{const row=document.createElement('div');row.className='manager-filter-condition';row.innerHTML='<button type="button" class="negate'+(c.negate?' on':'')+'" onclick="managerFilterUpdate('+gi+','+ci+',\'negate\','+(!c.negate)+')">'+(c.negate?'この条件を除外中':'この条件を除外')+'<small>NOT</small></button><div class="manager-filter-fields"><select onchange="managerFilterUpdate('+gi+','+ci+',\'field\',this.value)">'+[['status','状態'],['tag','タグ'],['important','重要'],['due','期限'],['breakdown','要分解'],['memo','メモ'],['text','文字を含む'],['createdAge','作成から日数'],['updatedAge','更新から日数']].map(([v,l])=>'<option value="'+v+'"'+(c.field===v?' selected':'')+'>'+l+'</option>').join('')+'</select>'+managerFilterValueControl(c,gi,ci)+'<button type="button" class="manager-filter-remove" onclick="managerFilterRemoveCondition('+gi+','+ci+')">この条件を削除</button></div>';box.appendChild(row)});
+    const add=document.createElement('button');add.type='button';add.className='manager-filter-add';add.textContent='＋ このグループに条件を追加';add.onclick=()=>managerFilterAddCondition(gi);box.appendChild(add);root.appendChild(box)});
+  if(expr)expr.textContent=managerFilterExpressionText(taskManagerFilterDraft);
+  if(saved){saved.innerHTML='';const list=taskManagerSavedFilters.slice().sort((a,b)=>(b.favorite?1:0)-(a.favorite?1:0)||(b.updatedAt||0)-(a.updatedAt||0));if(!list.length)saved.innerHTML='<div style="font-size:10px;color:rgba(170,185,210,.36);padding:4px">保存ビューはまだありません</div>';list.forEach(v=>{const r=document.createElement('div');r.className='manager-filter-saved-row';r.innerHTML='<button class="name" onclick="managerApplySavedView(\''+v.id+'\')">'+escapeHtml(v.name)+'</button><button class="fav'+(v.favorite?' on':'')+'" onclick="managerToggleSavedFavorite(\''+v.id+'\')">★</button><button onclick="managerRenameSavedView(\''+v.id+'\')">名前</button><button class="del" onclick="managerDeleteSavedView(\''+v.id+'\')">削除</button>';saved.appendChild(r)})}
+}
+function managerFilterApply(){taskManagerAdvancedFilter=managerCloneFilter(taskManagerFilterDraft);taskManagerActiveSavedViewId='';saveTaskManagerAdvancedFilters();closeTaskManagerFilterMenu();exitTaskManagerSelection(false);renderTaskManager()}
+function managerFilterClearApplied(){taskManagerAdvancedFilter=null;taskManagerActiveSavedViewId='';saveTaskManagerAdvancedFilters();exitTaskManagerSelection(false);renderTaskManager()}
+function managerFilterSaveView(){const name=prompt('保存ビューの名前','新しいビュー');if(!name||!name.trim())return;const v={id:newId(),name:name.trim().slice(0,24),favorite:false,filter:managerCloneFilter(taskManagerFilterDraft),updatedAt:Date.now()};taskManagerSavedFilters.push(v);saveTaskManagerAdvancedFilters();renderTaskManagerFilterMenu();renderTaskManagerSavedViews()}
+function managerApplySavedView(id){const v=taskManagerSavedFilters.find(x=>x.id===id);if(!v)return;taskManagerAdvancedFilter=managerCloneFilter(v.filter);taskManagerFilterDraft=managerCloneFilter(v.filter);taskManagerActiveSavedViewId=id;saveTaskManagerAdvancedFilters();closeTaskManagerFilterMenu();exitTaskManagerSelection(false);renderTaskManager()}
+function managerToggleSavedFavorite(id){const v=taskManagerSavedFilters.find(x=>x.id===id);if(!v)return;v.favorite=!v.favorite;v.updatedAt=Date.now();saveTaskManagerAdvancedFilters();renderTaskManagerFilterMenu();renderTaskManagerSavedViews()}
+function managerRenameSavedView(id){const v=taskManagerSavedFilters.find(x=>x.id===id);if(!v)return;const n=prompt('ビュー名を変更',v.name);if(!n||!n.trim())return;v.name=n.trim().slice(0,24);v.updatedAt=Date.now();saveTaskManagerAdvancedFilters();renderTaskManagerFilterMenu();renderTaskManagerSavedViews()}
+function managerDeleteSavedView(id){const v=taskManagerSavedFilters.find(x=>x.id===id);if(!v)return;if(!confirm('「'+v.name+'」を削除しますか？'))return;taskManagerSavedFilters=taskManagerSavedFilters.filter(x=>x.id!==id);if(taskManagerActiveSavedViewId===id)taskManagerActiveSavedViewId='';saveTaskManagerAdvancedFilters();renderTaskManagerFilterMenu();renderTaskManagerSavedViews()}
+function renderTaskManagerSavedViews(){const box=document.getElementById('taskManagerSavedViews');if(!box)return;box.innerHTML='';const list=taskManagerSavedFilters.slice().sort((a,b)=>(b.favorite?1:0)-(a.favorite?1:0)||(b.updatedAt||0)-(a.updatedAt||0));box.style.display=list.length?'flex':'none';list.forEach(v=>{const b=document.createElement('button');b.type='button';b.className='manager-saved-view'+(v.favorite?' favorite':'')+(taskManagerActiveSavedViewId===v.id?' on':'');b.textContent=v.name;b.onclick=()=>managerApplySavedView(v.id);box.appendChild(b)})}
+
+function normalizeManagerSearchText(v){return String(v==null?'':v).normalize('NFKC').toLocaleLowerCase('ja')}
+function taskManagerSearchText(t){
+  const ex=t&&t.extras&&typeof t.extras==='object'?t.extras:{};
+  const memo=[ex.memo,t&&t.memo,t&&t.note,t&&t.description].filter(Boolean).join(' ');
+  return normalizeManagerSearchText((t&&t.name||'')+' '+memo);
+}
+function applyTaskManagerSearch(list){
+  const q=normalizeManagerSearchText(taskManagerSearchQuery).trim();
+  if(!q)return list;
+  const words=q.split(/\s+/).filter(Boolean);
+  return list.filter(t=>{const hay=taskManagerSearchText(t);return words.every(w=>hay.includes(w))});
+}
+function syncTaskManagerSearchUI(){
+  const box=document.getElementById('taskManagerSearchBox'),input=document.getElementById('taskManagerSearchInput');
+  if(input&&input.value!==taskManagerSearchQuery)input.value=taskManagerSearchQuery;
+  if(box)box.classList.toggle('has-query',!!taskManagerSearchQuery.trim());
+}
+function onTaskManagerSearch(e){taskManagerSearchQuery=e&&e.target?e.target.value:'';exitTaskManagerSelection(false);syncTaskManagerSearchUI();renderTaskManager()}
+function clearTaskManagerSearch(){taskManagerSearchQuery='';exitTaskManagerSelection(false);syncTaskManagerSearchUI();renderTaskManager();setTimeout(()=>document.getElementById('taskManagerSearchInput')?.focus(),0)}
+const TASK_MANAGER_FILTERS=[
+  ['attention','対応'],['today','今日'],['active','未保留'],['hold','保留'],['skima','スキマ'],['breakdown','要分解'],['done','完了'],['trash','ゴミ箱'],['all','すべて']
+];
+function managerIsOverdue(t){return !!(t&&t.state!=='done'&&t.dueDate&&t.dueDate<appDayStr()&&!isTaskOnHold(t))}
+function managerNeedsBreakdown(t){return !!(t&&(t.needsBreakdown===true||t.organizeState==='breakdown'||t.organizeHoldKind==='breakdown'))}
+function managerFilterTasks(key){
+  normalizeTaskCollection();
+  const day=appDayStr(),all=(state.tasks||[]).slice();
+  if(key==='attention')return all.filter(t=>managerIsOverdue(t)||managerNeedsBreakdown(t));
+  if(key==='today')return all.filter(t=>isTaskToday(t));
+  if(key==='active')return all.filter(t=>t.state!=='done'&&!isTaskOnHold(t)&&!isTaskToday(t));
+  if(key==='hold')return all.filter(t=>t.state!=='done'&&!isTaskSkima(t)&&!!t.organizeHoldUntil&&day<t.organizeHoldUntil);
+  if(key==='skima')return all.filter(t=>t.state!=='done'&&isTaskSkima(t));
+  if(key==='breakdown')return all.filter(t=>t.state!=='done'&&managerNeedsBreakdown(t));
+  if(key==='done')return all.filter(t=>t.state==='done');
+  return all.filter(t=>{
+    if(t.state==='done')return taskManagerView.show.done!==false;
+    if(isTaskSkima(t))return taskManagerView.show.skima!==false;
+    if(managerNeedsBreakdown(t)&&taskManagerView.show.breakdown===false)return false;
+    if(isTaskOnHold(t))return taskManagerView.show.hold!==false;
+    return taskManagerView.show.active!==false;
+  });
+}
+function managerSortTasks(list,key){
+  const mode=taskManagerView.sort||'auto';
+  return list.slice().sort((a,b)=>{
+    if(mode==='name')return String(a.name||'').localeCompare(String(b.name||''),'ja');
+    if(mode==='newest')return (b.createdAt||0)-(a.createdAt||0);
+    if(mode==='oldest')return (a.createdAt||0)-(b.createdAt||0);
+    if(mode==='updated')return (b.updatedAt||b.createdAt||0)-(a.updatedAt||a.createdAt||0);
+    if(mode==='due'){
+      const ad=a.organizeHoldUntil||a.dueDate||'9999-12-31',bd=b.organizeHoldUntil||b.dueDate||'9999-12-31';
+      if(ad!==bd)return String(ad).localeCompare(String(bd));
+    }
+    if(key==='done')return (b.doneAt||0)-(a.doneAt||0);
+    if(key==='hold')return String(a.organizeHoldUntil||'9999').localeCompare(String(b.organizeHoldUntil||'9999'));
+    if(managerIsOverdue(a)!==managerIsOverdue(b))return managerIsOverdue(a)?-1:1;
+    if(isTaskImportant(a)!==isTaskImportant(b))return isTaskImportant(a)?-1:1;
+    if((a.dueDate||'')!==(b.dueDate||''))return String(a.dueDate||'9999').localeCompare(String(b.dueDate||'9999'));
+    return (b.createdAt||0)-(a.createdAt||0);
+  });
+}
+function taskManagerCounts(){
+  const keys=['attention','today','active','hold','skima','breakdown','done','all'],out={};
+  keys.forEach(k=>out[k]=managerFilterTasks(k).length);out.trash=ensureAiOrganizerState().trash.length;return out;
+}
+function applyTaskManagerDensity(){
+  const sc=document.getElementById('taskManagerScreen');if(!sc)return;
+  sc.classList.remove('view-compact','view-simple');
+  if(taskManagerView.density==='compact')sc.classList.add('view-compact');
+  if(taskManagerView.density==='simple')sc.classList.add('view-simple');
+  const btn=document.getElementById('taskManagerViewBtn');if(btn)btn.classList.toggle('on',taskManagerView.density!=='standard'||taskManagerView.sort!=='auto');
+}
+function openTaskManagerViewMenu(){const o=document.getElementById('taskManagerViewOverlay');if(!o)return;o.classList.add('open');o.setAttribute('aria-hidden','false');renderTaskManagerViewMenu()}
+function closeTaskManagerViewMenu(){const o=document.getElementById('taskManagerViewOverlay');if(o){o.classList.remove('open');o.setAttribute('aria-hidden','true')}}
+function managerViewBackdrop(e){if(e&&e.target&&e.target.id==='taskManagerViewOverlay')closeTaskManagerViewMenu()}
+function setTaskManagerDensity(v){taskManagerView.density=v;saveTaskManagerView();applyTaskManagerDensity();renderTaskManagerViewMenu();renderTaskManager()}
+function setTaskManagerSort(v){taskManagerView.sort=v;saveTaskManagerView();renderTaskManagerViewMenu();renderTaskManager()}
+function toggleTaskManagerVisibility(k){taskManagerView.show[k]=taskManagerView.show[k]===false;saveTaskManagerView();renderTaskManagerViewMenu();if(taskManagerFilter==='all')renderTaskManager()}
+function renderTaskManagerViewMenu(){
+  const d=document.getElementById('managerDensityOptions'),so=document.getElementById('managerSortOptions'),vi=document.getElementById('managerVisibilityOptions');if(!d||!so||!vi)return;
+  d.innerHTML='';[['standard','標準'],['compact','コンパクト'],['simple','超シンプル']].forEach(([v,l])=>{const b=document.createElement('button');b.type='button';b.className='manager-view-option'+(taskManagerView.density===v?' on':'');b.textContent=l;b.onclick=()=>setTaskManagerDensity(v);d.appendChild(b)});
+  so.innerHTML='';[['auto','おすすめ'],['due','期日・復帰日'],['newest','新しい順'],['oldest','古い順'],['updated','更新順'],['name','名前順']].forEach(([v,l])=>{const b=document.createElement('button');b.type='button';b.className='manager-view-option'+(taskManagerView.sort===v?' on':'');b.textContent=l;b.onclick=()=>setTaskManagerSort(v);so.appendChild(b)});
+  vi.innerHTML='';[['active','未保留'],['hold','保留'],['skima','スキマ'],['breakdown','要分解'],['done','完了']].forEach(([v,l])=>{const b=document.createElement('button');b.type='button';const on=taskManagerView.show[v]!==false;b.className='manager-view-check'+(on?' on':'');b.innerHTML='<span>'+l+'</span><i>✓</i>';b.onclick=()=>toggleTaskManagerVisibility(v);vi.appendChild(b)});
+}
+function openTaskManager(filter){
+  if(filter)taskManagerFilter=filter;
+  closeTopMenu();
+  const sc=document.getElementById('taskManagerScreen');if(!sc)return;
+  sc.classList.add('open');sc.setAttribute('aria-hidden','false');
+  syncTaskManagerSearchUI();
+  applyTaskManagerDensity();
+  renderTaskManagerSavedViews();
+  renderTaskManager();
+}
+function closeTaskManager(){
+  exitTaskManagerSelection(false);
+  closeTaskManagerViewMenu();
+  closeTaskManagerFilterMenu();
+  const sc=document.getElementById('taskManagerScreen');if(sc){sc.classList.remove('open');sc.setAttribute('aria-hidden','true')}
+  render();
+}
+function setTaskManagerFilter(key){exitTaskManagerSelection(false);taskManagerFilter=key;renderTaskManager()}
+function managerCurrentVisibleTasks(){return managerSortTasks(applyTaskManagerSearch(applyTaskManagerAdvancedFilter(managerFilterTasks(taskManagerFilter))),taskManagerFilter)}
+function enterTaskManagerSelection(id){
+  taskManagerSelectionMode=true;
+  if(id)taskManagerSelectedIds.add(id);
+  renderTaskManager();
+}
+function exitTaskManagerSelection(shouldRender=true){
+  taskManagerSelectionMode=false;taskManagerSelectedIds.clear();taskManagerVisibleIds=[];
+  syncTaskManagerSelectionUI();if(shouldRender&&document.getElementById('taskManagerScreen')?.classList.contains('open'))renderTaskManager();
+}
+function managerToggleSelected(id){
+  if(!taskManagerSelectionMode){enterTaskManagerSelection(id);return}
+  if(taskManagerSelectedIds.has(id))taskManagerSelectedIds.delete(id);else taskManagerSelectedIds.add(id);
+  if(!taskManagerSelectedIds.size){exitTaskManagerSelection();return}
+  renderTaskManager();
+}
+function managerToggleSelectAll(){
+  const ids=taskManagerVisibleIds.slice();const all=ids.length&&ids.every(id=>taskManagerSelectedIds.has(id));
+  if(all)ids.forEach(id=>taskManagerSelectedIds.delete(id));else ids.forEach(id=>taskManagerSelectedIds.add(id));
+  if(!taskManagerSelectedIds.size){exitTaskManagerSelection();return}renderTaskManager();
+}
+function syncTaskManagerSelectionUI(){
+  const sc=document.getElementById('taskManagerScreen'),bar=document.getElementById('taskManagerBatchBar'),count=document.getElementById('taskManagerBatchCount'),allBtn=document.getElementById('taskManagerSelectAllBtn'),impBtn=document.getElementById('taskManagerBatchImportantBtn');
+  if(sc)sc.classList.toggle('selection-mode',taskManagerSelectionMode);
+  if(bar){bar.classList.toggle('open',taskManagerSelectionMode);bar.setAttribute('aria-hidden',taskManagerSelectionMode?'false':'true')}
+  if(count)count.textContent=taskManagerSelectedIds.size+'件';
+  const allVisible=taskManagerVisibleIds.length&&taskManagerVisibleIds.every(id=>taskManagerSelectedIds.has(id));if(allBtn)allBtn.textContent=allVisible?'全解除':'全選択';
+  const selected=[...taskManagerSelectedIds].map(id=>state.tasks.find(t=>t.id===id)).filter(Boolean);const allImportant=selected.length&&selected.every(isTaskImportant);if(impBtn)impBtn.textContent=allImportant?'重要OFF':'重要ON';
+}
+function managerBindLongPress(card,id){
+  let timer=null,sx=0,sy=0,moved=false;
+  const cancel=()=>{if(timer){clearTimeout(timer);timer=null}};
+  card.addEventListener('pointerdown',e=>{if(taskManagerSelectionMode||e.target.closest('button'))return;sx=e.clientX;sy=e.clientY;moved=false;timer=setTimeout(()=>{timer=null;if(!moved){try{navigator.vibrate&&navigator.vibrate(18)}catch(_e){}enterTaskManagerSelection(id)}},650)});
+  card.addEventListener('pointermove',e=>{if(Math.abs(e.clientX-sx)>10||Math.abs(e.clientY-sy)>10){moved=true;cancel()}});
+  card.addEventListener('pointerup',cancel);card.addEventListener('pointercancel',cancel);card.addEventListener('pointerleave',cancel);
+  card.addEventListener('contextmenu',e=>{e.preventDefault();if(!taskManagerSelectionMode)enterTaskManagerSelection(id)});
+}
+function managerSelectedTasks(){return [...taskManagerSelectedIds].map(id=>state.tasks.find(t=>t.id===id)).filter(Boolean)}
+function managerAfterBatch(message){saveState();exitTaskManagerSelection(false);render();renderTaskManager();showToast(message)}
+function managerBatchMoveToday(){const list=managerSelectedTasks();if(!list.length)return;const day=appDayStr();list.forEach(t=>{t.organizeHoldKind='';t.organizeHoldUntil='';const old=t.dueDate;t.dueDate=day;t.todayDate=day;t.importantDate='';syncTaskDateFlags(t);maybeAwardSchedulePoint(t,old,t.dueDate)});managerAfterBatch(list.length+'件を今日へ移動した')}
+function managerBatchMoveTomorrow(){const list=managerSelectedTasks();if(!list.length)return;const tomorrow=addDaysStr(appDayStr(),1);list.forEach(t=>{t.organizeHoldKind='';t.organizeHoldUntil=tomorrow;t.dueDate='';t.todayDate='';t.importantDate='';t.importantFlag=false});managerAfterBatch(list.length+'件を明日まで保留した')}
+function managerBatchMoveSkima(){const list=managerSelectedTasks();if(!list.length)return;list.forEach(t=>{t.organizeHoldUntil='';t.organizeHoldKind='skima';t.dueDate='';t.todayDate='';t.importantDate='';t.importantFlag=false});managerAfterBatch(list.length+'件をスキマへ移動した')}
+function managerBatchToggleImportant(){const list=managerSelectedTasks().filter(t=>t.state!=='done');if(!list.length)return;const turnOn=!list.every(isTaskImportant);list.forEach(t=>{t.importantFlag=turnOn;t.importantDate=turnOn?appDayStr():''});managerAfterBatch(list.length+'件の重要を'+(turnOn?'ON':'OFF')+'にした')}
+function managerBatchComplete(){
+  const list=managerSelectedTasks().filter(t=>t.state!=='done');if(!list.length)return;
+  let rewarded=0;list.forEach(t=>{t.state='done';t.doneAt=Date.now();const shouldReward=!t.rewardDone;t.rewardDone=true;if(shouldReward){rewarded++;addGameStamina(5,'TASK CLEAR');const forceBonus=isTaskBonusGuaranteed(t);issueChargeTicket(t,{force:forceBonus?'bonus':null,type:forceBonus?'important':'task'})}});
+  saveState();exitTaskManagerSelection(false);render();renderTaskManager();showToast(list.length+'件を完了した');if(rewarded)setTimeout(()=>startNextChargeTicket(true),180);
+}
+function managerBatchDelete(){
+  const list=managerSelectedTasks();if(!list.length)return;
+  openAppConfirm({title:'タスクをまとめて削除',message:list.length+'件のタスクを削除しますか？',okText:'削除',danger:true,onOk:()=>{
+    const entries=list.map(t=>moveTaskToTrash(t.id,'manual')).filter(Boolean);
+    saveState();exitTaskManagerSelection(false);render();renderTaskManager();showUndo(entries.length+'件をゴミ箱へ移動した',()=>{entries.slice().reverse().forEach(x=>restoreTrashEntry(x.id));saveState();render();if(document.getElementById('taskManagerScreen')?.classList.contains('open'))renderTaskManager()});
+  }});
+}
+
+function managerTaskLabel(t){
+  if(t.state==='done')return '完了';
+  if(isTaskSkima(t))return 'スキマ';
+  if(t.organizeHoldUntil&&appDayStr()<t.organizeHoldUntil)return formatDateLabel(t.organizeHoldUntil)+'に復帰';
+  if(managerIsOverdue(t))return formatDateLabel(t.dueDate)+' 期限超過';
+  if(isTaskToday(t))return '今日';
+  if(t.dueDate)return formatDateLabel(t.dueDate);
+  return '未保留';
+}
+function managerChip(text,cls){const s=document.createElement('span');s.className='manager-chip'+(cls?' '+cls:'');s.textContent=text;return s}
+function renderManagerCard(t){
+  const card=document.createElement('article');card.className='manager-card'+(t.state==='done'?' is-done':'')+(taskManagerSelectedIds.has(t.id)?' selected':'');card.dataset.taskId=t.id;
+  const selectBox=document.createElement('span');selectBox.className='manager-select-box';selectBox.textContent='✓';card.appendChild(selectBox);
+  const main=document.createElement('div');main.className='manager-card-main';
+  const left=document.createElement('div');
+  const title=document.createElement('div');title.className='manager-card-title';title.textContent=t.name||'無題タスク';left.appendChild(title);
+  const meta=document.createElement('div');meta.className='manager-card-meta';
+  const label=managerTaskLabel(t);meta.appendChild(managerChip(label,isTaskSkima(t)?'skima':managerIsOverdue(t)?'overdue':isTaskToday(t)?'today':t.state==='done'?'done':''));
+  if(isTaskImportant(t))meta.appendChild(managerChip('重要','important'));
+  if(managerNeedsBreakdown(t))meta.appendChild(managerChip('要分解','overdue'));
+  const ex=t.extras||{};if(ex.memo)meta.appendChild(managerChip('メモあり',''));
+  left.appendChild(meta);main.appendChild(left);
+  const open=document.createElement('button');open.type='button';open.className='manager-card-open';open.textContent='›';open.setAttribute('aria-label','設定を開く');open.onclick=e=>{e.stopPropagation();if(taskManagerSelectionMode)managerToggleSelected(t.id);else openTaskSettings(t.id)};main.appendChild(open);
+  card.appendChild(main);card.onclick=e=>{if(e.target.closest('button'))return;if(taskManagerSelectionMode)managerToggleSelected(t.id);else openTaskSettings(t.id)};managerBindLongPress(card,t.id);
+  const actions=document.createElement('div');actions.className='manager-card-actions';
+  const addAction=(txt,cls,fn)=>{const b=document.createElement('button');b.type='button';b.className='manager-action'+(cls?' '+cls:'');b.textContent=txt;b.onclick=e=>{e.stopPropagation();fn()};actions.appendChild(b)};
+  if(t.state==='done'){
+    addAction('未完了へ','primary',()=>{undoTask(t.id);renderTaskManager()});
+  }else{
+    if(!isTaskToday(t))addAction('今日へ','primary',()=>managerMoveToday(t.id));
+    addAction('明日','',()=>managerMoveTomorrow(t.id));
+    if(!isTaskSkima(t))addAction('スキマ','skima',()=>managerMoveSkima(t.id));
+    addAction('完了','',()=>managerComplete(t.id));
+  }
+  addAction('削除','danger',()=>managerDelete(t.id));
+  card.appendChild(actions);return card;
+}
+function managerMoveToday(id){const t=state.tasks.find(x=>x.id===id);if(!t)return;t.organizeHoldKind='';t.organizeHoldUntil='';const old=t.dueDate;t.dueDate=appDayStr();t.todayDate=appDayStr();t.importantDate='';syncTaskDateFlags(t);maybeAwardSchedulePoint(t,old,t.dueDate);saveState();render();renderTaskManager();showToast('今日へ移動した')}
+function managerMoveTomorrow(id){const t=state.tasks.find(x=>x.id===id);if(!t)return;t.organizeHoldKind='';t.organizeHoldUntil=addDaysStr(appDayStr(),1);t.dueDate='';t.todayDate='';t.importantDate='';t.importantFlag=false;saveState();render();renderTaskManager();showToast('明日まで保留した')}
+function managerMoveSkima(id){const t=state.tasks.find(x=>x.id===id);if(!t)return;t.organizeHoldUntil='';t.organizeHoldKind='skima';t.dueDate='';t.todayDate='';t.importantDate='';t.importantFlag=false;saveState();render();renderTaskManager();showToast('スキマへ移動した')}
+function managerComplete(id){const t=state.tasks.find(x=>x.id===id);if(!t||t.state==='done')return;if(t.state==='idle')tap(id);const again=state.tasks.find(x=>x.id===id);if(again&&again.state==='charging')tap(id);renderTaskManager()}
+function managerDelete(id){const t=state.tasks.find(x=>x.id===id);if(!t)return;openAppConfirm({title:'タスクを削除',message:'「'+t.name+'」を削除しますか？',okText:'削除',danger:true,onOk:()=>{deleteTask(id);renderTaskManager()}})}
+function managerEmptyCopy(key){
+  if(key==='attention')return ['✓','対応が必要なタスクはありません','いま詰まっているものは見つかりません。'];
+  if(key==='hold')return ['◷','保留中のタスクはありません','今は全部、見える場所にあります。'];
+  if(key==='skima')return ['◇','スキマタスクはありません','急がないけど、いつかやりたいことを置けます。'];
+  if(key==='breakdown')return ['↳','要分解タスクはありません','大きすぎて止まっているタスクはありません。'];
+  if(key==='done')return ['✓','完了履歴はまだありません','終えたタスクがここに積み上がります。'];
+  if(key==='trash')return ['⌫','ゴミ箱は空です','削除したタスクはここから復元できます。'];
+  return ['·','このカテゴリにタスクはありません','別のカテゴリを確認してください。'];
+}
+function renderTaskManager(){
+  const body=document.getElementById('taskManagerBody'),tabs=document.getElementById('taskManagerTabs');if(!body||!tabs)return;
+  applyTaskManagerDensity();
+  renderTaskManagerSavedViews();
+  const filterBtn=document.getElementById('taskManagerFilterBtn');if(filterBtn)filterBtn.classList.toggle('on',managerHasAdvancedFilter());
+  const counts=taskManagerCounts();tabs.innerHTML='';
+  TASK_MANAGER_FILTERS.forEach(([key,label])=>{const b=document.createElement('button');b.type='button';b.className='task-manager-tab'+(taskManagerFilter===key?' on':'');b.textContent=label+' '+counts[key];b.onclick=()=>setTaskManagerFilter(key);tabs.appendChild(b)});
+  body.innerHTML='';
+  if(managerHasAdvancedFilter()){const fs=document.createElement('div');fs.className='manager-filter-summary';fs.innerHTML='<span>'+escapeHtml(managerFilterExpressionText(taskManagerAdvancedFilter))+'</span><button type="button" onclick="managerFilterClearApplied()">解除</button>';body.appendChild(fs)}
+  const sum=document.createElement('div');sum.className='task-manager-summary';
+  [['今日',counts.today],['保留',counts.hold+counts.skima],['完了',counts.done]].forEach(([label,n])=>{const box=document.createElement('div');box.className='task-manager-stat';box.innerHTML='<b>'+n+'</b><span>'+label+'</span>';sum.appendChild(box)});body.appendChild(sum);
+  syncTaskManagerSearchUI();
+  if(taskManagerFilter==='trash'){
+    exitTaskManagerSelection(false);
+    const trash=ensureAiOrganizerState().trash.slice();
+    const q=normalizeManagerSearchText(taskManagerSearchQuery).trim();
+    const list=q?trash.filter(x=>normalizeManagerSearchText((x.task&&x.task.name||'')+' '+(x.task&&x.task.extras&&x.task.extras.memo||'')).includes(q)):trash;
+    taskManagerVisibleIds=[];syncTaskManagerSelectionUI();
+    if(!list.length){const copy=q?['⌕','一致するタスクはありません','検索語を変えてください。']:managerEmptyCopy('trash');const e=document.createElement('div');e.className='manager-empty';e.innerHTML='<div class="manager-empty-icon">'+copy[0]+'</div><div class="manager-empty-title">'+copy[1]+'</div><div class="manager-empty-sub">'+copy[2]+'</div>';body.appendChild(e);return}
+    const tb=document.createElement('div');tb.className='trash-toolbar';tb.innerHTML='<button type="button" onclick="confirmEmptyAiTrash()">ゴミ箱を空にする</button>';body.appendChild(tb);
+    const lab=document.createElement('div');lab.className='task-manager-section-label';lab.textContent='ゴミ箱 '+list.length+'件'+(q?'（検索結果）':'');body.appendChild(lab);
+    list.forEach(x=>body.appendChild(renderManagerTrashCard(x)));return;
+  }
+  const baseList=managerFilterTasks(taskManagerFilter);
+  const list=managerSortTasks(applyTaskManagerSearch(applyTaskManagerAdvancedFilter(baseList)),taskManagerFilter);
+  taskManagerVisibleIds=list.map(t=>t.id);
+  if(taskManagerSelectionMode){const visibleSet=new Set(taskManagerVisibleIds);[...taskManagerSelectedIds].forEach(id=>{if(!visibleSet.has(id))taskManagerSelectedIds.delete(id)});if(!taskManagerSelectedIds.size)taskManagerSelectionMode=false}
+  syncTaskManagerSelectionUI();
+  if(!list.length){const searching=!!taskManagerSearchQuery.trim();const copy=searching?['⌕','一致するタスクはありません','検索語を変えるか、別のカテゴリを確認してください。']:managerEmptyCopy(taskManagerFilter);const [icon,title,sub]=copy;const e=document.createElement('div');e.className='manager-empty';e.innerHTML='<div class="manager-empty-icon">'+icon+'</div><div class="manager-empty-title">'+title+'</div><div class="manager-empty-sub">'+sub+'</div>';body.appendChild(e);return}
+  if(taskManagerFilter==='hold'){
+    if(taskManagerSearchQuery.trim()){const note=document.createElement('div');note.className='task-manager-search-result';note.textContent='保留 '+list.length+'件（検索結果）';body.appendChild(note)}
+    const groups={};list.forEach(t=>{const k=t.organizeHoldUntil||'日時未設定';(groups[k]||(groups[k]=[])).push(t)});
+    Object.keys(groups).sort().forEach(k=>{const g=document.createElement('section');g.className='task-manager-group';const h=document.createElement('div');h.className='task-manager-group-head';h.innerHTML='<span>'+escapeHtml(k==='日時未設定'?k:formatDateLabel(k))+'</span><b>'+groups[k].length+'</b>';g.appendChild(h);groups[k].forEach(t=>g.appendChild(renderManagerCard(t)));body.appendChild(g)});return;
+  }
+  const label=document.createElement('div');label.className='task-manager-section-label';label.textContent=(TASK_MANAGER_FILTERS.find(x=>x[0]===taskManagerFilter)||['','タスク'])[1]+' '+list.length+'件'+(taskManagerSearchQuery.trim()?'（検索結果）':'');body.appendChild(label);
+  list.forEach(t=>body.appendChild(renderManagerCard(t)));
+}
+
+
+
+/* ===== v49.26 AI ORGANIZER ===== */
+let aiOrganizerTab='export',aiPreviewOperations=[];
+function ensureAiOrganizerState(){
+  if(!state.aiOrganizer||typeof state.aiOrganizer!=='object')state.aiOrganizer={history:[],trash:[],lastExportIds:[]};
+  if(!Array.isArray(state.aiOrganizer.history))state.aiOrganizer.history=[];
+  if(!Array.isArray(state.aiOrganizer.trash))state.aiOrganizer.trash=[];
+  if(!Array.isArray(state.aiOrganizer.lastExportIds))state.aiOrganizer.lastExportIds=[];
+  return state.aiOrganizer;
+}
+function openAiOrganizer(tab='export'){ensureAiOrganizerState();const o=document.getElementById('aiOrganizerOverlay');if(!o)return;o.classList.add('open');o.setAttribute('aria-hidden','false');setAiOrganizerTab(tab)}
+function closeAiOrganizer(){const o=document.getElementById('aiOrganizerOverlay');if(o){o.classList.remove('open');o.setAttribute('aria-hidden','true')}}
+function aiOrganizerBackdrop(e){if(e&&e.target&&e.target.id==='aiOrganizerOverlay')closeAiOrganizer()}
+function setAiOrganizerTab(tab){aiOrganizerTab=tab;document.querySelectorAll('[data-ai-tab]').forEach(x=>x.classList.toggle('on',x.dataset.aiTab===tab));document.querySelectorAll('[data-ai-panel]').forEach(x=>x.classList.toggle('on',x.dataset.aiPanel===tab));if(tab==='history')renderAiHistory()}
+function aiTaskTagNames(t){return (t.tags||[]).map(id=>state.tags.find(x=>x.id===id)?.name||id)}
+function aiTaskPayload(t){return{id:t.id,title:t.name,memo:(t.extras&&t.extras.memo)||'',status:t.state==='done'?'done':'unfinished',today:isTaskToday(t),important:isTaskImportant(t),dueDate:t.dueDate||null,dueTime:t.dueTime||null,hold:t.organizeHoldKind==='skima'?'skima':(t.organizeHoldUntil||null),needsBreakdown:managerNeedsBreakdown(t),tags:aiTaskTagNames(t),createdAt:t.createdAt||null,doneAt:t.doneAt||null}}
+function aiExportTasks(scope){
+  if(scope==='selected')return managerSelectedTasks();
+  if(scope==='unfinished')return state.tasks.filter(t=>t.state!=='done');
+  if(scope==='all')return state.tasks.slice();
+  return managerCurrentVisibleTasks();
+}
+function aiOrganizerPrompt(tasks){
+  const payload=tasks.map(aiTaskPayload);
+  return `あなたはDOPADOのタスク整理アシスタントです。以下のタスクを分析し、必要な変更だけをJSONの差分命令として返してください。\n\n【絶対ルール】\n- 元の全タスク一覧を書き直さない。operationsだけ返す。\n- JSON以外の文章やMarkdownコードフェンスは付けない。\n- 変更不要なタスクは省略する。\n- 既存タスクの変更には必ず下記のtaskIdを使う。\n- 削除は可能だが、DOPADO側では復元可能なゴミ箱へ移動する。\n- 完全削除はできない。\n- 不確かな変更は無理に行わない。\n- 同じtaskIdに矛盾する命令を出さない。\n\n【返却形式】\n{"operations":[\n {"taskId":"既存ID","action":"set_today","reason":"理由"},\n {"taskId":"既存ID","action":"hold_tomorrow","reason":"理由"},\n {"taskId":"既存ID","action":"hold_until","value":"YYYY-MM-DD","reason":"理由"},\n {"taskId":"既存ID","action":"set_skima","reason":"理由"},\n {"taskId":"既存ID","action":"set_important","value":true,"reason":"理由"},\n {"taskId":"既存ID","action":"rename","value":"新タイトル","reason":"理由"},\n {"taskId":"既存ID","action":"set_memo","value":"メモ","reason":"理由"},\n {"taskId":"既存ID","action":"set_breakdown","value":true,"reason":"理由"},\n {"taskId":"既存ID","action":"complete","reason":"理由"},\n {"taskId":"既存ID","action":"reopen","reason":"理由"},\n {"taskId":"既存ID","action":"delete","reason":"理由"},\n {"action":"create","title":"新規タスク","memo":"任意","destination":"today|inbox|skima","reason":"理由"}\n]}\n\n【タスクデータ】\n${JSON.stringify(payload,null,2)}`;
+}
+let aiLastExportPrompt='';
+async function copyTextSafe(text){try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text);return true}}catch(e){}const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.left='-9999px';ta.style.top='0';document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);let ok=false;try{ok=document.execCommand('copy')}catch(_e){}ta.remove();return ok}
+function prepareAiExportPrompt(){const tasks=aiExportTasks();if(!tasks.length)return{tasks:[],prompt:''};const prompt=aiOrganizerPrompt(tasks);aiLastExportPrompt=prompt;const tx=document.getElementById('aiExportText');if(tx)tx.value=prompt;return{tasks,prompt}}
+async function copyAiOrganizerPrompt(){const st=document.getElementById('aiExportStatus'),p=prepareAiExportPrompt();if(!p.tasks.length){st.className='ai-org-status error';st.textContent='出力対象のタスクがありません。';return}const a=ensureAiOrganizerState();a.lastExportIds=p.tasks.map(t=>t.id);saveNow();const ok=await copyTextSafe(p.prompt);st.className='ai-org-status '+(ok?'ok':'error');st.textContent=ok?p.tasks.length+'件のAI用プロンプトをコピーしました。':'自動コピーできませんでした。下の「全文を表示」から選択してコピーできます。';if(!ok){document.getElementById('aiExportPreview')?.classList.add('open')}}
+function toggleAiExportPreview(){const p=prepareAiExportPrompt(),box=document.getElementById('aiExportPreview'),st=document.getElementById('aiExportStatus');if(!p.tasks.length){st.className='ai-org-status error';st.textContent='出力対象のタスクがありません。';return}box.classList.toggle('open')}
+function selectAiExportText(){const tx=document.getElementById('aiExportText');if(!tx)return;tx.focus();tx.select();tx.setSelectionRange(0,tx.value.length);const st=document.getElementById('aiExportStatus');st.className='ai-org-status ok';st.textContent='全文を選択しました。iPhoneのコピー操作を使えます。'}
+async function copyAiExportTextFromPreview(){const tx=document.getElementById('aiExportText'),st=document.getElementById('aiExportStatus');if(!tx||!tx.value){const p=prepareAiExportPrompt();if(!p.tasks.length){st.className='ai-org-status error';st.textContent='出力対象のタスクがありません。';return}}tx.focus();tx.select();tx.setSelectionRange(0,tx.value.length);let ok=false;try{ok=document.execCommand('copy')}catch(e){}if(!ok){ok=await copyTextSafe(tx.value)}st.className='ai-org-status '+(ok?'ok':'error');st.textContent=ok?'プロンプトをコピーしました。':'自動コピーできません。全文選択後、iPhoneの「コピー」を押してください。';document.getElementById('aiExportPreview')?.classList.add('open')}
+async function shareAiOrganizerPrompt(){const p=prepareAiExportPrompt(),st=document.getElementById('aiExportStatus');if(!p.tasks.length)return;if(navigator.share){try{await navigator.share({title:'DOPADO AI整理',text:p.prompt});st.className='ai-org-status ok';st.textContent='共有シートを開きました。';return}catch(e){if(e&&e.name==='AbortError')return}}const ok=await copyTextSafe(p.prompt);st.className='ai-org-status '+(ok?'ok':'error');st.textContent=ok?'共有非対応のためコピーしました。':'共有できませんでした。全文表示から手動でコピーしてください。'}
+function clearAiImport(){document.getElementById('aiImportText').value='';document.getElementById('aiImportStatus').textContent='';document.getElementById('aiPreviewArea').innerHTML='';aiPreviewOperations=[]}
+function aiParseJson(raw){let text=String(raw||'').trim();text=text.replace(/^```(?:json)?\s*/i,'').replace(/\s*```$/,'');return JSON.parse(text)}
+const AI_ACTION_LABELS={set_today:'今日へ',hold_tomorrow:'明日まで保留',hold_until:'日時保留',set_skima:'スキマへ',set_important:'重要変更',rename:'タイトル変更',set_memo:'メモ変更',set_breakdown:'要分解変更',complete:'完了',reopen:'未完了へ',delete:'削除',create:'新規追加'};
+function validateAiOperation(op,index){
+  const out={raw:op,index,valid:true,error:'',selected:true,action:op&&op.action,taskId:op&&op.taskId};
+  if(!op||typeof op!=='object'){out.valid=false;out.error='命令形式が不正';return out}
+  const allowed=Object.keys(AI_ACTION_LABELS);if(!allowed.includes(op.action)){out.valid=false;out.error='未対応のaction';return out}
+  if(op.action==='create'){if(!String(op.title||'').trim()){out.valid=false;out.error='新規タスク名が空'}return out}
+  const t=state.tasks.find(x=>x.id===op.taskId);if(!t){out.valid=false;out.error='存在しないtaskId';return out}out.task=t;
+  const exported=ensureAiOrganizerState().lastExportIds;if(exported.length&&!exported.includes(op.taskId)){out.valid=false;out.error='直近のAI出力対象外';return out}
+  if(op.action==='hold_until'&&!/^\d{4}-\d{2}-\d{2}$/.test(String(op.value||''))){out.valid=false;out.error='日付形式が不正'}
+  if(['rename','set_memo'].includes(op.action)&&typeof op.value!=='string'){out.valid=false;out.error='valueが文字列ではない'}
+  return out;
+}
+function aiOperationDiff(v){const op=v.raw,t=v.task;if(!v.valid)return v.error;if(op.action==='create')return '新規: '+String(op.title||'');if(op.action==='set_today')return aiTaskStatusLabel(t)+' → 今日';if(op.action==='hold_tomorrow')return aiTaskStatusLabel(t)+' → 明日まで保留';if(op.action==='hold_until')return aiTaskStatusLabel(t)+' → '+op.value+'まで保留';if(op.action==='set_skima')return aiTaskStatusLabel(t)+' → スキマ';if(op.action==='set_important')return '重要 '+(isTaskImportant(t)?'ON':'OFF')+' → '+(op.value?'ON':'OFF');if(op.action==='rename')return '「'+t.name+'」→「'+op.value+'」';if(op.action==='set_memo')return 'メモを更新';if(op.action==='set_breakdown')return '要分解 '+(managerNeedsBreakdown(t)?'ON':'OFF')+' → '+(op.value?'ON':'OFF');if(op.action==='complete')return '未完了 → 完了';if(op.action==='reopen')return '完了 → 未完了';if(op.action==='delete')return '通常一覧 → ゴミ箱';return AI_ACTION_LABELS[op.action]||op.action}
+function aiTaskStatusLabel(t){if(t.state==='done')return '完了';if(isTaskSkima(t))return 'スキマ';if(t.organizeHoldUntil)return '保留';if(isTaskToday(t))return '今日';return '未保留'}
+function loadAiImportPreview(){
+  const st=document.getElementById('aiImportStatus'),area=document.getElementById('aiPreviewArea');try{const parsed=aiParseJson(document.getElementById('aiImportText').value);if(!parsed||!Array.isArray(parsed.operations))throw new Error('operations配列がありません');const seen=new Map();aiPreviewOperations=parsed.operations.map(validateAiOperation);aiPreviewOperations.forEach(v=>{if(v.taskId){const k=v.taskId+':'+v.action;if(seen.has(k)){v.valid=false;v.error='同じ命令が重複'}seen.set(k,true)}});st.className='ai-org-status ok';st.textContent=aiPreviewOperations.length+'件を読み込みました。まだ変更は適用されていません。';renderAiPreview()}catch(e){aiPreviewOperations=[];area.innerHTML='';st.className='ai-org-status error';st.textContent='JSONを読み込めません: '+e.message}}
+function renderAiPreview(){
+  const area=document.getElementById('aiPreviewArea');if(!area)return;const valid=aiPreviewOperations.filter(x=>x.valid),deletes=valid.filter(x=>x.action==='delete').length,creates=valid.filter(x=>x.action==='create').length,invalid=aiPreviewOperations.length-valid.length;
+  area.innerHTML='<div class="ai-preview-summary"><div class="ai-preview-stat"><b>'+valid.length+'</b><span>適用可能</span></div><div class="ai-preview-stat"><b>'+deletes+'</b><span>削除</span></div><div class="ai-preview-stat"><b>'+invalid+'</b><span>除外</span></div></div>';
+  const list=document.createElement('div');list.className='ai-preview-list';aiPreviewOperations.forEach((v,i)=>{const op=v.raw,item=document.createElement('label');item.className='ai-preview-item'+(v.valid?'':' invalid');item.innerHTML='<input type="checkbox" '+(v.valid&&v.selected?'checked':'')+' '+(v.valid?'':'disabled')+' onchange="toggleAiPreviewOperation('+i+',this.checked)"><div><div class="ai-preview-title">'+escapeHtml(AI_ACTION_LABELS[op.action]||op.action||'不正な命令')+' · '+escapeHtml(v.task?v.task.name:(op.title||'新規タスク'))+'</div><div class="ai-preview-diff">'+escapeHtml(aiOperationDiff(v))+'</div>'+(op.reason?'<div class="ai-preview-reason">'+escapeHtml(op.reason)+'</div>':'')+'</div>';list.appendChild(item)});area.appendChild(list);
+  const chosen=valid.filter(x=>x.selected).length,delRatio=state.tasks.length?deletes/state.tasks.length:0;const warn=(deletes>=50||delRatio>=.5)?'<div class="ai-org-status error">大量削除が含まれています。適用後もゴミ箱と履歴から復元できます。</div>':'';area.insertAdjacentHTML('beforeend',warn+'<div class="ai-org-actions"><button type="button" class="ai-org-btn secondary" onclick="toggleAllAiPreview(true)">全選択</button><button type="button" class="ai-org-btn secondary" onclick="toggleAllAiPreview(false)">全解除</button></div><button type="button" class="ai-org-btn" style="margin-top:8px" onclick="confirmApplyAiPreview()">選択した'+chosen+'件を適用</button>');
+}
+function toggleAiPreviewOperation(i,on){if(aiPreviewOperations[i]&&aiPreviewOperations[i].valid)aiPreviewOperations[i].selected=!!on;renderAiPreview()}
+function toggleAllAiPreview(on){aiPreviewOperations.forEach(x=>{if(x.valid)x.selected=!!on});renderAiPreview()}
+function aiSnapshot(){const a=ensureAiOrganizerState();return{tasks:JSON.parse(JSON.stringify(state.tasks)),repeats:JSON.parse(JSON.stringify(state.repeats||[])),trash:JSON.parse(JSON.stringify(a.trash||[]))}}
+function confirmApplyAiPreview(){const ops=aiPreviewOperations.filter(x=>x.valid&&x.selected);if(!ops.length)return;const deletes=ops.filter(x=>x.action==='delete').length;openAppConfirm({title:'AI整理を適用する？',message:ops.length+'件を変更します。'+(deletes?' このうち'+deletes+'件はゴミ箱へ移動します。':'')+' 適用後もまとめて元に戻せます。',okText:'適用する',danger:deletes>0,onOk:()=>applyAiPreview(ops)})}
+function applyAiPreview(ops){
+  const before=aiSnapshot(),a=ensureAiOrganizerState(),summary={};let applied=0;
+  ops.forEach(v=>{const op=v.raw;try{if(applyAiOperation(op)){summary[op.action]=(summary[op.action]||0)+1;applied++}}catch(e){console.warn('AI op failed',op,e)}});
+  const history={id:newId(),createdAt:Date.now(),summary,before,afterTaskCount:state.tasks.length};a.history.unshift(history);a.history=a.history.slice(0,10);saveNow();render();if(document.getElementById('taskManagerScreen')?.classList.contains('open'))renderTaskManager();aiPreviewOperations=[];document.getElementById('aiPreviewArea').innerHTML='';document.getElementById('aiImportStatus').className='ai-org-status ok';document.getElementById('aiImportStatus').textContent=applied+'件のAI整理を適用しました。';showUndo(applied+'件のAI整理を適用した',()=>restoreAiHistory(history.id,true));
+}
+function applyAiOperation(op){
+  if(op.action==='create'){const dest=op.destination||'inbox',cfg={extras:{memo:String(op.memo||''),subtasks:[],conditions:[]}};if(dest==='today'){cfg.dueDate=appDayStr();cfg.todayDate=appDayStr()}else if(dest==='skima'){cfg.organizeHoldKind='skima'}state.tasks.push(createTask(String(op.title).trim(),cfg));return true}
+  const t=state.tasks.find(x=>x.id===op.taskId);if(!t)return false;
+  if(op.action==='set_today'){t.organizeHoldKind='';t.organizeHoldUntil='';t.dueDate=appDayStr();t.todayDate=appDayStr();syncTaskDateFlags(t)}
+  else if(op.action==='hold_tomorrow'){t.organizeHoldKind='';t.organizeHoldUntil=addDaysStr(appDayStr(),1);t.dueDate='';t.todayDate='';t.importantDate='';t.importantFlag=false}
+  else if(op.action==='hold_until'){t.organizeHoldKind='';t.organizeHoldUntil=String(op.value);t.dueDate='';t.todayDate='';t.importantDate='';t.importantFlag=false}
+  else if(op.action==='set_skima'){t.organizeHoldKind='skima';t.organizeHoldUntil='';t.dueDate='';t.todayDate='';t.importantDate='';t.importantFlag=false}
+  else if(op.action==='set_important'){t.importantFlag=!!op.value;if(op.value){t.dueDate=appDayStr();t.todayDate=appDayStr()}else t.importantDate=''}
+  else if(op.action==='rename'){t.name=String(op.value).trim()||t.name}
+  else if(op.action==='set_memo'){t.extras=normalizeTaskExtras(Object.assign({},t.extras,{memo:String(op.value||'')}))}
+  else if(op.action==='set_breakdown'){t.swipeCycle=op.value?2:0}
+  else if(op.action==='complete'){t.state='done';t.doneAt=Date.now();t.rewardDone=true}
+  else if(op.action==='reopen'){t.state='idle';t.doneAt=null}
+  else if(op.action==='delete'){moveTaskToTrash(t.id,'ai')}
+  else return false;return true;
+}
+function renderAiHistory(){const area=document.getElementById('aiHistoryArea'),a=ensureAiOrganizerState();if(!area)return;if(!a.history.length){area.innerHTML='<div class="ai-empty">AI整理履歴はまだありません。<br>適用前の状態はここから復元できます。</div>';return}area.innerHTML='<div class="ai-history-list">'+a.history.map(h=>{const total=Object.values(h.summary||{}).reduce((x,y)=>x+y,0),detail=Object.entries(h.summary||{}).map(([k,v])=>(AI_ACTION_LABELS[k]||k)+' '+v).join(' / ');return '<div class="ai-history-card"><div class="ai-history-top"><div><div class="ai-history-title">AI整理 '+total+'件</div><div class="ai-history-meta">'+escapeHtml(new Date(h.createdAt).toLocaleString('ja-JP'))+'<br>'+escapeHtml(detail)+'</div></div><button class="ai-mini-btn" onclick="confirmRestoreAiHistory(\''+h.id+'\')">この時点へ戻す</button></div></div>'}).join('')+'</div>'}
+function confirmRestoreAiHistory(id){openAppConfirm({title:'AI整理前へ戻す？',message:'このAI整理を適用する直前の全タスク状態へ戻します。現在の変更は置き換わります。',okText:'元に戻す',danger:true,onOk:()=>restoreAiHistory(id,false)})}
+function restoreAiHistory(id,quiet){const a=ensureAiOrganizerState(),h=a.history.find(x=>x.id===id);if(!h)return;state.tasks=JSON.parse(JSON.stringify(h.before.tasks||[])).map(normalizeTask);state.repeats=JSON.parse(JSON.stringify(h.before.repeats||[]));a.trash=JSON.parse(JSON.stringify(h.before.trash||[]));saveNow();render();if(document.getElementById('taskManagerScreen')?.classList.contains('open'))renderTaskManager();renderAiHistory();if(!quiet)document.getElementById('aiImportStatus').textContent='AI整理前の状態へ戻しました。'}
+function renderManagerTrashCard(x){
+  const card=document.createElement('article');card.className='trash-card';
+  const source=x.source==='ai'?'AI整理':'手動削除';
+  card.innerHTML='<div class="trash-card-top"><div><div class="trash-card-title">'+escapeHtml(x.task&&x.task.name||'無題タスク')+'</div><div class="trash-card-meta">'+escapeHtml(new Date(x.deletedAt).toLocaleString('ja-JP'))+' · '+source+'</div></div><div class="trash-card-actions"><button class="trash-action" onclick="restoreAiTrash(\''+x.id+'\')">復元</button><button class="trash-action danger" onclick="confirmPurgeAiTrash(\''+x.id+'\')">完全削除</button></div></div>';
+  return card;
+}
+function restoreAiTrash(id){if(!restoreTrashEntry(id))return;saveNow();render();if(document.getElementById('taskManagerScreen')?.classList.contains('open'))renderTaskManager()}
+function confirmPurgeAiTrash(id){openAppConfirm({title:'完全に削除する？',message:'このタスクは復元できなくなります。',okText:'完全削除',danger:true,onOk:()=>{const a=ensureAiOrganizerState();a.trash=a.trash.filter(x=>x.id!==id);saveNow();if(document.getElementById('taskManagerScreen')?.classList.contains('open'))renderTaskManager()}})}
+function confirmEmptyAiTrash(){const n=ensureAiOrganizerState().trash.length;if(!n)return;openAppConfirm({title:'ゴミ箱を空にする？',message:n+'件を完全に削除します。元に戻せません。',okText:'すべて完全削除',danger:true,onOk:()=>{ensureAiOrganizerState().trash=[];saveNow();if(document.getElementById('taskManagerScreen')?.classList.contains('open'))renderTaskManager()}})}
+
 
 let chargeParticleRaf=null,chargeParticles=[],chargeParticleMode='normal';
 function particleCanvas(){return document.getElementById('chargeParticleLayer')}
@@ -5789,7 +7011,7 @@ function playBonusFrame(){
   })
 }
 function keepTaskPreviewOnTarget(target){if(!target||!taskChargingId||currentMode()!=='tasks')return false;const card=target.closest&&target.closest('.task');if(!card||card.dataset.id!==String(taskChargingId))return false;return !!(target.closest('.task-btn')||target.closest('.task-dopaon')||target.closest('.dopa-close'));}
-document.addEventListener('click',e=>{const target=e.target;if(currentChargePhase==='peka'&&!(target.closest&&target.closest('#chargeMeter')))holdCurrentCharge();setTimeout(()=>{if(openExtraTaskId&&!(target.closest&&target.closest('.task-extra'))&&!(target.closest&&target.closest('.task-menu-toggle')))closeTaskExtras(true);if(taskChargingId&&!keepTaskPreviewOnTarget(target))clearTaskChargePreview(null,true);if(currentMode()==='habits'&&flippedHabitId&&!target.closest('.habit-tile')){flippedHabitId=null;render()}if(quickPickerMode&&!(target.closest&&(target.closest('#quickAddBar')||target.closest('#quickPickerPanel')||target.closest('#inputBar')))){quickClosePicker();const _mi=document.getElementById('mi');if(document.activeElement!==_mi){document.body.classList.remove('keyboard-open');document.getElementById('sf8')?.classList.remove('keyboard-open');syncViewport()}}},0);},true);
+document.addEventListener('click',e=>{const target=e.target;if(currentChargePhase==='peka'&&!(target.closest&&target.closest('#chargeMeter')))holdCurrentCharge();setTimeout(()=>{if(openExtraTaskId&&!(target.closest&&target.closest('.task-extra'))&&!(target.closest&&target.closest('.task-menu-toggle')))closeTaskExtras(true);if(taskChargingId&&!keepTaskPreviewOnTarget(target))clearTaskChargePreview(null,true);if(currentMode()==='habits'&&flippedHabitId&&!target.closest('.habit-tile')){flippedHabitId=null;render()}if(quickPickerMode&&!(target.closest&&(target.closest('#quickAddBar')||target.closest('#quickPickerPanel')||target.closest('#inputBar')))){const closed=quickClosePicker('outside click');if(closed){const _mi=document.getElementById('mi');if(document.activeElement!==_mi){document.body.classList.remove('keyboard-open');document.getElementById('sf8')?.classList.remove('keyboard-open');syncViewport()}}}},0);},true);
 window.addEventListener('message',e=>{
   const d=e.data||{};
   // v17: GAME画面は既存チャージ機の当選/状態通知を受け取らない。
@@ -5870,7 +7092,7 @@ if(window.visualViewport){visualViewport.addEventListener('resize',handleViewpor
 window.addEventListener('resize',()=>{initBaseViewport(false);syncViewport()});
 window.addEventListener('orientationchange',()=>{setTimeout(()=>{initBaseViewport(true);syncViewport()},300);setTimeout(syncViewport,700)});
 window.addEventListener('scroll',lockScroll,{passive:true});
-document.addEventListener('touchmove',e=>{if(e.target.closest('#ta'))return;if(e.target.closest('.popup'))return;if(e.target.closest('#taskSettingsScreen'))return;if(e.target.closest('#quickPickerPanel'))return;if(e.target.closest('#quickAddBar'))return;e.preventDefault()},{passive:false});
+document.addEventListener('touchmove',e=>{if(e.target.closest('#ta'))return;if(e.target.closest('.popup'))return;if(e.target.closest('#taskSettingsScreen'))return;if(e.target.closest('#taskManagerScreen'))return;if(e.target.closest('#quickPickerPanel'))return;if(e.target.closest('#quickAddBar'))return;e.preventDefault()},{passive:false});
 
 /* ================================================================
    DOPADO TUTORIAL SYSTEM v2 — グローバルスコープ
@@ -6520,9 +7742,345 @@ if('serviceWorker' in navigator){
     ? navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister())).catch(()=>{})
     : navigator.serviceWorker.ready.then(r=>r.unregister()).catch(()=>{});
 }
+
+/* ===== DOPADO DIAGNOSTICS: hidden logger + menu page ===== */
+(function installQuickUiDiagnostics(){
+  const STORE_KEY='dopado_diagnostic_logs_v1';
+  const ENABLE_KEY='dopado_diagnostic_enabled_v1';
+  const MAX=600;
+  let lines=[];
+  let enabled=localStorage.getItem(ENABLE_KEY)!=='0';
+
+  try{
+    const saved=JSON.parse(localStorage.getItem(STORE_KEY)||'[]');
+    if(Array.isArray(saved))lines=saved.slice(-MAX).map(String);
+  }catch(e){lines=[]}
+
+  function saveLogs(){
+    try{localStorage.setItem(STORE_KEY,JSON.stringify(lines.slice(-MAX)))}catch(e){}
+  }
+  function page(){return document.getElementById('diagnosticsScreen')}
+  function logList(){return document.getElementById('diagnosticsLogList')}
+  function renderPage(){
+    const list=logList();
+    if(list){
+      list.textContent=lines.length?lines.join('\n'):'ログはまだありません。';
+      requestAnimationFrame(()=>{list.scrollTop=list.scrollHeight});
+    }
+    const toggle=document.getElementById('diagnosticsToggleBtn');
+    if(toggle){
+      toggle.textContent=enabled?'記録 ON':'記録 OFF';
+      toggle.classList.toggle('on',enabled);
+    }
+    const count=document.getElementById('diagnosticsCount');
+    if(count)count.textContent=lines.length+' / '+MAX;
+  }
+  function ensurePage(){
+    let screen=page();
+    if(screen)return screen;
+    const style=document.createElement('style');
+    style.id='diagnosticsPageStyle';
+    style.textContent=`
+      #diagnosticsScreen{position:fixed;inset:0;z-index:2147483000;display:none;flex-direction:column;background:#05060d;color:#e9f5ff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+      #diagnosticsScreen.open{display:flex}
+      .diagnostics-head{padding:max(12px,env(safe-area-inset-top)) 12px 10px;display:grid;grid-template-columns:44px 1fr auto;gap:8px;align-items:center;border-bottom:1px solid rgba(255,255,255,.09);background:#070812}
+      .diagnostics-back{width:40px;height:40px;border:0;background:transparent;color:#c9d8ef;font-size:29px;line-height:1;border-radius:9px}
+      .diagnostics-title{font-family:"Orbitron",monospace;font-size:13px;letter-spacing:1.2px;color:#43f5c2}.diagnostics-sub{display:block;margin-top:3px;font-size:10px;letter-spacing:.2px;color:#71819b;font-family:inherit}
+      .diagnostics-count{font:10px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:#71819b;white-space:nowrap}
+      .diagnostics-controls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.07);background:#080a13}
+      .diagnostics-controls button{height:38px;border:1px solid rgba(255,255,255,.12);border-radius:9px;background:rgba(255,255,255,.035);color:#aebdd3;font-weight:900;font-size:12px}
+      .diagnostics-controls button.on{color:#43f5c2;border-color:rgba(67,245,194,.42);background:rgba(67,245,194,.07)}
+      #diagnosticsLogList{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;margin:0;padding:14px 12px calc(22px + env(safe-area-inset-bottom));white-space:pre-wrap;word-break:break-word;font:11px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:#bfffea;background:radial-gradient(circle at 50% 0%,rgba(67,245,194,.045),transparent 42%),#05060d;user-select:text;-webkit-user-select:text}
+      .diagnostics-toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:2147483001;padding:9px 13px;border-radius:999px;background:rgba(12,16,27,.96);border:1px solid rgba(67,245,194,.35);color:#dffff7;font-size:12px;opacity:0;pointer-events:none;transition:opacity .16s}.diagnostics-toast.show{opacity:1}
+    `;
+    document.head.appendChild(style);
+    screen=document.createElement('section');
+    screen.id='diagnosticsScreen';
+    screen.setAttribute('aria-label','診断');
+    screen.innerHTML=`
+      <div class="diagnostics-head">
+        <button type="button" class="diagnostics-back" onclick="closeDiagnosticsPage()" aria-label="戻る">‹</button>
+        <div class="diagnostics-title">DIAGNOSTICS<span class="diagnostics-sub">スマホ実機ログ</span></div>
+        <div class="diagnostics-count" id="diagnosticsCount"></div>
+      </div>
+      <div class="diagnostics-controls">
+        <button type="button" id="diagnosticsToggleBtn" onclick="toggleDiagnosticsRecording()">記録 ON</button>
+        <button type="button" onclick="copyDiagnosticsLogs()">コピー</button>
+        <button type="button" onclick="clearDiagnosticsLogs()">全消去</button>
+      </div>
+      <pre id="diagnosticsLogList"></pre>
+      <div class="diagnostics-toast" id="diagnosticsToast"></div>`;
+    document.body.appendChild(screen);
+    renderPage();
+    return screen;
+  }
+  function toast(msg){
+    ensurePage();
+    const el=document.getElementById('diagnosticsToast');
+    if(!el)return;
+    el.textContent=msg;el.classList.add('show');
+    clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),1300);
+  }
+
+  window.quickDiag=function(msg){
+    if(!enabled)return;
+    try{
+      const t=((performance.now()/1000).toFixed(2)).padStart(7,' ');
+      lines.push(t+' '+String(msg));
+      if(lines.length>MAX)lines=lines.slice(-MAX);
+      saveLogs();
+      if(page()?.classList.contains('open'))renderPage();
+    }catch(e){}
+  };
+  window.openDiagnosticsPage=function(){ensurePage().classList.add('open');renderPage()};
+  window.closeDiagnosticsPage=function(){page()?.classList.remove('open')};
+  window.toggleDiagnosticsRecording=function(){
+    enabled=!enabled;
+    try{localStorage.setItem(ENABLE_KEY,enabled?'1':'0')}catch(e){}
+    if(enabled)window.quickDiag('DIAGNOSTIC RECORDING ON');
+    renderPage();
+  };
+  window.clearDiagnosticsLogs=function(){lines=[];saveLogs();renderPage();toast('ログを消去しました')};
+  window.copyDiagnosticsLogs=async function(){
+    const text=lines.join('\n');
+    try{
+      if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(text)}
+      else{
+        const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();
+      }
+      toast('ログをコピーしました');
+    }catch(e){toast('コピーできませんでした')}
+  };
+
+  function describeTarget(t){
+    if(!t)return 'unknown';
+    let cls='';
+    try{cls=typeof t.className==='string'?t.className:(t.getAttribute&&t.getAttribute('class'))||''}catch(e){}
+    const type=t.tagName==='INPUT'&&t.type?'[type='+t.type+']':'';
+    return (t.tagName?String(t.tagName).toLowerCase():'')+'#'+(t.id||'')+(cls?'.'+String(cls).trim().replace(/\s+/g,'.'):'')+type;
+  }
+  function focusState(label){
+    const ae=document.activeElement;
+    const vv=window.visualViewport;
+    quickDiag(label+' active='+describeTarget(ae)+' bodyKB='+document.body.classList.contains('keyboard-open')+' sfKB='+!!document.getElementById('sf8')?.classList.contains('keyboard-open')+' vv='+(vv?Math.round(vv.height)+'@'+Math.round(vv.offsetTop):'none'));
+  }
+  window.__dopadoLastFocusRequest={at:0,target:'',stack:''};
+  try{
+    const nativeFocus=HTMLElement.prototype.focus;
+    if(!nativeFocus.__dopadoFocusWrapped){
+      const wrapped=function(){
+        const isMi=this&&this.id==='mi';
+        const isDate=this&&this.tagName==='INPUT'&&this.type==='date';
+        if(isMi||isDate){
+          let stack='';
+          try{stack=(new Error()).stack||''}catch(e){}
+          stack=String(stack).split('\n').slice(2,6).join(' <- ').replace(/\s+/g,' ');
+          window.__dopadoLastFocusRequest={at:Date.now(),target:describeTarget(this),stack};
+          quickDiag('FOCUS REQUEST '+describeTarget(this)+(stack?' stack='+stack:''));
+        }
+        return nativeFocus.apply(this,arguments);
+      };
+      wrapped.__dopadoFocusWrapped=true;
+      HTMLElement.prototype.focus=wrapped;
+    }
+  }catch(e){quickDiag('FOCUS PATCH ERROR '+String(e&&e.message||e))}
+  let activeWatchTimer=0;
+  function watchActiveElement(label,duration=2600){
+    clearInterval(activeWatchTimer);
+    const started=Date.now();let last='';
+    quickDiag('ACTIVE WATCH START '+label);
+    activeWatchTimer=setInterval(()=>{
+      const ae=document.activeElement;
+      const vv=window.visualViewport;
+      const current=describeTarget(ae)+'|bodyKB='+document.body.classList.contains('keyboard-open')+'|sfKB='+!!document.getElementById('sf8')?.classList.contains('keyboard-open')+'|vv='+(vv?Math.round(vv.height):'none');
+      if(current!==last){quickDiag('ACTIVE WATCH '+label+' '+current);last=current}
+      if(Date.now()-started>=duration){clearInterval(activeWatchTimer);activeWatchTimer=0;quickDiag('ACTIVE WATCH END '+label)}
+    },100);
+  }
+  window.__dopadoWatchActiveElement=watchActiveElement;
+  const diagObserver=new MutationObserver(records=>{
+    records.forEach(r=>{
+      if(r.type==='attributes'&&r.attributeName==='class'&&(r.target===document.body||r.target.id==='sf8')){
+        quickDiag('CLASS CHANGE '+describeTarget(r.target)+' class="'+r.target.className+'"');
+      }
+      if(r.type==='childList'){
+        r.addedNodes.forEach(n=>{
+          if(n.nodeType!==1)return;
+          const dates=[];
+          if(n.matches&&n.matches('input[type=date]'))dates.push(n);
+          if(n.querySelectorAll)dates.push(...n.querySelectorAll('input[type=date]'));
+          dates.forEach(el=>quickDiag('DATE CREATE '+describeTarget(el)+' value='+String(el.value||'')));
+        });
+        r.removedNodes.forEach(n=>{
+          if(n.nodeType!==1)return;
+          const dates=[];
+          if(n.matches&&n.matches('input[type=date]'))dates.push(n);
+          if(n.querySelectorAll)dates.push(...n.querySelectorAll('input[type=date]'));
+          dates.forEach(el=>quickDiag('DATE REMOVE '+describeTarget(el)+' value='+String(el.value||'')));
+        });
+      }
+    });
+  });
+  try{diagObserver.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['class']})}catch(e){quickDiag('OBSERVER ERROR '+String(e&&e.message||e))}
+  ['focusin','focusout','input','change'].forEach(type=>{
+    document.addEventListener(type,e=>{
+      const t=e.target;
+      if(!(t&&t.tagName==='INPUT'&&t.type==='date'))return;
+      quickDiag('DATE '+type.toUpperCase()+' '+describeTarget(t)+' value='+String(t.value||''));
+      if(type==='change'||type==='input')watchActiveElement('date-'+type,3200);
+    },true);
+  });
+  window.addEventListener('error',e=>quickDiag('ERROR '+(e.message||'unknown')+' @'+(e.lineno||'?')));
+  window.addEventListener('unhandledrejection',e=>quickDiag('REJECTION '+String(e.reason&&e.reason.message||e.reason||'unknown')));
+  ['pointerdown','touchstart','touchend','click'].forEach(type=>{
+    document.addEventListener(type,e=>{
+      const t=e.target&&e.target.closest&&e.target.closest('#quickDueBtn,#quickTagBtn,#quickMemoBtn,#quickCondBtn,#quickTodayBtn,#quickImportantBtn,#quickPickerPanel button,#quickPickerPanel input');
+      if(t)quickDiag(type.toUpperCase()+' '+describeTarget(t)+' prevented='+e.defaultPrevented);
+    },true);
+  });
+  document.addEventListener('focusin',e=>{
+    const t=e.target;
+    if(t&&t.closest&&t.closest('#mi,#quickAddBar,#quickPickerPanel,#taskSettingsScreen')){
+      const req=window.__dopadoLastFocusRequest||{};
+      const age=Date.now()-(req.at||0);
+      const origin=age>=0&&age<250?'programmatic '+String(req.target||''):'NO JS FOCUS REQUEST';
+      quickDiag('FOCUSIN '+describeTarget(t)+' origin='+origin+' age='+age+'ms');
+      if(t.id==='mi'&&origin==='NO JS FOCUS REQUEST')quickDiag('AUTO REFOCUS DETECTED #mi');
+      focusState('FOCUSIN STATE');
+    }
+  },true);
+  document.addEventListener('focusout',e=>{
+    const t=e.target;
+    if(t&&t.closest&&t.closest('#mi,#quickAddBar,#quickPickerPanel,#taskSettingsScreen'))quickDiag('FOCUSOUT '+describeTarget(t));
+  },true);
+
+  function wrap(name,before,after){
+    const orig=window[name];
+    if(typeof orig!=='function'){quickDiag('WRAP MISS '+name);return}
+    window[name]=function(){
+      try{before&&before.apply(this,arguments)}catch(e){}
+      const result=orig.apply(this,arguments);
+      try{after&&after.apply(this,arguments)}catch(e){}
+      return result;
+    };
+  }
+  wrap('initQuickAddBarEvents',()=>quickDiag('INIT EVENTS begin'),()=>quickDiag('INIT EVENTS done'));
+  wrap('onInputBlur',()=>quickDiag('INPUT BLUR handler'));
+  wrap('scheduleQuickBlurSettle',d=>quickDiag('BLUR TIMER schedule '+d+'ms'));
+  wrap('quickTogglePicker',mode=>quickDiag('TOGGLE '+mode),()=>{
+    requestAnimationFrame(()=>{
+      const p=document.getElementById('quickPickerPanel');
+      if(!p){quickDiag('PANEL missing');return}
+      const cs=getComputedStyle(p),r=p.getBoundingClientRect();
+      quickDiag('PANEL mode='+String(window.quickPickerMode)+' open='+p.classList.contains('open')+' children='+p.children.length+' display='+cs.display+' vis='+cs.visibility+' op='+cs.opacity+' rect='+Math.round(r.width)+'x'+Math.round(r.height));
+    });
+  });
+  wrap('renderQuickPicker',()=>quickDiag('RENDER PICKER mode='+String(window.quickPickerMode)),()=>quickDiag('RENDER PICKER done'));
+  wrap('quickClosePicker',reason=>quickDiag('QUICK CLOSE request '+String(reason||'unspecified')));
+  wrap('quickOpenSettings',panel=>quickDiag('QUICK SETTINGS '+panel));
+  wrap('openTaskSettings',(id,panel)=>quickDiag('OPEN SETTINGS panel='+panel+' id='+id),()=>{
+    requestAnimationFrame(()=>{
+      const sc=document.getElementById('taskSettingsScreen');
+      if(!sc){quickDiag('SETTINGS missing');return}
+      const cs=getComputedStyle(sc),r=sc.getBoundingClientRect();
+      quickDiag('SETTINGS open='+sc.classList.contains('open')+' display='+cs.display+' vis='+cs.visibility+' op='+cs.opacity+' z='+cs.zIndex+' rect='+Math.round(r.width)+'x'+Math.round(r.height));
+    });
+  });
+  wrap('quickSetDue',v=>quickDiag('SET DUE '+v));
+  wrap('quickSetHold',v=>quickDiag('SET HOLD '+v));
+  wrap('quickToggleTag',id=>quickDiag('TOGGLE TAG '+id));
+  wrap('finishQuickDateSelection',kind=>{quickDiag('FINISH DATE ENTER '+kind);focusState('FINISH DATE BEFORE')},kind=>{focusState('FINISH DATE AFTER');watchActiveElement('finish-'+String(kind||'date'),4200)});
+  wrap('onInputFocus',()=>{quickDiag('ON INPUT FOCUS ENTER');focusState('ON INPUT FOCUS BEFORE')},()=>focusState('ON INPUT FOCUS AFTER'));
+  quickDiag('DIAG INSTALLED focus-trace');
+})();
+
+
+/* ===== v49.11 layout-trace diagnostic ===== */
+(function(){
+  const diag=window.quickDiag||function(){};
+  const ids=['quickAddBar','quickPickerPanel','inputBar','bottomDock','sf8'];
+  let layoutTimer=0;
+  let layoutObserver=null;
+
+  function num(v){return Number.isFinite(v)?Math.round(v):0}
+  function elemState(id){
+    const el=document.getElementById(id);
+    if(!el)return id+'=MISSING';
+    const cs=getComputedStyle(el);
+    const r=el.getBoundingClientRect();
+    const inline=el.getAttribute('style')||'';
+    return id+
+      '{class="'+String(el.className||'')+'"'+
+      ',inline="'+inline.replace(/\s+/g,' ').slice(0,180)+'"'+
+      ',display='+cs.display+
+      ',visibility='+cs.visibility+
+      ',position='+cs.position+
+      ',bottom='+cs.bottom+
+      ',transform='+cs.transform+
+      ',height='+cs.height+
+      ',pointer='+cs.pointerEvents+
+      ',z='+cs.zIndex+
+      ',rect='+num(r.left)+','+num(r.top)+','+num(r.width)+'x'+num(r.height)+'}';
+  }
+  function rootVars(){
+    const rs=getComputedStyle(document.documentElement);
+    const vv=window.visualViewport;
+    return 'ROOT{--kb='+rs.getPropertyValue('--kb').trim()+
+      ',--app-h='+rs.getPropertyValue('--app-h').trim()+
+      ',vv='+(vv?num(vv.height)+'@'+num(vv.offsetTop):'none')+
+      ',bodyClass="'+document.body.className+'"}';
+  }
+  function snapshot(label){
+    diag('LAYOUT SNAP '+label+' '+rootVars());
+    ids.forEach(id=>diag('LAYOUT '+label+' '+elemState(id)));
+  }
+  function startLayoutWatch(label,duration=5200){
+    clearInterval(layoutTimer);
+    if(layoutObserver){try{layoutObserver.disconnect()}catch(e){} layoutObserver=null}
+    const started=Date.now();
+    const last=new Map();
+    diag('LAYOUT WATCH START '+label);
+    snapshot(label+'-start');
+    layoutObserver=new MutationObserver(records=>{
+      records.forEach(r=>{
+        const t=r.target;
+        if(!(t&&t.id&&ids.includes(t.id)))return;
+        diag('LAYOUT MUTATION '+label+' '+t.id+' attr='+r.attributeName+' '+elemState(t.id));
+      });
+    });
+    ids.forEach(id=>{
+      const el=document.getElementById(id);
+      if(el)layoutObserver.observe(el,{attributes:true,attributeFilter:['class','style']});
+    });
+    layoutTimer=setInterval(()=>{
+      const states=[rootVars(),...ids.map(elemState)];
+      states.forEach((state,i)=>{
+        const key=i===0?'root':ids[i-1];
+        if(last.get(key)!==state){diag('LAYOUT CHANGE '+label+' '+state);last.set(key,state)}
+      });
+      if(Date.now()-started>=duration){
+        clearInterval(layoutTimer);layoutTimer=0;
+        if(layoutObserver){layoutObserver.disconnect();layoutObserver=null}
+        snapshot(label+'-end');
+        diag('LAYOUT WATCH END '+label);
+      }
+    },100);
+  }
+  window.__dopadoStartLayoutWatch=startLayoutWatch;
+  const originalFinish=window.finishQuickDateSelection;
+  if(typeof originalFinish==='function'){
+    window.finishQuickDateSelection=function(kind){
+      const result=originalFinish.apply(this,arguments);
+      setTimeout(()=>startLayoutWatch('finish-'+String(kind||'date'),5200),0);
+      return result;
+    };
+  }else diag('LAYOUT WRAP MISS finishQuickDateSelection');
+  diag('DIAG INSTALLED layout-trace');
+})();
+
 oneTimeDataResetForTutorial();
 loadState();cleanStaleTutorialData();initBaseViewport(true);syncViewport();renderHeader();render();renderChargeMini();resetPraiseInput();renderInputPrompt(true);scheduleInputPromptRotation();initQuickAddBarEvents();
-checkOnboarding();
+checkOnboarding();setTimeout(checkMorningSkima,500);
 
 
 
@@ -6558,6 +8116,163 @@ window.addEventListener('message',function(ev){
   }
 });
 
+
+/* ===== v49.29 AI SKILL OVERRIDES ===== */
+const AI_BUILTIN_SKILLS=[
+ {id:'organize',name:'整理する',description:'実行しやすい状態へ整えます。今日・保留・スキマ・重要・要分解を必要に応じて見直します。',outputMode:'operations',builtin:true,promptTemplate:'タスクを実行しやすくすることを最優先に、全体を整理してください。今日に詰め込みすぎず、今やらないものは保留またはスキマへ移し、大きすぎるものは要分解にしてください。'},
+ {id:'today',name:'今日決める',description:'今日やる量を現実的に絞り、着手順が分かる状態にします。',outputMode:'operations',builtin:true,promptTemplate:'今日実行するタスクを現実的な量に絞ってください。優先度・期限・負担を考慮し、今日やるものはset_today、今日でなくてよいものはhold_tomorrow・hold_until・set_skimaを使ってください。'},
+ {id:'shrink',name:'小さくする',description:'止まっている大きなタスクを、次に動ける粒度へ落とします。',outputMode:'operations',builtin:true,promptTemplate:'大きすぎる・曖昧・着手しづらいタスクを見つけてください。元タスクにはset_breakdown=trueを付け、必要に応じてcreateで具体的な最初の一歩を追加してください。勝手な大量追加は避けてください。'},
+ {id:'reduce',name:'減らす',description:'不要・重複・今抱えなくてよいタスクを減らします。削除は復元可能なゴミ箱へ移動します。',outputMode:'operations',builtin:true,promptTemplate:'タスク数を減らして実行しやすくしてください。明らかな不要・重複はdelete、今でないものはhold_until・hold_tomorrow・set_skimaを使ってください。不確かなものは削除しないでください。'},
+ {id:'consult',name:'相談する',description:'変更は行わず、今どう動くとよいかを文章で相談します。',outputMode:'text',builtin:true,promptTemplate:'タスクは変更せず、ユーザーが次に動きやすくなる短い助言を日本語で返してください。優先順位を最大3つまで示し、責めずに具体的な最初の一歩を提案してください。'}
+];
+function ensureAiOrganizerState(){
+  if(!state.aiOrganizer||typeof state.aiOrganizer!=='object')state.aiOrganizer={history:[],trash:[],lastExportIds:[],customSkills:[],selectedSkillId:'organize'};
+  const a=state.aiOrganizer;
+  if(!Array.isArray(a.history))a.history=[];if(!Array.isArray(a.trash))a.trash=[];if(!Array.isArray(a.lastExportIds))a.lastExportIds=[];if(!Array.isArray(a.customSkills))a.customSkills=[];if(!a.selectedSkillId)a.selectedSkillId='organize';return a;
+}
+function aiAllSkills(){const a=ensureAiOrganizerState();return AI_BUILTIN_SKILLS.concat(a.customSkills.filter(x=>x&&x.id&&x.name&&x.promptTemplate));}
+function aiCurrentSkill(){const a=ensureAiOrganizerState(),sel=document.getElementById('aiSkillSelect');const id=(sel&&sel.value)||a.selectedSkillId||'organize';return aiAllSkills().find(x=>x.id===id)||AI_BUILTIN_SKILLS[0];}
+function renderAiSkillControls(){
+ const sel=document.getElementById('aiSkillSelect');if(!sel)return;const a=ensureAiOrganizerState(),skills=aiAllSkills(),old=sel.value||a.selectedSkillId||'organize';sel.innerHTML=skills.map(x=>'<option value="'+escapeHtml(x.id)+'">'+escapeHtml(x.name)+(x.builtin?'':' · CUSTOM')+'</option>').join('');sel.value=skills.some(x=>x.id===old)?old:'organize';a.selectedSkillId=sel.value;const d=document.getElementById('aiSkillDescription'),sk=aiCurrentSkill();if(d)d.textContent=sk.description||'';renderAiCustomSkillList();prepareAiExportPrompt();
+}
+function onAiSkillChanged(){const a=ensureAiOrganizerState(),sel=document.getElementById('aiSkillSelect');if(sel)a.selectedSkillId=sel.value;saveNow();const d=document.getElementById('aiSkillDescription'),sk=aiCurrentSkill();if(d)d.textContent=sk.description||'';prepareAiExportPrompt();}
+function openAiOrganizer(tab='export'){ensureAiOrganizerState();const o=document.getElementById('aiOrganizerOverlay');if(!o)return;o.classList.add('open');o.setAttribute('aria-hidden','false');setAiOrganizerTab(tab);if(tab==='export')setTimeout(renderAiSkillControls,0)}
+function setAiOrganizerTab(tab){aiOrganizerTab=tab;document.querySelectorAll('[data-ai-tab]').forEach(x=>x.classList.toggle('on',x.dataset.aiTab===tab));document.querySelectorAll('[data-ai-panel]').forEach(x=>x.classList.toggle('on',x.dataset.aiPanel===tab));if(tab==='history')renderAiHistory();if(tab==='export')setTimeout(renderAiSkillControls,0)}
+function aiExportTasks(scope){scope=scope||document.getElementById('aiSkillScope')?.value||'visible';if(scope==='selected')return managerSelectedTasks();if(scope==='today')return state.tasks.filter(t=>t.state!=='done'&&isTaskToday(t));if(scope==='unfinished')return state.tasks.filter(t=>t.state!=='done');if(scope==='all')return state.tasks.slice();return managerCurrentVisibleTasks();}
+function aiOperationsSchema(){return `【返却形式】
+{"operations":[
+ {"taskId":"既存ID","action":"set_today","reason":"理由"},
+ {"taskId":"既存ID","action":"hold_tomorrow","reason":"理由"},
+ {"taskId":"既存ID","action":"hold_until","value":"YYYY-MM-DD","reason":"理由"},
+ {"taskId":"既存ID","action":"set_skima","reason":"理由"},
+ {"taskId":"既存ID","action":"set_important","value":true,"reason":"理由"},
+ {"taskId":"既存ID","action":"rename","value":"新タイトル","reason":"理由"},
+ {"taskId":"既存ID","action":"set_memo","value":"メモ","reason":"理由"},
+ {"taskId":"既存ID","action":"set_breakdown","value":true,"reason":"理由"},
+ {"taskId":"既存ID","action":"complete","reason":"理由"},
+ {"taskId":"既存ID","action":"reopen","reason":"理由"},
+ {"taskId":"既存ID","action":"delete","reason":"理由"},
+ {"action":"create","title":"新規タスク","memo":"任意","destination":"today|inbox|skima","reason":"理由"}
+]}`;}
+function aiOrganizerPrompt(tasks){
+ const skill=aiCurrentSkill(),extra=(document.getElementById('aiSkillExtra')?.value||'').trim(),scopeLabel=document.getElementById('aiSkillScope')?.selectedOptions?.[0]?.textContent||'選択範囲',payload=tasks.map(aiTaskPayload);
+ const common=`あなたはDOPADOの行動支援アシスタントです。目的は、ユーザーがタスクを実行しやすくなることです。
+
+【今回の範囲】
+${scopeLabel}
+
+【今回の操作】
+${skill.name}
+${skill.promptTemplate}`+(extra?`
+
+【追加指示】
+${extra}`:'');
+ if(skill.outputMode==='text')return common+`
+
+【返答ルール】
+- 日本語で短く、具体的に答える。
+- タスクを変更するJSONは返さない。
+- 最初の一歩を明確にする。
+
+【タスクデータ】
+${JSON.stringify(payload,null,2)}`;
+ return common+`
+
+【絶対ルール】
+- 元の全タスク一覧を書き直さず、必要な変更だけoperationsで返す。
+- JSON以外の文章やMarkdownコードフェンスは付けない。
+- 変更不要なタスクは省略する。
+- 既存タスクの変更には必ず下記のtaskIdを使う。
+- 削除は可能だが、DOPADO側では復元可能なゴミ箱へ移動する。
+- 完全削除はできない。
+- 不確かな変更は無理に行わない。
+- 同じtaskIdに矛盾する命令を出さない。
+
+${aiOperationsSchema()}
+
+【タスクデータ】
+${JSON.stringify(payload,null,2)}`;
+}
+function prepareAiExportPrompt(){const scope=document.getElementById('aiSkillScope')?.value||'visible',tasks=aiExportTasks(scope);if(!tasks.length){const tx=document.getElementById('aiExportText');if(tx)tx.value='';return{tasks:[],prompt:''}}const prompt=aiOrganizerPrompt(tasks);aiLastExportPrompt=prompt;const tx=document.getElementById('aiExportText');if(tx)tx.value=prompt;return{tasks,prompt}}
+function toggleAiSkillMaker(){document.getElementById('aiSkillMaker')?.classList.toggle('open');renderAiCustomSkillList()}
+function aiSkillMakerPrompt(idea){return `あなたはDOPADO用AI操作の設計者です。ユーザーの要望から、再利用可能なAI操作を1つ作ってください。
+
+【ユーザーの要望】
+${idea}
+
+【DOPADOの目的】
+タスクを実行しやすくすること。操作は対象タスクに対して使われ、必要なら差分JSONでDOPADOへ戻されます。
+
+【返却ルール】
+- JSONだけ返す。Markdown禁止。
+- 次の形式に厳密に従う。
+{"name":"短い操作名","description":"ユーザー向けの短い説明","promptTemplate":"AIへ渡す具体的な指示文","outputMode":"operations"}
+- outputModeは、タスク変更を返すならoperations、助言だけならtext。
+- promptTemplateには対象範囲やタスクデータそのものを書かない。DOPADOが後から追加する。
+- 危険な完全削除や、確認不能な一括変更を指示しない。`;}
+async function copyAiSkillMakerPrompt(){const idea=(document.getElementById('aiSkillIdea')?.value||'').trim(),st=document.getElementById('aiSkillMakerStatus');if(!idea){st.className='ai-org-status error';st.textContent='作りたい操作を先に書いてください。';return}const ok=await copyTextSafe(aiSkillMakerPrompt(idea));st.className='ai-org-status '+(ok?'ok':'error');st.textContent=ok?'操作を作るプロンプトをコピーしました。外部AIへ貼ってください。':'コピーできませんでした。';}
+function saveAiCustomSkill(){const st=document.getElementById('aiSkillMakerStatus');try{const raw=aiParseJson(document.getElementById('aiSkillJson')?.value||''),name=String(raw.name||'').trim(),description=String(raw.description||'').trim(),promptTemplate=String(raw.promptTemplate||'').trim(),outputMode=raw.outputMode==='text'?'text':'operations';if(!name||!promptTemplate)throw new Error('nameとpromptTemplateが必要です');const a=ensureAiOrganizerState(),skill={id:'custom_'+newId(),name:name.slice(0,30),description:description.slice(0,160),promptTemplate:promptTemplate.slice(0,3000),outputMode,builtin:false,createdAt:Date.now(),updatedAt:Date.now()};a.customSkills.push(skill);a.selectedSkillId=skill.id;saveNow();renderAiSkillControls();document.getElementById('aiSkillSelect').value=skill.id;onAiSkillChanged();st.className='ai-org-status ok';st.textContent='「'+skill.name+'」を保存しました。';document.getElementById('aiSkillJson').value='';}catch(e){st.className='ai-org-status error';st.textContent='保存できません: '+e.message}}
+function renderAiCustomSkillList(){const box=document.getElementById('aiCustomSkillList');if(!box)return;const list=ensureAiOrganizerState().customSkills;if(!list.length){box.innerHTML='<div class="ai-empty">保存したカスタム操作はまだありません。</div>';return}box.innerHTML=list.map(x=>'<div class="ai-custom-skill-row"><div><b>'+escapeHtml(x.name)+'</b><small>'+escapeHtml(x.description||'カスタム操作')+'</small></div><button type="button" data-skill-delete="'+escapeHtml(x.id)+'">削除</button></div>').join('');box.querySelectorAll('[data-skill-delete]').forEach(b=>b.onclick=()=>deleteAiCustomSkill(b.dataset.skillDelete))}
+function deleteAiCustomSkill(id){openAppConfirm({title:'カスタム操作を削除する？',message:'保存した操作だけを削除します。タスクには影響しません。',okText:'削除',danger:true,onOk:()=>{const a=ensureAiOrganizerState();a.customSkills=a.customSkills.filter(x=>x.id!==id);if(a.selectedSkillId===id)a.selectedSkillId='organize';saveNow();renderAiSkillControls()}})}
+function clearAiSkillMaker(){['aiSkillIdea','aiSkillJson'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});const st=document.getElementById('aiSkillMakerStatus');if(st){st.className='ai-org-status';st.textContent=''}}
+
+/* ===== v49.30 AI ORGANIZER UX OVERRIDES ===== */
+function updateAiRequestSummary(tasks){
+ const box=document.getElementById('aiRequestSummary');if(!box)return;
+ const scope=document.getElementById('aiSkillScope'),skill=aiCurrentSkill();
+ const scopeLabel=scope?.selectedOptions?.[0]?.textContent||'選択範囲';
+ const n=Array.isArray(tasks)?tasks.length:0;
+ box.innerHTML='<b>'+escapeHtml(scopeLabel)+'</b>の'+n+'件に対して、<b>'+escapeHtml(skill.name)+'</b>を依頼します。';
+}
+const _v4930PrepareAiExportPrompt=prepareAiExportPrompt;
+prepareAiExportPrompt=function(){
+ const result=_v4930PrepareAiExportPrompt();updateAiRequestSummary(result.tasks);
+ const resultBox=document.getElementById('aiCopyResult');if(resultBox)resultBox.classList.remove('open','error');
+ return result;
+};
+function toggleAiExportPreview(forceOpen){
+ const p=document.getElementById('aiExportPreview');if(!p)return;
+ const willOpen=forceOpen===true?true:!p.classList.contains('open');
+ p.classList.toggle('open',willOpen);
+ if(willOpen){prepareAiExportPrompt();setTimeout(()=>p.scrollIntoView({behavior:'smooth',block:'nearest'}),40)}
+}
+async function copyAiOrganizerPrompt(){
+ const st=document.getElementById('aiExportStatus'),result=document.getElementById('aiCopyResult'),text=document.getElementById('aiCopyResultText'),p=prepareAiExportPrompt();
+ if(!p.tasks.length){if(st){st.className='ai-org-status error';st.textContent='対象タスクがありません。'}return}
+ const a=ensureAiOrganizerState();a.lastExportIds=p.tasks.map(t=>t.id);saveNow();
+ const ok=await copyTextSafe(p.prompt);
+ if(st){st.className='ai-org-status';st.textContent=''}
+ if(result&&text){result.classList.add('open');result.classList.toggle('error',!ok);text.textContent=ok?'✓ '+p.tasks.length+'件分のプロンプトをコピーしました。':'自動コピーできませんでした。全文を開いて手動でコピーしてください。'}
+ if(!ok){toggleAiExportPreview(true)}else{document.getElementById('aiExportPreview')?.classList.remove('open')}
+}
+
+/* ===== v49.31 AI ORGANIZER TRUE VIEWPORT FIX ===== */
+function syncAiOrganizerViewport(){
+  const o=document.getElementById('aiOrganizerOverlay');
+  if(!o)return;
+  const vv=window.visualViewport;
+  const h=Math.max(320,Math.round(vv?vv.height:window.innerHeight));
+  const top=Math.max(0,Math.round(vv?vv.offsetTop:0));
+  o.style.setProperty('--ai-vh',h+'px');
+  o.style.setProperty('--ai-vtop',top+'px');
+}
+const _v4931OpenAiOrganizer=openAiOrganizer;
+openAiOrganizer=function(tab='export'){
+  const o=document.getElementById('aiOrganizerOverlay');
+  if(o&&o.parentElement!==document.body)document.body.appendChild(o);
+  syncAiOrganizerViewport();
+  _v4931OpenAiOrganizer(tab);
+  requestAnimationFrame(syncAiOrganizerViewport);
+  setTimeout(syncAiOrganizerViewport,80);
+};
+const _v4931CloseAiOrganizer=closeAiOrganizer;
+closeAiOrganizer=function(){_v4931CloseAiOrganizer();};
+window.addEventListener('resize',syncAiOrganizerViewport,{passive:true});
+window.addEventListener('orientationchange',()=>setTimeout(syncAiOrganizerViewport,120),{passive:true});
+if(window.visualViewport){
+  visualViewport.addEventListener('resize',syncAiOrganizerViewport,{passive:true});
+  visualViewport.addEventListener('scroll',syncAiOrganizerViewport,{passive:true});
+}
 </script>
 </body>
 </html>
