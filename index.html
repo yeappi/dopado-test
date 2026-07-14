@@ -8273,6 +8273,234 @@ if(window.visualViewport){
   visualViewport.addEventListener('resize',syncAiOrganizerViewport,{passive:true});
   visualViewport.addEventListener('scroll',syncAiOrganizerViewport,{passive:true});
 }
+
+
+/* ===== v49.32 AI ORGANIZER SAFETY SESSION FIX ===== */
+function aiStableTaskHash(t){
+  const data={
+    id:t&&t.id||'',
+    title:t&&t.name||'',
+    memo:(t&&t.extras&&t.extras.memo)||'',
+    state:t&&t.state||'',
+    today:!!(t&&isTaskToday(t)),
+    important:!!(t&&isTaskImportant(t)),
+    dueDate:t&&t.dueDate||'',
+    dueTime:t&&t.dueTime||'',
+    holdKind:t&&t.organizeHoldKind||'',
+    holdUntil:t&&t.organizeHoldUntil||'',
+    breakdown:!!(t&&managerNeedsBreakdown(t)),
+    tags:aiTaskTagNames(t||{}).slice().sort()
+  };
+  return JSON.stringify(data);
+}
+function aiExportSignature(tasks){
+  const scope=document.getElementById('aiSkillScope')?.value||'visible';
+  const skill=aiCurrentSkill();
+  const extra=(document.getElementById('aiSkillExtra')?.value||'').trim();
+  return JSON.stringify({scope,skillId:skill.id,extra,ids:(tasks||[]).map(t=>t.id),hashes:(tasks||[]).map(aiStableTaskHash)});
+}
+const _v4932EnsureAiOrganizerState=ensureAiOrganizerState;
+ensureAiOrganizerState=function(){
+  const a=_v4932EnsureAiOrganizerState();
+  if(!Array.isArray(a.exportSessions))a.exportSessions=[];
+  if(!a.lastExportSessionId)a.lastExportSessionId='';
+  if(!a.draftExport||typeof a.draftExport!=='object')a.draftExport=null;
+  if(!Array.isArray(a.restoreSnapshots))a.restoreSnapshots=[];
+  return a;
+};
+function aiEnsureDraftExportSession(tasks){
+  const a=ensureAiOrganizerState(),sig=aiExportSignature(tasks||[]),skill=aiCurrentSkill();
+  if(!a.draftExport||a.draftExport.signature!==sig){
+    const id='ai_'+newId();
+    const taskHashes={};
+    (tasks||[]).forEach(t=>{taskHashes[t.id]=aiStableTaskHash(t)});
+    a.draftExport={
+      id,
+      signature:sig,
+      createdAt:Date.now(),
+      scope:document.getElementById('aiSkillScope')?.value||'visible',
+      scopeLabel:document.getElementById('aiSkillScope')?.selectedOptions?.[0]?.textContent||'選択範囲',
+      skillId:skill.id,
+      skillName:skill.name,
+      taskIds:(tasks||[]).map(t=>t.id),
+      taskHashes
+    };
+  }
+  return a.draftExport;
+}
+function aiCommitExportSession(tasks,prompt){
+  const a=ensureAiOrganizerState(),session=aiEnsureDraftExportSession(tasks||[]);
+  session.copiedAt=Date.now();
+  session.promptLength=String(prompt||'').length;
+  a.lastExportIds=session.taskIds.slice();
+  a.lastExportSessionId=session.id;
+  a.exportSessions=[session].concat((a.exportSessions||[]).filter(x=>x&&x.id!==session.id)).slice(0,12);
+  return session;
+}
+function aiFindImportSession(sessionId){
+  const a=ensureAiOrganizerState();
+  if(!sessionId)return null;
+  return (a.exportSessions||[]).find(x=>x&&x.id===sessionId)||null;
+}
+const _v4932AiOrganizerPromptBase=aiOrganizerPrompt;
+aiOrganizerPrompt=function(tasks){
+  const session=aiEnsureDraftExportSession(tasks||[]),skill=aiCurrentSkill(),extra=(document.getElementById('aiSkillExtra')?.value||'').trim(),scopeLabel=document.getElementById('aiSkillScope')?.selectedOptions?.[0]?.textContent||'選択範囲',payload=(tasks||[]).map(aiTaskPayload);
+  const common=`あなたはDOPADOの行動支援アシスタントです。目的は、ユーザーがタスクを実行しやすくなることです。
+
+【重要】
+この依頼のsessionIdは ${session.id} です。返答JSONには必ず同じsessionIdを含めてください。
+
+【今回の範囲】
+${scopeLabel}
+
+【今回の操作】
+${skill.name}
+${skill.promptTemplate}`+(extra?`
+
+【追加指示】
+${extra}`:'');
+  if(skill.outputMode==='text')return common+`
+
+【返答ルール】
+- 日本語で短く、具体的に答える。
+- タスクを変更するJSONは返さない。
+- 最初の一歩を明確にする。
+
+【タスクデータ】
+${JSON.stringify(payload,null,2)}`;
+  return common+`
+
+【絶対ルール】
+- 元の全タスク一覧を書き直さず、必要な変更だけoperationsで返す。
+- JSON以外の文章やMarkdownコードフェンスは付けない。
+- 変更不要なタスクは省略する。
+- 既存タスクの変更には必ず下記のtaskIdを使う。
+- 削除は可能だが、DOPADO側では復元可能なゴミ箱へ移動する。
+- 完全削除はできない。
+- 不確かな変更は無理に行わない。
+- 同じtaskIdに矛盾する命令を出さない。
+- sessionIdは必ず ${session.id} をそのまま返す。
+
+【返却形式】
+{"sessionId":"${session.id}","operations":[
+ {"taskId":"既存ID","action":"set_today","reason":"理由"},
+ {"taskId":"既存ID","action":"hold_tomorrow","reason":"理由"},
+ {"taskId":"既存ID","action":"hold_until","value":"YYYY-MM-DD","reason":"理由"},
+ {"taskId":"既存ID","action":"set_skima","reason":"理由"},
+ {"taskId":"既存ID","action":"set_important","value":true,"reason":"理由"},
+ {"taskId":"既存ID","action":"rename","value":"新タイトル","reason":"理由"},
+ {"taskId":"既存ID","action":"set_memo","value":"メモ","reason":"理由"},
+ {"taskId":"既存ID","action":"set_breakdown","value":true,"reason":"理由"},
+ {"taskId":"既存ID","action":"complete","reason":"理由"},
+ {"taskId":"既存ID","action":"reopen","reason":"理由"},
+ {"taskId":"既存ID","action":"delete","reason":"理由"},
+ {"action":"create","title":"新規タスク","memo":"任意","destination":"today|inbox|skima","reason":"理由"}
+]}
+
+【タスクデータ】
+${JSON.stringify(payload,null,2)}`;
+};
+function prepareAiExportPrompt(){
+  const scope=document.getElementById('aiSkillScope')?.value||'visible',tasks=aiExportTasks(scope);
+  if(!tasks.length){const tx=document.getElementById('aiExportText');if(tx)tx.value='';updateAiRequestSummary([]);const resultBox=document.getElementById('aiCopyResult');if(resultBox)resultBox.classList.remove('open','error');return{tasks:[],prompt:'',session:null}}
+  const session=aiEnsureDraftExportSession(tasks),prompt=aiOrganizerPrompt(tasks);aiLastExportPrompt=prompt;
+  const tx=document.getElementById('aiExportText');if(tx)tx.value=prompt;
+  updateAiRequestSummary(tasks);
+  const resultBox=document.getElementById('aiCopyResult');if(resultBox)resultBox.classList.remove('open','error');
+  return{tasks,prompt,session};
+}
+async function copyAiOrganizerPrompt(){
+  const st=document.getElementById('aiExportStatus'),result=document.getElementById('aiCopyResult'),text=document.getElementById('aiCopyResultText'),p=prepareAiExportPrompt();
+  if(!p.tasks.length){if(st){st.className='ai-org-status error';st.textContent='対象タスクがありません。'}return}
+  const session=aiCommitExportSession(p.tasks,p.prompt);saveNow();
+  const ok=await copyTextSafe(p.prompt);
+  if(st){st.className='ai-org-status';st.textContent=''}
+  if(result&&text){result.classList.add('open');result.classList.toggle('error',!ok);text.textContent=ok?'✓ '+p.tasks.length+'件分のプロンプトをコピーしました。sessionId: '+session.id:'自動コピーできませんでした。全文を開いて手動でコピーしてください。'}
+  if(!ok){toggleAiExportPreview(true)}else{document.getElementById('aiExportPreview')?.classList.remove('open')}
+}
+function aiImportSessionId(parsed){return String((parsed&&parsed.sessionId)||(parsed&&parsed.aiSessionId)||(parsed&&parsed.session_id)||'').trim()}
+const _v4932ValidateAiOperation=validateAiOperation;
+function validateAiOperationWithSession(op,index,session,sessionIssue){
+  const out=_v4932ValidateAiOperation(op,index);
+  out.sessionId=session&&session.id||'';
+  if(!out.valid)return out;
+  if(op&&op.action!=='create'){
+    if(session){
+      if(!session.taskIds.includes(op.taskId)){out.valid=false;out.error='このsessionの出力対象外';return out}
+      const currentHash=aiStableTaskHash(out.task);
+      if(session.taskHashes&&session.taskHashes[op.taskId]&&session.taskHashes[op.taskId]!==currentHash){out.warning='AI出力後にタスクが変更されています';out.selected=false}
+    }else if(sessionIssue){
+      out.warning=sessionIssue;out.selected=false;
+    }
+  }else if(sessionIssue){
+    out.warning=sessionIssue;out.selected=false;
+  }
+  return out;
+}
+function aiApplyConflictChecks(items){
+  const byTask={};
+  items.forEach(v=>{if(v.valid&&v.taskId){(byTask[v.taskId]=byTask[v.taskId]||[]).push(v)}});
+  Object.values(byTask).forEach(list=>{
+    const loc=list.filter(v=>['set_today','hold_tomorrow','hold_until','set_skima','delete'].includes(v.action));
+    if(loc.length>1)loc.forEach(v=>{v.valid=false;v.error='同じタスクに移動/削除系の矛盾命令'});
+    const done=list.filter(v=>['complete','reopen'].includes(v.action));
+    if(done.length>1)done.forEach(v=>{v.valid=false;v.error='完了/未完了の矛盾命令'});
+    ['rename','set_memo','set_important','set_breakdown'].forEach(action=>{const dup=list.filter(v=>v.action===action);if(dup.length>1)dup.forEach(v=>{v.valid=false;v.error='同じ変更命令が重複'})});
+  });
+}
+function loadAiImportPreview(){
+  const st=document.getElementById('aiImportStatus'),area=document.getElementById('aiPreviewArea');
+  try{
+    const parsed=aiParseJson(document.getElementById('aiImportText').value);
+    if(!parsed||!Array.isArray(parsed.operations))throw new Error('operations配列がありません');
+    const sid=aiImportSessionId(parsed),a=ensureAiOrganizerState(),session=aiFindImportSession(sid);
+    let sessionIssue='';
+    if(!sid)sessionIssue='sessionIdがありません。内容確認が必要です';
+    else if(!session)sessionIssue='保存された出力sessionと一致しません';
+    aiPreviewOperations=parsed.operations.map((op,i)=>validateAiOperationWithSession(op,i,session,sessionIssue));
+    aiApplyConflictChecks(aiPreviewOperations);
+    const valid=aiPreviewOperations.filter(x=>x.valid).length,warn=aiPreviewOperations.filter(x=>x.valid&&x.warning).length;
+    st.className='ai-org-status '+(sessionIssue?'error':'ok');
+    st.textContent=(sessionIssue?sessionIssue+'。':'')+aiPreviewOperations.length+'件を読み込みました。適用可能 '+valid+'件'+(warn?'、要確認 '+warn+'件':'')+'。まだ変更は適用されていません。';
+    renderAiPreview();
+  }catch(e){aiPreviewOperations=[];area.innerHTML='';st.className='ai-org-status error';st.textContent='JSONを読み込めません: '+e.message}
+}
+function renderAiPreview(){
+  const area=document.getElementById('aiPreviewArea');if(!area)return;const valid=aiPreviewOperations.filter(x=>x.valid),deletes=valid.filter(x=>x.action==='delete').length,creates=valid.filter(x=>x.action==='create').length,invalid=aiPreviewOperations.length-valid.length,warn=valid.filter(x=>x.warning).length;
+  area.innerHTML='<div class="ai-preview-summary"><div class="ai-preview-stat"><b>'+valid.length+'</b><span>適用可能</span></div><div class="ai-preview-stat"><b>'+deletes+'</b><span>削除</span></div><div class="ai-preview-stat"><b>'+warn+'</b><span>要確認</span></div><div class="ai-preview-stat"><b>'+invalid+'</b><span>除外</span></div></div>';
+  const list=document.createElement('div');list.className='ai-preview-list';aiPreviewOperations.forEach((v,i)=>{const op=v.raw||{},item=document.createElement('label');item.className='ai-preview-item'+(v.valid?'':' invalid');const warnHtml=v.warning?'<div class="ai-preview-reason" style="color:#ffd24a">⚠ '+escapeHtml(v.warning)+'</div>':'';item.innerHTML='<input type="checkbox" '+(v.valid&&v.selected?'checked':'')+' '+(v.valid?'':'disabled')+' onchange="toggleAiPreviewOperation('+i+',this.checked)"><div><div class="ai-preview-title">'+escapeHtml(AI_ACTION_LABELS[op.action]||op.action||'不正な命令')+' · '+escapeHtml(v.task?v.task.name:(op.title||'新規タスク'))+'</div><div class="ai-preview-diff">'+escapeHtml(aiOperationDiff(v))+'</div>'+warnHtml+(op.reason?'<div class="ai-preview-reason">'+escapeHtml(op.reason)+'</div>':'')+'</div>';list.appendChild(item)});area.appendChild(list);
+  const chosen=valid.filter(x=>x.selected).length,delRatio=state.tasks.length?deletes/state.tasks.length:0;const warnBlock=(deletes>=50||delRatio>=.5)?'<div class="ai-org-status error">大量削除が含まれています。適用後もゴミ箱と履歴から復元できます。</div>':'';area.insertAdjacentHTML('beforeend',warnBlock+'<div class="ai-org-actions"><button type="button" class="ai-org-btn secondary" onclick="toggleAllAiPreview(true)">全選択</button><button type="button" class="ai-org-btn secondary" onclick="toggleAllAiPreview(false)">全解除</button></div><button type="button" class="ai-org-btn" style="margin-top:8px" onclick="confirmApplyAiPreview()">選択した'+chosen+'件を適用</button>');
+}
+const _v4932ApplyAiPreview=applyAiPreview;
+applyAiPreview=function(ops){
+  const before=aiSnapshot(),a=ensureAiOrganizerState(),summary={};let applied=0;
+  ops.forEach(v=>{const op=v.raw;try{if(applyAiOperation(op)){summary[op.action]=(summary[op.action]||0)+1;applied++}}catch(e){console.warn('AI op failed',op,e)}});
+  const sessionId=(ops.find(v=>v.sessionId)||{}).sessionId||a.lastExportSessionId||'';
+  const session=aiFindImportSession(sessionId);
+  const history={id:newId(),createdAt:Date.now(),summary,before,afterTaskCount:state.tasks.length,sessionId,skillName:session&&session.skillName||aiCurrentSkill().name,scopeLabel:session&&session.scopeLabel||''};
+  a.history.unshift(history);a.history=a.history.slice(0,10);saveNow();render();if(document.getElementById('taskManagerScreen')?.classList.contains('open'))renderTaskManager();aiPreviewOperations=[];document.getElementById('aiPreviewArea').innerHTML='';document.getElementById('aiImportStatus').className='ai-org-status ok';document.getElementById('aiImportStatus').textContent=applied+'件のAI整理を適用しました。';showUndo(applied+'件のAI整理を適用した',()=>restoreAiHistory(history.id,true));
+};
+function restoreAiSnapshotObject(snapshot){
+  const a=ensureAiOrganizerState();
+  state.tasks=JSON.parse(JSON.stringify(snapshot.tasks||[])).map(normalizeTask);
+  state.repeats=JSON.parse(JSON.stringify(snapshot.repeats||[]));
+  a.trash=JSON.parse(JSON.stringify(snapshot.trash||[]));
+}
+function confirmRestoreAiHistory(id){openAppConfirm({title:'AI整理前へ戻す？',message:'戻す前に現在状態も保存します。復元後に取り消すこともできます。',okText:'元に戻す',danger:true,onOk:()=>restoreAiHistory(id,false)})}
+function restoreAiHistory(id,quiet){
+  const a=ensureAiOrganizerState(),h=a.history.find(x=>x.id===id);if(!h)return;
+  const restoreUndo={id:'restore_'+newId(),createdAt:Date.now(),before:aiSnapshot(),restoredHistoryId:id};
+  a.restoreSnapshots.unshift(restoreUndo);a.restoreSnapshots=a.restoreSnapshots.slice(0,5);
+  restoreAiSnapshotObject(h.before);saveNow();render();if(document.getElementById('taskManagerScreen')?.classList.contains('open'))renderTaskManager();renderAiHistory();if(!quiet){const st=document.getElementById('aiImportStatus');if(st)st.textContent='AI整理前の状態へ戻しました。'}showUndo('AI整理前へ戻した',()=>{restoreAiSnapshotObject(restoreUndo.before);saveNow();render();if(document.getElementById('taskManagerScreen')?.classList.contains('open'))renderTaskManager();renderAiHistory();});
+}
+function renderAiHistory(){
+  const area=document.getElementById('aiHistoryArea'),a=ensureAiOrganizerState();if(!area)return;if(!a.history.length){area.innerHTML='<div class="ai-empty">AI整理履歴はまだありません。<br>適用前の状態はここから復元できます。</div>';return}area.innerHTML='<div class="ai-history-list">'+a.history.map(h=>{const total=Object.values(h.summary||{}).reduce((x,y)=>x+y,0),detail=Object.entries(h.summary||{}).map(([k,v])=>(AI_ACTION_LABELS[k]||k)+' '+v).join(' / ');return '<div class="ai-history-card"><div class="ai-history-top"><div><div class="ai-history-title">AI整理 '+total+'件</div><div class="ai-history-meta">'+escapeHtml(new Date(h.createdAt).toLocaleString('ja-JP'))+(h.skillName?'<br>'+escapeHtml(h.skillName+(h.scopeLabel?' · '+h.scopeLabel:'')):'')+(h.sessionId?'<br>session: '+escapeHtml(h.sessionId):'')+'<br>'+escapeHtml(detail)+'</div></div><button class="ai-mini-btn" onclick="confirmRestoreAiHistory(\''+h.id+'\')">この時点へ戻す</button></div></div>'}).join('')+'</div>';
+}
+function runAiOrganizerSelfTest(){
+  const dummy={sessionId:'test',operations:[{action:'create',title:'テスト',destination:'inbox',reason:'追加テスト'},{taskId:'missing',action:'set_today',reason:'存在しないIDテスト'}]};
+  try{return aiParseJson(JSON.stringify(dummy)).operations.length===2}catch(e){return false}
+}
+
 </script>
 </body>
 </html>
